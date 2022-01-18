@@ -14,7 +14,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Use or create gradle cache
-        uses: actions/cache@v2s
+        uses: actions/cache@v2
         with:
           path: |
             ~/.gradle/caches
