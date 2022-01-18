@@ -1,0 +1,25 @@
+# Gradle
+.gradle
+/local.properties
+
+# IntelliJ .idea folder
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.idea/deploymentTargetDropDown.xml
+.idea/misc.xml
+*.iml
+
+# General
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+
+# Firebase config file
+app/google-services.json
