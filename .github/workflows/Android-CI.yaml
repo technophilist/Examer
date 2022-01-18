@@ -13,6 +13,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Use or create gradle cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
       - name: Change permissions of ./gradlew
         run: chmod +x ./gradlew
       - name: Decrypt google services config file
@@ -23,5 +30,6 @@ jobs:
         run: |
           ./gradlew build
           rm app/google-services.json
+
 
 
