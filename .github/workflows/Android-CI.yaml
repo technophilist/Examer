@@ -1,0 +1,26 @@
+name: Android CI
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      ENCRYPT_KEY: ${{ secrets.GOOGLE_SERVICES_JSON_DECRYPTION_KEY }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Change permissions of ./gradlew
+        run: chmod +x ./gradlew
+      - name: Decrypt google services config file
+        run: |
+          cd app/
+          openssl enc -aes-256-cbc -d -in egsj.txt -out google-services.json -k $ENCRYPT_KEY
+      - name: Build the app
+        run: |
+          ./gradlew build
+          rm app/google-services.json
+
+
