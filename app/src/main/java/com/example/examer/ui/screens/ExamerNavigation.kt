@@ -28,10 +28,12 @@ data class NavigationDrawerDestination(
 )
 
 /**
- * A composable that manages the topAppbar and NavigationDrawer.
+ * A scaffold that manages the topAppbar and NavigationDrawer.
  *
  * @param modifier the Modifier to be applied to the composable.
- * @param scaffoldState
+ * @param scaffoldState  state of this scaffold widget. It contains
+ * the state of the screen, e.g. variables to provide manual control
+ * over the drawer behavior, sizes of components, etc.
  * @param onNavigationIconClick callback that will be executed when
  * the navigation icon is clicked.
  * @param onNavigationItemClick callback that will be executed when
@@ -43,13 +45,13 @@ data class NavigationDrawerDestination(
  * [NavigationDrawerDestination]s that are to be added to the
  * navigation drawer.
  * @param content content of the current screen. The lambda receives
- * an implementatino of [PaddingValues]that should be applied to the
+ * an implementation of [PaddingValues]that should be applied to the
  * content root via Modifier.padding to properly offset top and bottom bars.
  * If you're using VerticalScroller,apply this modifier to the child of the
  * scroller, and not on the scroller itself.
  */
 @Composable
-fun ExamerNavigation(
+fun ExamerNavigationScaffold(
     modifier: Modifier = Modifier,
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     onNavigationIconClick: (() -> Unit)? = null,
