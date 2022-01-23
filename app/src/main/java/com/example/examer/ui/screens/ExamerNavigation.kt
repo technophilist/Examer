@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.examer.R
+import com.example.examer.ui.components.NavigationDrawerItem
 import com.google.accompanist.insets.statusBarsHeight
 import com.google.accompanist.insets.statusBarsPadding
 
@@ -49,10 +50,13 @@ fun ExamerNavigation(
         drawerContent = {
             Spacer(modifier = Modifier.statusBarsHeight(16.dp))
             navigationDrawerDestinations.forEachIndexed { index, item ->
-                DrawerItem(
-                    navigationDrawerItem = item,
+                NavigationDrawerItem(
+                    icon = item.icon,
+                    label = item.name,
                     isSelected = currentlySelectedNavigationDrawerItemIndex == index,
-                    onItemSelected = { onNavigationItemClick?.invoke(index) }
+                    onClick = {
+                        onNavigationItemClick?.invoke(index)
+                    }
                 )
             }
         },
@@ -82,38 +86,3 @@ private fun ExamerAppbar(
         navigationIcon = navigationIcon,
     )
 }
-
-@Composable
-private fun DrawerItem(
-    isSelected: Boolean = false,
-    onItemSelected: (() -> Unit)? = null,
-    navigationDrawerItem: NavigationDrawerDestination,
-) {
-    //TODO Hoist color state
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 8.dp, start = 8.dp, end = 8.dp)
-            .clip(RoundedCornerShape(12))
-            .background(
-                if (isSelected) MaterialTheme.colors.primary.copy(alpha = 0.12f)
-                else MaterialTheme.colors.surface
-            )
-            .clickable {
-                navigationDrawerItem.onClick()
-                onItemSelected?.invoke()
-            }
-            .padding(8.dp)
-    ) {
-        val color = if (isSelected) MaterialTheme.colors.primary
-        else MaterialTheme.colors.onSurface
-        Icon(
-            imageVector = navigationDrawerItem.icon,
-            contentDescription = null,
-            tint = color
-        )
-        Spacer(modifier = Modifier.width(16.dp))
-        Text(text = navigationDrawerItem.name, color = color)
-    }
-}
-
