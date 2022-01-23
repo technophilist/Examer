@@ -18,13 +18,36 @@ import com.example.examer.ui.components.NavigationDrawerItem
 import com.google.accompanist.insets.statusBarsHeight
 import com.google.accompanist.insets.statusBarsPadding
 
-
+/**
+ * A data class that models a destination in a navigation drawer.
+ */
 data class NavigationDrawerDestination(
     val icon: ImageVector,
     val name: String,
     val onClick: () -> Unit,
 )
 
+/**
+ * A composable that manages the topAppbar and NavigationDrawer.
+ *
+ * @param modifier the Modifier to be applied to the composable.
+ * @param scaffoldState
+ * @param onNavigationIconClick callback that will be executed when
+ * the navigation icon is clicked.
+ * @param onNavigationItemClick callback that will be executed when
+ * a navigation item in the navigation drawer is clicked. The lambda
+ * receives an integer representing the index of the selected item.
+ * @param currentlySelectedNavigationDrawerItemIndex the index of the
+ * currently selected navigation item in the drawer.
+ * @param  navigationDrawerDestinations a list of
+ * [NavigationDrawerDestination]s that are to be added to the
+ * navigation drawer.
+ * @param content content of the current screen. The lambda receives
+ * an implementatino of [PaddingValues]that should be applied to the
+ * content root via Modifier.padding to properly offset top and bottom bars.
+ * If you're using VerticalScroller,apply this modifier to the child of the
+ * scroller, and not on the scroller itself.
+ */
 @Composable
 fun ExamerNavigation(
     modifier: Modifier = Modifier,
@@ -35,7 +58,6 @@ fun ExamerNavigation(
     navigationDrawerDestinations: List<NavigationDrawerDestination>,
     content: @Composable (PaddingValues) -> Unit,
 ) {
-    // TODO State hoisting
     Scaffold(
         modifier = modifier,
         scaffoldState = scaffoldState,
@@ -64,6 +86,12 @@ fun ExamerNavigation(
     )
 }
 
+/**
+ * An appbar customized for Examer.
+ * @param modifier the modifier to be applied to the composable.
+ * @param onNavigationIconClick an optional callback that will be
+ * executed when the navigation icon is clicked.
+ */
 @Composable
 private fun ExamerAppbar(
     modifier: Modifier = Modifier,
