@@ -48,7 +48,7 @@ object NavigationDrawerItemDefaults {
      */
     val inactiveColors: NavigationDrawerItemColors
         @Composable get() = NavigationDrawerItemColors(
-            backgroundColor = MaterialTheme.colors.surface,
+            backgroundColor = Color.Transparent,
             contentColor = MaterialTheme.colors.onSurface
         )
 
