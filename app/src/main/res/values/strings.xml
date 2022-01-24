@@ -34,4 +34,9 @@
     <string name="placeholder_first_name">First Name</string>
     <string name="placeholder_last_name">Last Name</string>
     <string name="label_signup">Sign up</string>
+
+    <!-- Examer Test Card -->
+    <string name="button_label_start_test">Start test</string>
+    <string name="label_test_description">Test Description</string>
+    <string name="label_total_number_of_questions">Total number of questions</string>
 </resources>
