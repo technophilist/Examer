@@ -57,7 +57,7 @@ data class TestDetails(
  * string.
  */
 fun TestDetails.getDateStringAndTimeString(is24hourFormat: Boolean = false): Pair<String, String> {
-    val format = DateTimeFormatter.ofPattern(if (is24hourFormat) "hh:mm" else "K:mm a")
+    val format = DateTimeFormatter.ofPattern(if (is24hourFormat) "hh:mm" else "h:mm a")
     val dateString = localDateTime.toLocalDate().toString()
     val timeString = localDateTime
         .toLocalTime()
