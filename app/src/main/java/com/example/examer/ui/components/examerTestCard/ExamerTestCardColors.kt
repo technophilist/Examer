@@ -1,4 +1,4 @@
-package com.example.examer.ui.components
+package com.example.examer.ui.components.examerTestCard
 
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable

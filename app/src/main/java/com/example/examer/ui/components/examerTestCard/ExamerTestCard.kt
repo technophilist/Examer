@@ -1,4 +1,4 @@
-package com.example.examer.ui.components
+package com.example.examer.ui.components.examerTestCard
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -13,7 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.font.FontWeight
@@ -23,8 +22,6 @@ import com.example.examer.R
 import com.example.examer.data.domain.Status
 import com.example.examer.data.domain.TestDetails
 import com.example.examer.data.domain.getDateStringAndTimeString
-import com.example.examer.ui.theme.Green200
-import com.example.examer.ui.theme.Green600
 
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
