@@ -2,6 +2,7 @@ package com.example.examer.ui.components.examerTestCard
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -23,7 +24,6 @@ import com.example.examer.data.domain.Status
 import com.example.examer.data.domain.TestDetails
 import com.example.examer.data.domain.getDateStringAndTimeString
 
-@ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
 fun ExamerExpandableTestCard(
@@ -37,7 +37,7 @@ fun ExamerExpandableTestCard(
 ) {
     val (dateString, timeString) = test.getDateStringAndTimeString(is24hourFormat = is24HourTimeFormat)
     Card(
-        modifier = modifier,
+        modifier = modifier.animateContentSize(),
         onClick = onClick
     ) {
         Column(modifier = Modifier.padding(8.dp)) {
@@ -55,7 +55,7 @@ fun ExamerExpandableTestCard(
                 timeString = timeString,
                 timeGivenPerQuestionString = "${test.minutesPerQuestion} minutes"
             )
-            AnimatedVisibility(isExpanded) {
+            if (isExpanded) {
                 ExamerCardExpandedContent(
                     description = test.description,
                     totalNumberOfQuestions = test.totalNumberOfQuestions,
