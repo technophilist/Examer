@@ -91,7 +91,7 @@ fun StatusRow(
                 .background(backgroundColor)
         )
         Text(
-            text = testStatus.toString().capitalize(Locale.current),
+            text = testStatus.toString().lowercase().capitalize(Locale.current),
             style = MaterialTheme.typography.caption
         )
     }
