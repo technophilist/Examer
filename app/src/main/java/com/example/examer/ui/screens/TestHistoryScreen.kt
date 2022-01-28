@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import com.example.examer.R
 import com.example.examer.data.domain.TestDetails
 import com.example.examer.ui.components.examerTestCard.ExamerExpandableTestCard
+import com.google.accompanist.insets.navigationBarsPadding
 import kotlinx.coroutines.launch
 
 @ExperimentalAnimationApi
@@ -83,6 +84,7 @@ fun TestHistoryScreen(
         AnimatedVisibility(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
+                .navigationBarsPadding()
                 .padding(8.dp),
             visible = isScrollToTopButtonVisible,
             enter = expandIn(expandFrom = Alignment.Center),
