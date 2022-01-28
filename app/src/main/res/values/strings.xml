@@ -42,4 +42,9 @@
 
     <!-- HomeScreen -->
     <string name="label_upcoming_tests">Upcoming tests</string>
+
+    <!-- Test History Screen-->
+    <string name="label_test_history">Test history</string>
+    <string name="button_label_review_test">Review Test</string>
+
 </resources>
