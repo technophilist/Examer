@@ -1,8 +1,8 @@
 package com.example.examer.ui.components.examerTestCard
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.*
+import androidx.compose.animation.core.AnimationConstants
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -31,6 +31,7 @@ import com.example.examer.data.domain.getDateStringAndTimeString
  * the content to be displayed when the card is expanded.
  * // TODO Add docs for params
  */
+@ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
 fun DefaultExamerExpandableTestCard(
@@ -58,6 +59,7 @@ fun DefaultExamerExpandableTestCard(
     }
 }
 
+@ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
 fun ExamerExpandableTestCard(
@@ -89,7 +91,12 @@ fun ExamerExpandableTestCard(
                 timeString = timeString,
                 timeGivenPerQuestionString = "${test.minutesPerQuestion} minutes"
             )
-            if (isExpanded) expandedContent()
+            AnimatedVisibility(
+                visible = isExpanded,
+                enter = fadeIn(animationSpec = tween(durationMillis = 50)),
+                exit = fadeOut(animationSpec = tween(durationMillis = 50)),
+                content = { expandedContent() }
+            )
         }
     }
 }
