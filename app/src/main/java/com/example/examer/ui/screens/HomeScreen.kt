@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.example.examer.R
 import com.example.examer.data.domain.TestDetails
 import com.example.examer.ui.components.examerTestCard.DefaultExamerExpandableTestCard
+import com.google.accompanist.insets.navigationBarsPadding
 import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
@@ -60,7 +61,7 @@ fun HomeScreen(tests: List<TestDetails>) {
                         onExpandButtonClick = { expandedState[it.id] = !expandedState[it.id]!! },
                         onClick = { expandedState[it.id] = !expandedState[it.id]!! },
                         is24HourTimeFormat = DateFormat.is24HourFormat(context),
-                        onTakeTestButtonClick = {}
+                        onTakeTestButtonClick = {} // TODO hoist
                     )
                 }
             }
@@ -68,6 +69,7 @@ fun HomeScreen(tests: List<TestDetails>) {
         AnimatedVisibility(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
+                .navigationBarsPadding()
                 .padding(8.dp),
             visible = isScrollToTopButtonVisible,
             enter = expandIn(expandFrom = Alignment.Center),
