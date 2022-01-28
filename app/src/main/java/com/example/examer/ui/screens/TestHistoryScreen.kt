@@ -1,10 +1,9 @@
 package com.example.examer.ui.screens
 
 import android.text.format.DateFormat
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.expandIn
-import androidx.compose.animation.shrinkOut
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -22,9 +21,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.example.examer.R
 import com.example.examer.data.domain.TestDetails
@@ -81,16 +82,23 @@ fun TestHistoryScreen(
                 }
             }
         }
+        // TODO extract into a separate component
         AnimatedVisibility(
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .navigationBarsPadding()
-                .padding(8.dp),
+            modifier = Modifier.align(Alignment.BottomEnd),
             visible = isScrollToTopButtonVisible,
-            enter = expandIn(expandFrom = Alignment.Center),
-            exit = shrinkOut(shrinkTowards = Alignment.Center)
+            enter = slideInVertically(
+                initialOffsetY = { it },
+                animationSpec = tween()
+            ),
+            exit = slideOutVertically(
+                targetOffsetY = { it },
+                animationSpec = tween()
+            )
         ) {
             FloatingActionButton(
+                modifier = Modifier
+                    .navigationBarsPadding()
+                    .padding(8.dp),
                 onClick = { coroutineScope.launch { lazyListState.animateScrollToItem(0) } },
                 content = {
                     Icon(
