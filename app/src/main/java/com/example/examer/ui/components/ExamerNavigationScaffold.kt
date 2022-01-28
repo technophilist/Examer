@@ -9,8 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.examer.R
+import com.example.examer.data.domain.ExamerUser
 import com.google.accompanist.insets.statusBarsHeight
 import com.google.accompanist.insets.statusBarsPadding
 
@@ -26,6 +28,9 @@ data class NavigationDrawerDestination(
 /**
  * A scaffold that manages the topAppbar and NavigationDrawer.
  *
+ * @param currentlyLoggedInUser the currently authenticated user. The
+ * name and email of the user will be displayed in the header of the
+ * navigation drawer.
  * @param modifier the Modifier to be applied to the composable.
  * @param scaffoldState  state of this scaffold widget. It contains
  * the state of the screen, e.g. variables to provide manual control
@@ -48,6 +53,7 @@ data class NavigationDrawerDestination(
  */
 @Composable
 fun ExamerNavigationScaffold(
+    currentlyLoggedInUser: ExamerUser,
     modifier: Modifier = Modifier,
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     onNavigationIconClick: (() -> Unit)? = null,
@@ -69,14 +75,33 @@ fun ExamerNavigationScaffold(
         },
         drawerContent = {
             Spacer(modifier = Modifier.statusBarsHeight(16.dp))
+            // Header
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp)
+            ) {
+                Text(
+                    text = currentlyLoggedInUser.name,
+                    style = MaterialTheme.typography.h5,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 1
+                )
+                Text(
+                    text = currentlyLoggedInUser.email,
+                    style = MaterialTheme.typography.subtitle1,
+                    color = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium),
+                    maxLines = 1,
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+            Divider(modifier = Modifier.fillMaxWidth())
             navigationDrawerDestinations.forEachIndexed { index, item ->
                 NavigationDrawerItem(
                     icon = item.icon,
                     label = item.name,
                     isSelected = currentlySelectedNavigationDrawerItemIndex == index,
-                    onClick = {
-                        onNavigationItemClick?.invoke(index)
-                    }
+                    onClick = { onNavigationItemClick?.invoke(index) }
                 )
             }
         },
