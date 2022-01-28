@@ -2,8 +2,6 @@ package com.example.examer.ui.screens
 
 import android.text.format.DateFormat
 import androidx.compose.animation.*
-import androidx.compose.animation.core.snap
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -11,19 +9,16 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropUp
-import androidx.compose.material.icons.filled.Filter
-import androidx.compose.material.icons.filled.Sort
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.examer.R
 import com.example.examer.data.domain.TestDetails
-import com.example.examer.ui.components.examerTestCard.ExamerExpandableTestCard
+import com.example.examer.ui.components.examerTestCard.DefaultExamerExpandableTestCard
 import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
@@ -59,12 +54,13 @@ fun HomeScreen(tests: List<TestDetails>) {
                     )
                 }
                 items(tests, key = { it.id }) {
-                    ExamerExpandableTestCard(
+                    DefaultExamerExpandableTestCard(
                         test = it,
                         isExpanded = expandedState[it.id] == true,
                         onExpandButtonClick = { expandedState[it.id] = !expandedState[it.id]!! },
                         onClick = { expandedState[it.id] = !expandedState[it.id]!! },
-                        is24HourTimeFormat = DateFormat.is24HourFormat(context)
+                        is24HourTimeFormat = DateFormat.is24HourFormat(context),
+                        onTakeTestButtonClick = {}
                     )
                 }
             }
