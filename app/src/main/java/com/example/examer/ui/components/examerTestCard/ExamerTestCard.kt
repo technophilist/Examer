@@ -24,6 +24,40 @@ import com.example.examer.data.domain.Status
 import com.example.examer.data.domain.TestDetails
 import com.example.examer.data.domain.getDateStringAndTimeString
 
+/**
+ * This is a default implementation of [ExamerExpandableTestCard]
+ * which displays the [ExamerCardExpandedContent] when the card is
+ * expanded. [ExamerExpandableTestCard] provides slot for defining
+ * the content to be displayed when the card is expanded.
+ * // TODO Add docs for params
+ */
+@ExperimentalMaterialApi
+@Composable
+fun DefaultExamerExpandableTestCard(
+    test: TestDetails,
+    isExpanded: Boolean,
+    onExpandButtonClick: (() -> Unit),
+    onTakeTestButtonClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {},
+    is24HourTimeFormat: Boolean = false,
+) {
+    ExamerExpandableTestCard(
+        test = test,
+        isExpanded = isExpanded,
+        onExpandButtonClick = onExpandButtonClick,
+        modifier = modifier,
+        onClick = onClick,
+        is24HourTimeFormat = is24HourTimeFormat,
+    ) {
+        ExamerCardExpandedContent(
+            description = test.description,
+            totalNumberOfQuestions = test.totalNumberOfQuestions,
+            onTakeTestButtonClick = onTakeTestButtonClick
+        )
+    }
+}
+
 @ExperimentalMaterialApi
 @Composable
 fun ExamerExpandableTestCard(
@@ -32,8 +66,8 @@ fun ExamerExpandableTestCard(
     onExpandButtonClick: (() -> Unit),
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
-    onTakeTestButtonClick: (() -> Unit)? = null,
-    is24HourTimeFormat: Boolean = false
+    is24HourTimeFormat: Boolean = false,
+    expandedContent: @Composable () -> Unit
 ) {
     val (dateString, timeString) = test.getDateStringAndTimeString(is24hourFormat = is24HourTimeFormat)
     Card(
@@ -55,13 +89,7 @@ fun ExamerExpandableTestCard(
                 timeString = timeString,
                 timeGivenPerQuestionString = "${test.minutesPerQuestion} minutes"
             )
-            if (isExpanded) {
-                ExamerCardExpandedContent(
-                    description = test.description,
-                    totalNumberOfQuestions = test.totalNumberOfQuestions,
-                    onTakeTestButtonClick = onTakeTestButtonClick ?: {}
-                )
-            }
+            if (isExpanded) expandedContent()
         }
     }
 }
