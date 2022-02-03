@@ -1,9 +1,12 @@
 package com.example.examer.data.remote
 
 import android.util.Log
+import com.example.examer.auth.FirebaseAuthenticationService
+import com.example.examer.auth.createUser
 import com.example.examer.data.domain.ExamerUser
 import com.example.examer.di.DispatcherProvider
 import com.example.examer.di.StandardDispatchersProvider
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.auth.User
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -30,21 +33,11 @@ class FirebaseRemoteDatabaseTest {
     }
 
     @Test
-    fun fetchTestListTest_validUser_isSuccessfullyFetched() {
-        // given a valid user
+    fun fetchTestListTest_registered_isSuccessfullyFetched() {
+        // given a registered user
         // it must be possible to fetch the list of all tests related
         // to that particular user without an exception.
         runBlocking { remoteDatabase.fetchTestListForUser(currentUser) }
     }
-
-    @Test(expected = IllegalArgumentException::class)
-    fun fetchTestList_invalidUser_exceptionIsRaised() {
-        // given - Invalid user
-        val invalidUser = ExamerUser("test", "", "")
-        // when - trying to get the test list for the invalid user.
-        runBlocking { remoteDatabase.fetchTestListForUser(invalidUser) }
-        // then - the test must throw an instance of IllegalArguement exception
-    }
-
 
 }
