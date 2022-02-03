@@ -4,6 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ExitToApp
+import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -13,8 +15,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.examer.R
 import com.example.examer.data.domain.ExamerUser
+import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.statusBarsHeight
 import com.google.accompanist.insets.statusBarsPadding
+import com.google.accompanist.insets.systemBarsPadding
 
 /**
  * A data class that models a destination in a navigation drawer.
@@ -45,6 +49,9 @@ data class NavigationDrawerDestination(
  * @param  navigationDrawerDestinations a list of
  * [NavigationDrawerDestination]s that are to be added to the
  * navigation drawer.
+ * @param onSignOutButtonClick the callback that will be executed when
+ * the sign out button located at the bottom of the navigation drawer
+ * is clicked.
  * @param content content of the current screen. The lambda receives
  * an implementation of [PaddingValues]that should be applied to the
  * content root via Modifier.padding to properly offset top and bottom bars.
@@ -60,6 +67,7 @@ fun ExamerNavigationScaffold(
     onNavigationItemClick: ((index: Int) -> Unit)? = null,
     currentlySelectedNavigationDrawerItemIndex: Int = 0,
     navigationDrawerDestinations: List<NavigationDrawerDestination>,
+    onSignOutButtonClick: (() -> Unit)? = null,
     content: @Composable (PaddingValues) -> Unit,
 ) {
     Scaffold(
@@ -74,39 +82,81 @@ fun ExamerNavigationScaffold(
             )
         },
         drawerContent = {
-            Spacer(modifier = Modifier.statusBarsHeight(16.dp))
-            // Header
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp)
+                    .fillMaxSize()
+                    .systemBarsPadding(),
+                verticalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(
-                    text = currentlyLoggedInUser.name,
-                    style = MaterialTheme.typography.h5,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 1
+                // Header
+                NavigationDrawerHeader(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp)
+                        .weight(0.13f),
+                    currentlyLoggedInUser = currentlyLoggedInUser
                 )
-                Text(
-                    text = currentlyLoggedInUser.email,
-                    style = MaterialTheme.typography.subtitle1,
-                    color = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium),
-                    maxLines = 1,
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-            }
-            Divider(modifier = Modifier.fillMaxWidth())
-            navigationDrawerDestinations.forEachIndexed { index, item ->
-                NavigationDrawerItem(
-                    icon = item.icon,
-                    label = item.name,
-                    isSelected = currentlySelectedNavigationDrawerItemIndex == index,
-                    onClick = { onNavigationItemClick?.invoke(index) }
-                )
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp)
+                        .weight(0.77f),
+                ) {
+                    navigationDrawerDestinations.forEachIndexed { index, item ->
+                        NavigationDrawerItem(
+                            icon = item.icon,
+                            label = item.name,
+                            isSelected = currentlySelectedNavigationDrawerItemIndex == index,
+                            onClick = { onNavigationItemClick?.invoke(index) }
+                        )
+                    }
+                }
+                // Footer
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .navigationBarsPadding()
+                        .weight(0.1f)
+                ) {
+                    Divider(modifier = Modifier.fillMaxWidth())
+                    NavigationDrawerItem(
+                        icon = Icons.Filled.Logout,
+                        label = stringResource(R.string.button_sign_out),
+                        isSelected = false,
+                        onClick = onSignOutButtonClick
+                    )
+                }
             }
         },
         content = content
     )
+}
+
+@Composable
+private fun NavigationDrawerHeader(
+    currentlyLoggedInUser: ExamerUser,
+    modifier: Modifier = Modifier,
+) {
+    // TODO add elipses
+    Column(modifier = modifier) {
+        val paddingStartModifier = Modifier.padding(start = 16.dp)
+        Text(
+            modifier = paddingStartModifier,
+            text = currentlyLoggedInUser.name,
+            style = MaterialTheme.typography.h5,
+            fontWeight = FontWeight.Bold,
+            maxLines = 1
+        )
+        Text(
+            modifier = paddingStartModifier,
+            text = currentlyLoggedInUser.email,
+            style = MaterialTheme.typography.subtitle1,
+            color = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium),
+            maxLines = 1,
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Divider(modifier = Modifier.fillMaxWidth())
+    }
 }
 
 /**
