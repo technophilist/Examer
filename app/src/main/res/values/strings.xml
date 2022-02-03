@@ -47,4 +47,7 @@
     <string name="label_test_history">Test history</string>
     <string name="button_label_review_test">Review Test</string>
 
+    <!-- Navigation Drawer -->
+    <string name="button_sign_out">Sign out</string>
+
 </resources>
