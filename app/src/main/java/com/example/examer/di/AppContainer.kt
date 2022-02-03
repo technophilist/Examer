@@ -13,8 +13,8 @@ class AppContainer {
     private val remoteDatabase =
         FirebaseRemoteDatabase(StandardDispatchersProvider()) as RemoteDatabase
     private val repository = ExamerRepository(remoteDatabase) as Repository
-    private val authenticationService = FirebaseAuthenticationService()
-
+    
+    val authenticationService = FirebaseAuthenticationService()
     val isUserLoggedIn get() = authenticationService.currentUser != null
     val logInViewModelFactory = LogInViewModelFactory(authenticationService)
     val signUpViewModelFactory = SignUpViewModelFactory(authenticationService)
