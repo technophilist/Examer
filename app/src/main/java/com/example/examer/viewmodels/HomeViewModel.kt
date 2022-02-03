@@ -23,7 +23,8 @@ class ExamerHomeViewModel(
 
     init {
         viewModelScope.launch {
-            authenticationService.currentUser?.let { repository.fetchTestListForUser(it) }
+            _testDetailsList.value = authenticationService
+                .currentUser?.let { repository.fetchTestListForUser(it) } ?: emptyList()
         }
     }
 }
