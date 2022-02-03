@@ -28,7 +28,7 @@ enum class Status { OPEN, SCHEDULED, MISSED, COMPLETED }
  * for each question.
  */
 data class TestDetails(
-    val id: Int,
+    val id: String,
     val title: String,
     val description: String,
     val language: String,

@@ -32,7 +32,7 @@ fun HomeScreen(tests: List<TestDetails>) {
         lazyListState.firstVisibleItemIndex > 2
     }
     val expandedState = remember {
-        val map = mutableStateMapOf<Int, Boolean>()
+        val map = mutableStateMapOf<String, Boolean>()
         tests.forEach { map[it.id] = false }
         map
     }
