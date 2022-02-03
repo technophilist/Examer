@@ -1,6 +1,7 @@
 package com.example.examer.ui.screens
 
 import android.text.format.DateFormat
+import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,6 +11,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.runtime.*
+import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -21,6 +23,7 @@ import com.example.examer.data.domain.TestDetails
 import com.example.examer.ui.components.examerTestCard.DefaultExamerExpandableTestCard
 import com.google.accompanist.insets.navigationBarsPadding
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @ExperimentalMaterialApi
 @ExperimentalAnimationApi
@@ -31,10 +34,17 @@ fun HomeScreen(tests: List<TestDetails>) {
     val isScrollToTopButtonVisible = remember(lazyListState.firstVisibleItemIndex) {
         lazyListState.firstVisibleItemIndex > 2
     }
-    val expandedState = remember {
-        val map = mutableStateMapOf<String, Boolean>()
-        tests.forEach { map[it.id] = false }
-        map
+    // Since the test list is fetched asynchronously, initial value
+    // of the tests param will be empty. If key argument is not
+    // specified for the remember block, the map would always be
+    // empty because the remember block is not re-executed. By
+    // executing the remember block whenever the list changes
+    // we ensure that the map will always contain the updated
+    // values.
+    val expandedState = remember(tests) {
+        mutableStateMapOf<String, Boolean>().apply {
+            tests.forEach { this[it.id] = false }
+        }
     }
     val coroutineScope = rememberCoroutineScope()
     Box(modifier = Modifier.fillMaxSize()) {
@@ -59,7 +69,9 @@ fun HomeScreen(tests: List<TestDetails>) {
                         test = it,
                         isExpanded = expandedState[it.id] == true,
                         onExpandButtonClick = { expandedState[it.id] = !expandedState[it.id]!! },
-                        onClick = { expandedState[it.id] = !expandedState[it.id]!! },
+                        onClick = {
+                            expandedState[it.id] = !expandedState[it.id]!!
+                        },
                         is24HourTimeFormat = DateFormat.is24HourFormat(context),
                         onTakeTestButtonClick = {} // TODO hoist
                     )
