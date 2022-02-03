@@ -15,11 +15,6 @@ import com.example.examer.viewmodels.LogInViewModel
 import com.example.examer.viewmodels.SignUpViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 
-sealed class OnBoardingDestinations(val route: String) {
-    object WelcomeScreen : OnBoardingDestinations("com.example.examer.ui.navigation.WelcomeScreen")
-    object SignUpScreen : OnBoardingDestinations("com.example.examer.ui.navigation.SignUpScreen")
-    object LoginScreen : OnBoardingDestinations("com.example.examer.ui.navigation.LoginScreen")
-}
 
 @ExperimentalComposeUiApi
 @ExperimentalPagerApi
@@ -30,33 +25,33 @@ fun NavGraphBuilder.onboardingGraph(
     logInViewModelFactory: LogInViewModelFactory,
     onSuccessfulAuthentication: () -> Unit,
 ) {
-    navigation(startDestination = OnBoardingDestinations.WelcomeScreen.route, route = route) {
-
-        composable(OnBoardingDestinations.WelcomeScreen.route) {
-            WelcomeScreen(
-                onCreateAccountButtonClick = { navController.navigate(OnBoardingDestinations.SignUpScreen.route) },
-                onLoginButtonClick = { navController.navigate(OnBoardingDestinations.LoginScreen.route) }
-            )
-        }
-
-        composable(OnBoardingDestinations.LoginScreen.route) {
-            LoginScreen(
-                viewModel = viewModel(
-                    factory = logInViewModelFactory,
-                    viewModelStoreOwner = it
-                ),
-                onSuccessfulAuthentication = onSuccessfulAuthentication
-            )
-        }
-
-        composable(OnBoardingDestinations.SignUpScreen.route) {
-            SignUpScreen(
-                viewModel = viewModel(
-                    factory = signupViewModelFactory,
-                    viewModelStoreOwner = it
-                ),
-                onAccountCreatedSuccessfully = onSuccessfulAuthentication
-            )
-        }
-    }
+//    navigation(startDestination = OnBoardingDestinations.kt.WelcomeScreen.route, route = route) {
+//
+//        composable(OnBoardingDestinations.kt.WelcomeScreen.route) {
+//            WelcomeScreen(
+//                onCreateAccountButtonClick = { navController.navigate(OnBoardingDestinations.kt.SignUpScreen.route) },
+//                onLoginButtonClick = { navController.navigate(OnBoardingDestinations.kt.LoginScreen.route) }
+//            )
+//        }
+//
+//        composable(OnBoardingDestinations.kt.LoginScreen.route) {
+//            LoginScreen(
+//                viewModel = viewModel(
+//                    factory = logInViewModelFactory,
+//                    viewModelStoreOwner = it
+//                ),
+//                onSuccessfulAuthentication = onSuccessfulAuthentication
+//            )
+//        }
+//
+//        composable(OnBoardingDestinations.kt.SignUpScreen.route) {
+//            SignUpScreen(
+//                viewModel = viewModel(
+//                    factory = signupViewModelFactory,
+//                    viewModelStoreOwner = it
+//                ),
+//                onAccountCreatedSuccessfully = onSuccessfulAuthentication
+//            )
+//        }
+//    }
 }
