@@ -3,8 +3,10 @@ package com.example.examer.utils
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.examer.auth.AuthenticationService
+import com.example.examer.data.Repository
 import com.example.examer.di.DispatcherProvider
 import com.example.examer.di.StandardDispatchersProvider
+import com.example.examer.viewmodels.ExamerHomeViewModel
 import com.example.examer.viewmodels.ExamerLogInViewModel
 import com.example.examer.viewmodels.ExamerSignUpViewModel
 import kotlinx.coroutines.Dispatchers
@@ -50,4 +52,13 @@ class SignUpViewModelFactory(
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T =
         ExamerSignUpViewModel(authenticationService, dispatcherProvider) as T
+}
+
+class HomeViewModelFactory(
+    private val authenticationService: AuthenticationService,
+    private val repository: Repository,
+) : ViewModelProvider.Factory {
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T =
+        ExamerHomeViewModel(authenticationService, repository) as T
 }
