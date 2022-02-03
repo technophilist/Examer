@@ -3,6 +3,8 @@ package com.example.examer.ui.activities
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -19,6 +21,8 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 class MainActivity : ComponentActivity() {
     private lateinit var appContainer: AppContainer
 
+    @ExperimentalMaterialApi
+    @ExperimentalAnimationApi
     @ExperimentalPagerApi
     @ExperimentalComposeUiApi
     override fun onCreate(savedInstanceState: Bundle?) {
