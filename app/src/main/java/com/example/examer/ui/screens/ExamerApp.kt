@@ -1,24 +1,27 @@
 package com.example.examer.ui.screens
 
-import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ProductionQuantityLimits
+import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.capitalize
+import androidx.compose.ui.text.toUpperCase
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.examer.R
 import com.example.examer.data.domain.ExamerUser
 import com.example.examer.di.AppContainer
 import com.example.examer.ui.components.ExamerNavigationScaffold
+import com.example.examer.ui.components.NavigationDrawerDestination
 import com.example.examer.ui.navigation.ExamerDestinations
 import com.example.examer.ui.navigation.OnBoardingDestinations
 import com.example.examer.ui.screens.onboarding.LoginScreen
@@ -80,7 +83,14 @@ fun ExamerApp(appContainer: AppContainer) {
         }
 
         composable(ExamerDestinations.LoggedInScreen.route) {
-            LoggedInScreen(navHostController = loggedInNavController, appContainer = appContainer)
+            LoggedInScreen(
+                navHostController = loggedInNavController,
+                onSignOut = {
+                    onBoardingNavController.popBackStack()
+                    onBoardingNavController.navigate(OnBoardingDestinations.WelcomeScreen.route)
+                },
+                appContainer = appContainer
+            )
         }
     }
 }
@@ -88,11 +98,41 @@ fun ExamerApp(appContainer: AppContainer) {
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
-private fun LoggedInScreen(navHostController: NavHostController, appContainer: AppContainer) {
+private fun LoggedInScreen(
+    navHostController: NavHostController,
+    onSignOut: () -> Unit,
+    appContainer: AppContainer
+) {
+    var isAlertDialogVisible by remember { mutableStateOf(false) }
+    val scaffoldState = rememberScaffoldState()
     ExamerNavigationScaffold(
+        scaffoldState = scaffoldState,
         currentlyLoggedInUser = appContainer.authenticationService.currentUser!!,
-        navigationDrawerDestinations = emptyList()
+        navigationDrawerDestinations = emptyList(),
+        onSignOutButtonClick = { isAlertDialogVisible = true }
     ) { paddingValues ->
+        if (isAlertDialogVisible) {
+            LaunchedEffect(Unit) {
+                scaffoldState.drawerState.animateTo(DrawerValue.Closed, tween())
+            }
+            AlertDialog(
+                title = { Text(text = stringResource(R.string.alert_dialog_label_header)) },
+                text = { Text(text = stringResource(R.string.alert_dialog_label_sign_out_description)) },
+                confirmButton = {
+                    TextButton(
+                        onClick = onSignOut,
+                        content = { Text(text = stringResource(R.string.alert_dialog_button_label_sign_out).uppercase()) }
+                    )
+                },
+                dismissButton = {
+                    TextButton(
+                        onClick = { isAlertDialogVisible = false },
+                        content = { Text(text = stringResource(R.string.alert_dialog_button_label_cancel).uppercase()) }
+                    )
+                },
+                onDismissRequest = { isAlertDialogVisible = false }
+            )
+        }
         NavHost(
             modifier = Modifier.padding(paddingValues),
             navController = navHostController,
