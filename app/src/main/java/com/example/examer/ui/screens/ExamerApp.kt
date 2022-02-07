@@ -86,8 +86,9 @@ fun ExamerApp(appContainer: AppContainer) {
             LoggedInScreen(
                 navHostController = loggedInNavController,
                 onSignOut = {
-                    onBoardingNavController.popBackStack()
-                    onBoardingNavController.navigate(OnBoardingDestinations.WelcomeScreen.route)
+                    onBoardingNavController.navigate(OnBoardingDestinations.WelcomeScreen.route) {
+                        popUpTo(ExamerDestinations.LoggedInScreen.route) { inclusive = true }
+                    }
                 },
                 appContainer = appContainer
             )
@@ -107,7 +108,7 @@ private fun LoggedInScreen(
     val scaffoldState = rememberScaffoldState()
     ExamerNavigationScaffold(
         scaffoldState = scaffoldState,
-        currentlyLoggedInUser = appContainer.authenticationService.currentUser!!,
+        currentlyLoggedInUser = ExamerUser("","",""),
         navigationDrawerDestinations = emptyList(),
         onSignOutButtonClick = { isAlertDialogVisible = true }
     ) { paddingValues ->
