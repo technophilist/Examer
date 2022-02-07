@@ -84,6 +84,7 @@ fun ExamerApp(appContainer: AppContainer) {
             LoggedInScreen(
                 navHostController = loggedInNavController,
                 onSignOut = {
+                    appContainer.authenticationService.signOut()
                     onBoardingNavController.navigate(OnBoardingDestinations.WelcomeScreen.route) {
                         popUpTo(ExamerDestinations.LoggedInScreen.route) { inclusive = true }
                     }
