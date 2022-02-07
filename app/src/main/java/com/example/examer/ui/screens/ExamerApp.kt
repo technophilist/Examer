@@ -54,9 +54,7 @@ fun ExamerApp(appContainer: AppContainer) {
         composable(OnBoardingDestinations.WelcomeScreen.route) {
             WelcomeScreen(
                 onCreateAccountButtonClick = {
-                    onBoardingNavController.navigate(
-                        OnBoardingDestinations.SignUpScreen.route
-                    )
+                    onBoardingNavController.navigate(OnBoardingDestinations.SignUpScreen.route)
                 },
                 onLoginButtonClick = { onBoardingNavController.navigate(OnBoardingDestinations.LoginScreen.route) }
             )
@@ -86,8 +84,9 @@ fun ExamerApp(appContainer: AppContainer) {
             LoggedInScreen(
                 navHostController = loggedInNavController,
                 onSignOut = {
-                    onBoardingNavController.popBackStack()
-                    onBoardingNavController.navigate(OnBoardingDestinations.WelcomeScreen.route)
+                    onBoardingNavController.navigate(OnBoardingDestinations.WelcomeScreen.route) {
+                        popUpTo(ExamerDestinations.LoggedInScreen.route) { inclusive = true }
+                    }
                 },
                 appContainer = appContainer
             )
