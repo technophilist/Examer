@@ -50,4 +50,10 @@
     <!-- Navigation Drawer -->
     <string name="button_sign_out">Sign out</string>
 
+    <!-- Sign Out navigation drawer item -->
+    <string name="alert_dialog_button_label_sign_out">Sign Out</string>
+    <string name="alert_dialog_button_label_cancel">Cancel</string>
+    <string name="alert_dialog_label_header">Are you sure you want to sign out?</string>
+    <string name="alert_dialog_label_sign_out_description">You will be logged out of your account. You can log back in using your email and password.</string>
+
 </resources>
