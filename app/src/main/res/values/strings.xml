@@ -56,4 +56,9 @@
     <string name="alert_dialog_label_header">Are you sure you want to sign out?</string>
     <string name="alert_dialog_label_sign_out_description">You will be logged out of your account. You can log back in using your email and password.</string>
 
+    <!-- Navigation Drawer Item-->
+    <string name="navigation_drawer_label_scheduled_test">Scheduled Tests</string>
+    <string name="navigation_drawer_label_test_history">Test History</string>
+
+
 </resources>
