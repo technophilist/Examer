@@ -159,7 +159,8 @@ private fun LoggedInScreen(
             // in the map and the associated value is equal to
             // the NavigationDrawerDestination's name.
             navigationDrawerDestinationRouteAndNameMap[currentBackStackEntry?.destination?.route] == it.name
-        }
+        },
+        onNavigationIconClick = { coroutineScope.launch { scaffoldState.drawerState.open() } }
     ) { paddingValues ->
         if (isAlertDialogVisible) {
             LaunchedEffect(Unit) { scaffoldState.drawerState.close() }
