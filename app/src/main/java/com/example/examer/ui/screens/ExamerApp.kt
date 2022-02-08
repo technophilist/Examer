@@ -4,14 +4,10 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ProductionQuantityLimits
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.capitalize
-import androidx.compose.ui.text.toUpperCase
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -21,7 +17,6 @@ import com.example.examer.R
 import com.example.examer.data.domain.ExamerUser
 import com.example.examer.di.AppContainer
 import com.example.examer.ui.components.ExamerNavigationScaffold
-import com.example.examer.ui.components.NavigationDrawerDestination
 import com.example.examer.ui.navigation.ExamerDestinations
 import com.example.examer.ui.navigation.OnBoardingDestinations
 import com.example.examer.ui.screens.onboarding.LoginScreen
@@ -81,16 +76,19 @@ fun ExamerApp(appContainer: AppContainer) {
         }
 
         composable(ExamerDestinations.LoggedInScreen.route) {
-            LoggedInScreen(
-                navHostController = loggedInNavController,
-                onSignOut = {
-                    appContainer.authenticationService.signOut()
-                    onBoardingNavController.navigate(OnBoardingDestinations.WelcomeScreen.route) {
-                        popUpTo(ExamerDestinations.LoggedInScreen.route) { inclusive = true }
-                    }
-                },
-                appContainer = appContainer
-            )
+            appContainer.authenticationService.currentUser?.let {
+                LoggedInScreen(
+                    navHostController = loggedInNavController,
+                    onSignOut = {
+                        onBoardingNavController.navigate(OnBoardingDestinations.WelcomeScreen.route) {
+                            popUpTo(ExamerDestinations.LoggedInScreen.route) { inclusive = true }
+                            appContainer.authenticationService.signOut()
+                        }
+                    },
+                    appContainer = appContainer,
+                    currentlyLoggedInUser = it
+                )
+            }
         }
     }
 }
@@ -101,13 +99,14 @@ fun ExamerApp(appContainer: AppContainer) {
 private fun LoggedInScreen(
     navHostController: NavHostController,
     onSignOut: () -> Unit,
-    appContainer: AppContainer
+    appContainer: AppContainer,
+    currentlyLoggedInUser: ExamerUser
 ) {
     var isAlertDialogVisible by remember { mutableStateOf(false) }
     val scaffoldState = rememberScaffoldState()
     ExamerNavigationScaffold(
         scaffoldState = scaffoldState,
-        currentlyLoggedInUser = appContainer.authenticationService.currentUser!!,
+        currentlyLoggedInUser = currentlyLoggedInUser,
         navigationDrawerDestinations = emptyList(),
         onSignOutButtonClick = { isAlertDialogVisible = true }
     ) { paddingValues ->
