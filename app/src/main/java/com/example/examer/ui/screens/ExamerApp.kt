@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -33,6 +34,7 @@ import com.example.examer.ui.screens.onboarding.SignUpScreen
 import com.example.examer.ui.screens.onboarding.WelcomeScreen
 import com.example.examer.viewmodels.ExamerHomeViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
+import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
 @ExperimentalAnimationApi
@@ -110,6 +112,7 @@ private fun LoggedInScreen(
     currentlyLoggedInUser: ExamerUser,
 ) {
     val loggedInNavController = rememberNavController()
+    val coroutineScope = rememberCoroutineScope()
     var isAlertDialogVisible by remember { mutableStateOf(false) }
     val scaffoldState = rememberScaffoldState()
     val resources = LocalContext.current.resources
@@ -122,27 +125,26 @@ private fun LoggedInScreen(
             ExamerDestinations.TestHistoryScreen.route to resources.getString(R.string.navigation_drawer_label_test_history)
         )
     }
+    val onNavigationDrawerDestinationClick = remember {
+        { destinationRoute: String ->
+            if (currentBackStackEntry?.destination?.route != destinationRoute) {
+                loggedInNavController.popBackStack()
+                loggedInNavController.navigate(destinationRoute)
+                coroutineScope.launch { scaffoldState.drawerState.close() }
+            }
+        }
+    }
     val navigationDrawerDestinations = remember {
         listOf(
             NavigationDrawerDestination(
                 icon = Icons.Filled.List,
                 name = navigationDrawerDestinationRouteAndNameMap.getValue(ExamerDestinations.HomeScreen.route),
-                onClick = {
-                    if (currentBackStackEntry?.destination?.route != ExamerDestinations.HomeScreen.route) {
-                        loggedInNavController.popBackStack()
-                        loggedInNavController.navigate(ExamerDestinations.HomeScreen.route)
-                    }
-                }
+                onClick = { onNavigationDrawerDestinationClick(ExamerDestinations.HomeScreen.route) }
             ),
             NavigationDrawerDestination(
                 icon = Icons.Filled.History,
                 name = navigationDrawerDestinationRouteAndNameMap.getValue(ExamerDestinations.TestHistoryScreen.route),
-                onClick = {
-                    if (currentBackStackEntry?.destination?.route != ExamerDestinations.TestHistoryScreen.route) {
-                        loggedInNavController.popBackStack()
-                        loggedInNavController.navigate(ExamerDestinations.TestHistoryScreen.route)
-                    }
-                }
+                onClick = { onNavigationDrawerDestinationClick(ExamerDestinations.TestHistoryScreen.route) }
             )
         )
     }
@@ -160,9 +162,7 @@ private fun LoggedInScreen(
         }
     ) { paddingValues ->
         if (isAlertDialogVisible) {
-            LaunchedEffect(Unit) {
-                scaffoldState.drawerState.animateTo(DrawerValue.Closed, tween())
-            }
+            LaunchedEffect(Unit) { scaffoldState.drawerState.close() }
             AlertDialog(
                 title = { Text(text = stringResource(R.string.alert_dialog_label_header)) },
                 text = { Text(text = stringResource(R.string.alert_dialog_label_sign_out_description)) },
