@@ -9,7 +9,6 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -33,7 +32,6 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 @Composable
 fun ExamerApp(appContainer: AppContainer) {
     val onBoardingNavController = rememberNavController()
-    val loggedInNavController = rememberNavController()
     val onSuccessfulAuthentication = remember {
         {
             onBoardingNavController.navigate(ExamerDestinations.LoggedInScreen.route) {
@@ -78,7 +76,6 @@ fun ExamerApp(appContainer: AppContainer) {
         composable(ExamerDestinations.LoggedInScreen.route) {
             appContainer.authenticationService.currentUser?.let {
                 LoggedInScreen(
-                    navHostController = loggedInNavController,
                     onSignOut = {
                         onBoardingNavController.navigate(OnBoardingDestinations.WelcomeScreen.route) {
                             popUpTo(ExamerDestinations.LoggedInScreen.route) { inclusive = true }
@@ -97,11 +94,11 @@ fun ExamerApp(appContainer: AppContainer) {
 @ExperimentalMaterialApi
 @Composable
 private fun LoggedInScreen(
-    navHostController: NavHostController,
     onSignOut: () -> Unit,
     appContainer: AppContainer,
     currentlyLoggedInUser: ExamerUser
 ) {
+    val loggedInNavController = rememberNavController()
     var isAlertDialogVisible by remember { mutableStateOf(false) }
     val scaffoldState = rememberScaffoldState()
     ExamerNavigationScaffold(
@@ -134,7 +131,7 @@ private fun LoggedInScreen(
         }
         NavHost(
             modifier = Modifier.padding(paddingValues),
-            navController = navHostController,
+            navController = loggedInNavController,
             startDestination = ExamerDestinations.HomeScreen.route
         ) {
             composable(route = ExamerDestinations.HomeScreen.route) {
