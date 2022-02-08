@@ -129,6 +129,7 @@ private fun LoggedInScreen(
                 name = navigationDrawerDestinationRouteAndNameMap.getValue(ExamerDestinations.HomeScreen.route),
                 onClick = {
                     if (currentBackStackEntry?.destination?.route != ExamerDestinations.HomeScreen.route) {
+                        loggedInNavController.popBackStack()
                         loggedInNavController.navigate(ExamerDestinations.HomeScreen.route)
                     }
                 }
@@ -138,6 +139,7 @@ private fun LoggedInScreen(
                 name = navigationDrawerDestinationRouteAndNameMap.getValue(ExamerDestinations.TestHistoryScreen.route),
                 onClick = {
                     if (currentBackStackEntry?.destination?.route != ExamerDestinations.TestHistoryScreen.route) {
+                        loggedInNavController.popBackStack()
                         loggedInNavController.navigate(ExamerDestinations.TestHistoryScreen.route)
                     }
                 }
