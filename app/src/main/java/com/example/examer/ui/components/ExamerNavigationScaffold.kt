@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
@@ -16,7 +15,6 @@ import androidx.compose.ui.unit.dp
 import com.example.examer.R
 import com.example.examer.data.domain.ExamerUser
 import com.google.accompanist.insets.navigationBarsPadding
-import com.google.accompanist.insets.statusBarsHeight
 import com.google.accompanist.insets.statusBarsPadding
 import com.google.accompanist.insets.systemBarsPadding
 
@@ -41,11 +39,9 @@ data class NavigationDrawerDestination(
  * over the drawer behavior, sizes of components, etc.
  * @param onNavigationIconClick callback that will be executed when
  * the navigation icon is clicked.
- * @param onNavigationItemClick callback that will be executed when
- * a navigation item in the navigation drawer is clicked. The lambda
- * receives an integer representing the index of the selected item.
- * @param currentlySelectedNavigationDrawerItemIndex the index of the
- * currently selected navigation item in the drawer.
+ * @param isNavigationDrawerDestinationSelected the lambda that will
+ * be executed in-order to resolve whether an item in the navigation
+ * drawer is selected.
  * @param  navigationDrawerDestinations a list of
  * [NavigationDrawerDestination]s that are to be added to the
  * navigation drawer.
@@ -64,8 +60,7 @@ fun ExamerNavigationScaffold(
     modifier: Modifier = Modifier,
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     onNavigationIconClick: (() -> Unit)? = null,
-    onNavigationItemClick: ((index: Int) -> Unit)? = null,
-    currentlySelectedNavigationDrawerItemIndex: Int = 0,
+    isNavigationDrawerDestinationSelected: ((NavigationDrawerDestination) -> Boolean)? = null,
     navigationDrawerDestinations: List<NavigationDrawerDestination>,
     onSignOutButtonClick: (() -> Unit)? = null,
     content: @Composable (PaddingValues) -> Unit,
@@ -102,12 +97,13 @@ fun ExamerNavigationScaffold(
                         .padding(top = 8.dp)
                         .weight(0.77f),
                 ) {
-                    navigationDrawerDestinations.forEachIndexed { index, item ->
+                    navigationDrawerDestinations.forEach { item ->
                         NavigationDrawerItem(
                             icon = item.icon,
                             label = item.name,
-                            isSelected = currentlySelectedNavigationDrawerItemIndex == index,
-                            onClick = { onNavigationItemClick?.invoke(index) }
+                            isSelected = isNavigationDrawerDestinationSelected?.invoke(item)
+                                ?: false,
+                            onClick = item.onClick
                         )
                     }
                 }
