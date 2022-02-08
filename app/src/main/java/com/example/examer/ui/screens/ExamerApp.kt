@@ -2,7 +2,6 @@ package com.example.examer.ui.screens
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,7 +17,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -122,7 +120,7 @@ private fun LoggedInScreen(
     // to a string representing that route in the UI.
     val navigationDrawerDestinationRouteAndNameMap = remember {
         mapOf(
-            ExamerDestinations.HomeScreen.route to resources.getString(R.string.navigation_drawer_label_scheduled_test),
+            ExamerDestinations.ScheduledTestsScreen.route to resources.getString(R.string.navigation_drawer_label_scheduled_test),
             ExamerDestinations.TestHistoryScreen.route to resources.getString(R.string.navigation_drawer_label_test_history)
         )
     }
@@ -139,8 +137,8 @@ private fun LoggedInScreen(
         listOf(
             NavigationDrawerDestination(
                 icon = Icons.Filled.List,
-                name = navigationDrawerDestinationRouteAndNameMap.getValue(ExamerDestinations.HomeScreen.route),
-                onClick = { onNavigationDrawerDestinationClick(ExamerDestinations.HomeScreen.route) }
+                name = navigationDrawerDestinationRouteAndNameMap.getValue(ExamerDestinations.ScheduledTestsScreen.route),
+                onClick = { onNavigationDrawerDestinationClick(ExamerDestinations.ScheduledTestsScreen.route) }
             ),
             NavigationDrawerDestination(
                 icon = Icons.Filled.History,
@@ -191,15 +189,15 @@ private fun LoggedInScreen(
         NavHost(
             modifier = Modifier.padding(paddingValues),
             navController = loggedInNavController,
-            startDestination = ExamerDestinations.HomeScreen.route
+            startDestination = ExamerDestinations.ScheduledTestsScreen.route
         ) {
-            composable(route = ExamerDestinations.HomeScreen.route) {
+            composable(route = ExamerDestinations.ScheduledTestsScreen.route) {
                 val homeViewModel = viewModel<ExamerHomeViewModel>(
                     factory = appContainer.homeViewModelFactory,
                     viewModelStoreOwner = it
                 )
                 val testList by homeViewModel.testDetailsList
-                HomeScreen(tests = testList)
+                ScheduledTestsScreen(tests = testList)
             }
             composable(route = ExamerDestinations.TestHistoryScreen.route) {
                 // TODO replace placeholder

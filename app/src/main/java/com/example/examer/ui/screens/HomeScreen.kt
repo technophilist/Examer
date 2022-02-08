@@ -28,7 +28,7 @@ import timber.log.Timber
 @ExperimentalMaterialApi
 @ExperimentalAnimationApi
 @Composable
-fun HomeScreen(tests: List<TestDetails>) {
+fun ScheduledTestsScreen(tests: List<TestDetails>) {
     val context = LocalContext.current
     val lazyListState = rememberLazyListState()
     val isScrollToTopButtonVisible = remember(lazyListState.firstVisibleItemIndex) {
