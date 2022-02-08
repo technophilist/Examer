@@ -1,5 +1,6 @@
 package com.example.examer.ui.screens
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -147,6 +148,11 @@ private fun LoggedInScreen(
                 onClick = { onNavigationDrawerDestinationClick(ExamerDestinations.TestHistoryScreen.route) }
             )
         )
+    }
+    // if the drawer is open, close the drawer instead of
+    // quitting the app.
+    BackHandler(enabled = scaffoldState.drawerState.isOpen) {
+        coroutineScope.launch { scaffoldState.drawerState.close() }
     }
     ExamerNavigationScaffold(
         scaffoldState = scaffoldState,
