@@ -64,6 +64,7 @@ fun ScheduledTestsScreen(
                     .padding(8.dp)
             ) {
                 LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
                     state = lazyListState,
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
