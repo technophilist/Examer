@@ -68,6 +68,7 @@ dependencies {
     implementation "com.google.accompanist:accompanist-pager:0.13.0"
     implementation "com.google.accompanist:accompanist-pager-indicators:0.13.0"
     implementation "com.google.accompanist:accompanist-insets:0.13.0"
+    implementation "com.google.accompanist:accompanist-swiperefresh:0.13.0"
     //navigation
     implementation "androidx.navigation:navigation-compose:2.4.0-rc01"
     // unit test
