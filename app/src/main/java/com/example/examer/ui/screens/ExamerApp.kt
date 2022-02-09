@@ -33,6 +33,7 @@ import com.example.examer.ui.screens.onboarding.SignUpScreen
 import com.example.examer.ui.screens.onboarding.WelcomeScreen
 import com.example.examer.viewmodels.ExamerHomeViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
@@ -197,7 +198,12 @@ private fun LoggedInScreen(
                     viewModelStoreOwner = it
                 )
                 val testList by homeViewModel.testDetailsList
-                ScheduledTestsScreen(tests = testList)
+                val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = false)
+                ScheduledTestsScreen(
+                    swipeRefreshState = swipeRefreshState,
+                    tests = testList,
+                    onRefresh = {}
+                )
             }
             composable(route = ExamerDestinations.TestHistoryScreen.route) {
                 // TODO replace placeholder

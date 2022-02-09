@@ -22,13 +22,18 @@ import com.example.examer.R
 import com.example.examer.data.domain.TestDetails
 import com.example.examer.ui.components.examerTestCard.DefaultExamerExpandableTestCard
 import com.google.accompanist.insets.navigationBarsPadding
+import com.google.accompanist.swiperefresh.SwipeRefreshState
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @ExperimentalMaterialApi
 @ExperimentalAnimationApi
 @Composable
-fun ScheduledTestsScreen(tests: List<TestDetails>) {
+fun ScheduledTestsScreen(
+    tests: List<TestDetails>,
+    swipeRefreshState: SwipeRefreshState,
+    onRefresh: () -> Unit
+) {
     val context = LocalContext.current
     val lazyListState = rememberLazyListState()
     val isScrollToTopButtonVisible = remember(lazyListState.firstVisibleItemIndex) {
