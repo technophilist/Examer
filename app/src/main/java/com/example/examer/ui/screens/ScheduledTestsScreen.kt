@@ -22,6 +22,7 @@ import com.example.examer.R
 import com.example.examer.data.domain.TestDetails
 import com.example.examer.ui.components.examerTestCard.DefaultExamerExpandableTestCard
 import com.google.accompanist.insets.navigationBarsPadding
+import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.SwipeRefreshState
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -52,55 +53,62 @@ fun ScheduledTestsScreen(
         }
     }
     val coroutineScope = rememberCoroutineScope()
-    Box(modifier = Modifier.fillMaxSize()) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(8.dp)
-        ) {
-            LazyColumn(
-                state = lazyListState,
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+    SwipeRefresh(
+        state = swipeRefreshState,
+        onRefresh = onRefresh
+    ) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(8.dp)
             ) {
-                item {
-                    Text(
-                        text = stringResource(id = R.string.label_upcoming_tests),
-                        style = MaterialTheme.typography.subtitle1,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                }
-                items(tests, key = { it.id }) {
-                    DefaultExamerExpandableTestCard(
-                        test = it,
-                        isExpanded = expandedState[it.id] == true,
-                        onExpandButtonClick = { expandedState[it.id] = !expandedState[it.id]!! },
-                        onClick = {
-                            expandedState[it.id] = !expandedState[it.id]!!
-                        },
-                        is24HourTimeFormat = DateFormat.is24HourFormat(context),
-                        onTakeTestButtonClick = {} // TODO hoist
-                    )
+                LazyColumn(
+                    state = lazyListState,
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    item {
+                        Text(
+                            text = stringResource(id = R.string.label_upcoming_tests),
+                            style = MaterialTheme.typography.subtitle1,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    }
+                    items(tests, key = { it.id }) {
+                        DefaultExamerExpandableTestCard(
+                            test = it,
+                            isExpanded = expandedState[it.id] == true,
+                            onExpandButtonClick = {
+                                expandedState[it.id] = !expandedState[it.id]!!
+                            },
+                            onClick = {
+                                expandedState[it.id] = !expandedState[it.id]!!
+                            },
+                            is24HourTimeFormat = DateFormat.is24HourFormat(context),
+                            onTakeTestButtonClick = {} // TODO hoist
+                        )
+                    }
                 }
             }
-        }
-        AnimatedVisibility(
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .navigationBarsPadding()
-                .padding(8.dp),
-            visible = isScrollToTopButtonVisible,
-            enter = expandIn(expandFrom = Alignment.Center),
-            exit = shrinkOut(shrinkTowards = Alignment.Center)
-        ) {
-            FloatingActionButton(
-                onClick = { coroutineScope.launch { lazyListState.animateScrollToItem(0) } },
-                content = {
-                    Icon(
-                        imageVector = Icons.Filled.ArrowDropUp,
-                        contentDescription = null
-                    )
-                }
-            )
+            AnimatedVisibility(
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .navigationBarsPadding()
+                    .padding(8.dp),
+                visible = isScrollToTopButtonVisible,
+                enter = expandIn(expandFrom = Alignment.Center),
+                exit = shrinkOut(shrinkTowards = Alignment.Center)
+            ) {
+                FloatingActionButton(
+                    onClick = { coroutineScope.launch { lazyListState.animateScrollToItem(0) } },
+                    content = {
+                        Icon(
+                            imageVector = Icons.Filled.ArrowDropUp,
+                            contentDescription = null
+                        )
+                    }
+                )
+            }
         }
     }
 }
