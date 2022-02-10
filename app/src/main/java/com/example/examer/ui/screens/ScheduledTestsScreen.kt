@@ -33,83 +33,23 @@ import timber.log.Timber
 fun ScheduledTestsScreen(
     tests: List<TestDetails>,
     swipeRefreshState: SwipeRefreshState,
-    onRefresh: () -> Unit
+    onRefresh: () -> Unit,
+    onTakeTestButtonClick: () -> Unit
 ) {
-    val context = LocalContext.current
-    val lazyListState = rememberLazyListState()
-    val isScrollToTopButtonVisible = remember(lazyListState.firstVisibleItemIndex) {
-        lazyListState.firstVisibleItemIndex > 2
-    }
-    // Since the test list is fetched asynchronously, initial value
-    // of the tests param will be empty. If key argument is not
-    // specified for the remember block, the map would always be
-    // empty because the remember block is not re-executed. By
-    // executing the remember block whenever the list changes
-    // we ensure that the map will always contain the updated
-    // values.
-    val expandedState = remember(tests) {
-        mutableStateMapOf<String, Boolean>().apply {
-            tests.forEach { this[it.id] = false }
-        }
-    }
-    val coroutineScope = rememberCoroutineScope()
-    SwipeRefresh(
-        state = swipeRefreshState,
+    val listHeader = stringResource(id = R.string.label_upcoming_tests)
+    TestListScreen(
+        listHeader = listHeader,
+        testList = tests,
+        swipeRefreshState = swipeRefreshState,
         onRefresh = onRefresh
-    ) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(8.dp)
-            ) {
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    state = lazyListState,
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    item {
-                        Text(
-                            text = stringResource(id = R.string.label_upcoming_tests),
-                            style = MaterialTheme.typography.subtitle1,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }
-                    items(tests, key = { it.id }) {
-                        DefaultExamerExpandableTestCard(
-                            test = it,
-                            isExpanded = expandedState[it.id] == true,
-                            onExpandButtonClick = {
-                                expandedState[it.id] = !expandedState[it.id]!!
-                            },
-                            onClick = {
-                                expandedState[it.id] = !expandedState[it.id]!!
-                            },
-                            is24HourTimeFormat = DateFormat.is24HourFormat(context),
-                            onTakeTestButtonClick = {} // TODO hoist
-                        )
-                    }
-                }
-            }
-            AnimatedVisibility(
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .navigationBarsPadding()
-                    .padding(8.dp),
-                visible = isScrollToTopButtonVisible,
-                enter = expandIn(expandFrom = Alignment.Center),
-                exit = shrinkOut(shrinkTowards = Alignment.Center)
-            ) {
-                FloatingActionButton(
-                    onClick = { coroutineScope.launch { lazyListState.animateScrollToItem(0) } },
-                    content = {
-                        Icon(
-                            imageVector = Icons.Filled.ArrowDropUp,
-                            contentDescription = null
-                        )
-                    }
-                )
-            }
-        }
+    ) { testDetailsItem, isExpanded, onExpandButtonClick, onClick, is24hourFormat ->
+        DefaultExamerExpandableTestCard(
+            test = testDetailsItem,
+            isExpanded = isExpanded,
+            onExpandButtonClick = onExpandButtonClick,
+            onClick = onClick,
+            is24HourTimeFormat = is24hourFormat,
+            onTakeTestButtonClick = onTakeTestButtonClick
+        )
     }
 }
