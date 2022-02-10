@@ -5,10 +5,10 @@ import com.example.examer.data.domain.TestDetails
 import com.example.examer.data.remote.RemoteDatabase
 
 interface Repository {
-    suspend fun fetchTestListForUser(user: ExamerUser): List<TestDetails>
+    suspend fun fetchScheduledTestListForUser(user: ExamerUser): List<TestDetails>
 }
 
 class ExamerRepository(private val remoteDatabase: RemoteDatabase) : Repository {
-    override suspend fun fetchTestListForUser(user: ExamerUser): List<TestDetails> =
+    override suspend fun fetchScheduledTestListForUser(user: ExamerUser): List<TestDetails> =
         remoteDatabase.fetchTestListForUser(user)
 }

@@ -87,7 +87,7 @@ class ExamerTestsViewModel(
      */
     private suspend fun fetchScheduledTestListForCurrentUser(): List<TestDetails>? =
         authenticationService
-            .currentUser?.let { repository.fetchTestListForUser(it) }
+            .currentUser?.let { repository.fetchScheduledTestListForUser(it) }
 
     private suspend fun fetchPreviousTestListForCurrentUser(): List<TestDetails>? {
         TODO()
