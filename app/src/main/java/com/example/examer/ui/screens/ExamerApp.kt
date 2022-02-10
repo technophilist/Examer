@@ -26,6 +26,7 @@ import com.example.examer.data.domain.ExamerUser
 import com.example.examer.di.AppContainer
 import com.example.examer.ui.components.ExamerNavigationScaffold
 import com.example.examer.ui.components.NavigationDrawerDestination
+import com.example.examer.ui.components.examerTestCard.DefaultExamerExpandableTestCard
 import com.example.examer.ui.navigation.ExamerDestinations
 import com.example.examer.ui.navigation.OnBoardingDestinations
 import com.example.examer.ui.screens.onboarding.LoginScreen
@@ -199,14 +200,14 @@ private fun LoggedInScreen(
                     factory = scheduledTestsViewModelFactory,
                     viewModelStoreOwner = it
                 )
-                val testList by testsViewModel.testDetailsList
                 val swipeRefreshState = rememberSwipeRefreshState(
                     isRefreshing = testsViewModel.testsViewModelUiState.value == TestsViewModelUiState.LOADING
                 )
                 ScheduledTestsScreen(
+                    tests = testsViewModel.testDetailsList.value,
                     swipeRefreshState = swipeRefreshState,
-                    tests = testList,
-                    onRefresh = testsViewModel::refreshTestDetailsList
+                    onRefresh = testsViewModel::refreshTestDetailsList,
+                    onTakeTestButtonClick = {}
                 )
             }
             composable(route = ExamerDestinations.TestHistoryScreen.route) {
