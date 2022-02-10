@@ -211,13 +211,20 @@ private fun LoggedInScreen(
                 )
             }
             composable(route = ExamerDestinations.TestHistoryScreen.route) {
-                // TODO replace placeholder
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color.Red)
+                val previousTestsViewModelFactory = appContainer.previousTestsViewModelFactory
+                val testsViewModel = viewModel<ExamerTestsViewModel>(
+                    factory = previousTestsViewModelFactory,
+                    viewModelStoreOwner = it
                 )
-
+                val swipeRefreshState = rememberSwipeRefreshState(
+                    isRefreshing = testsViewModel.testsViewModelUiState.value == TestsViewModelUiState.LOADING
+                )
+                TestHistoryScreen(
+                    swipeRefreshState = swipeRefreshState,
+                    onRefresh = testsViewModel::refreshTestDetailsList,
+                    tests = testsViewModel.testDetailsList.value,
+                    onReviewButtonClick = {}
+                )
             }
         }
     }
