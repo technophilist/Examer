@@ -195,7 +195,7 @@ private fun LoggedInScreen(
         ) {
             composable(route = ExamerDestinations.ScheduledTestsScreen.route) {
                 val homeViewModel = viewModel<ExamerTestsViewModel>(
-                    factory = appContainer.testsViewModelFactory,
+                    factory = appContainer.scheduledTestsViewModelFactory,
                     viewModelStoreOwner = it
                 )
                 val testList by homeViewModel.testDetailsList
