@@ -29,83 +29,39 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.example.examer.R
 import com.example.examer.data.domain.TestDetails
+import com.example.examer.ui.components.examerTestCard.DefaultExamerExpandableTestCard
 import com.example.examer.ui.components.examerTestCard.ExamerExpandableTestCard
 import com.google.accompanist.insets.navigationBarsPadding
+import com.google.accompanist.swiperefresh.SwipeRefreshState
 import kotlinx.coroutines.launch
 
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
 fun TestHistoryScreen(
+    swipeRefreshState: SwipeRefreshState,
+    onRefresh: () -> Unit,
     tests: List<TestDetails>,
     onReviewButtonClick: (TestDetails) -> Unit
 ) {
-    val context = LocalContext.current
-    val lazyListState = rememberLazyListState()
-    val isScrollToTopButtonVisible = remember(lazyListState.firstVisibleItemIndex) {
-        lazyListState.firstVisibleItemIndex > 2
-    }
-    val expandedState = remember {
-        val map = mutableStateMapOf<String, Boolean>()
-        tests.forEach { map[it.id] = false }
-        map
-    }
-    val coroutineScope = rememberCoroutineScope()
-    Box(modifier = Modifier.fillMaxSize()) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(8.dp)
+    val listHeader = stringResource(id = R.string.label_test_history)
+    TestListScreen(
+        listHeader = listHeader,
+        testList = tests,
+        swipeRefreshState = swipeRefreshState,
+        onRefresh = onRefresh
+    ) { testDetailsItem, isExpanded, onExpandButtonClick, onClick, is24hourFormat ->
+        ExamerExpandableTestCard(
+            test = testDetailsItem,
+            isExpanded = isExpanded,
+            onExpandButtonClick = onExpandButtonClick,
+            onClick = onClick,
+            is24HourTimeFormat = is24hourFormat
         ) {
-            LazyColumn(state = lazyListState, verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                item {
-                    Text(
-                        text = stringResource(id = R.string.label_test_history),
-                        style = MaterialTheme.typography.subtitle1,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                }
-                items(tests, key = { it.id }) {
-                    ExamerExpandableTestCard(
-                        test = it,
-                        isExpanded = expandedState[it.id] == true,
-                        onExpandButtonClick = { expandedState[it.id] = !expandedState[it.id]!! },
-                        onClick = { expandedState[it.id] = !expandedState[it.id]!! },
-                        is24HourTimeFormat = DateFormat.is24HourFormat(context)
-                    ) {
-                        ExpandedContent(
-                            description = it.description,
-                            totalNumberOfQuestions = it.totalNumberOfQuestions,
-                            onReviewButtonClick = { onReviewButtonClick(it) }
-                        )
-                    }
-                }
-            }
-        }
-        // TODO extract into a separate component
-        AnimatedVisibility(
-            modifier = Modifier.align(Alignment.BottomEnd),
-            visible = isScrollToTopButtonVisible,
-            enter = slideInVertically(
-                initialOffsetY = { it },
-                animationSpec = tween()
-            ),
-            exit = slideOutVertically(
-                targetOffsetY = { it },
-                animationSpec = tween()
-            )
-        ) {
-            FloatingActionButton(
-                modifier = Modifier
-                    .navigationBarsPadding()
-                    .padding(8.dp),
-                onClick = { coroutineScope.launch { lazyListState.animateScrollToItem(0) } },
-                content = {
-                    Icon(
-                        imageVector = Icons.Filled.ArrowDropUp,
-                        contentDescription = null
-                    )
-                }
+            ExpandedContent(
+                description = testDetailsItem.description,
+                totalNumberOfQuestions = testDetailsItem.totalNumberOfQuestions,
+                onReviewButtonClick = { onReviewButtonClick(testDetailsItem) }
             )
         }
     }
