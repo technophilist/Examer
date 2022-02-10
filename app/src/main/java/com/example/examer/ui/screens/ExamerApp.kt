@@ -31,8 +31,8 @@ import com.example.examer.ui.navigation.OnBoardingDestinations
 import com.example.examer.ui.screens.onboarding.LoginScreen
 import com.example.examer.ui.screens.onboarding.SignUpScreen
 import com.example.examer.ui.screens.onboarding.WelcomeScreen
-import com.example.examer.viewmodels.ExamerHomeViewModel
-import com.example.examer.viewmodels.HomeScreenUiState
+import com.example.examer.viewmodels.ExamerTestsViewModel
+import com.example.examer.viewmodels.TestsViewModelUiState
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlinx.coroutines.launch
@@ -194,18 +194,19 @@ private fun LoggedInScreen(
             startDestination = ExamerDestinations.ScheduledTestsScreen.route
         ) {
             composable(route = ExamerDestinations.ScheduledTestsScreen.route) {
-                val homeViewModel = viewModel<ExamerHomeViewModel>(
-                    factory = appContainer.homeViewModelFactory,
+                val scheduledTestsViewModelFactory = appContainer.scheduledTestsViewModelFactory
+                val testsViewModel = viewModel<ExamerTestsViewModel>(
+                    factory = scheduledTestsViewModelFactory,
                     viewModelStoreOwner = it
                 )
-                val testList by homeViewModel.testDetailsList
+                val testList by testsViewModel.testDetailsList
                 val swipeRefreshState = rememberSwipeRefreshState(
-                    isRefreshing = homeViewModel.homeScreenUiState.value == HomeScreenUiState.LOADING
+                    isRefreshing = testsViewModel.testsViewModelUiState.value == TestsViewModelUiState.LOADING
                 )
                 ScheduledTestsScreen(
                     swipeRefreshState = swipeRefreshState,
                     tests = testList,
-                    onRefresh = homeViewModel::refreshTestDetailsList
+                    onRefresh = testsViewModel::refreshTestDetailsList
                 )
             }
             composable(route = ExamerDestinations.TestHistoryScreen.route) {
