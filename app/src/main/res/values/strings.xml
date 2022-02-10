@@ -40,7 +40,7 @@
     <string name="label_test_description">Test Description</string>
     <string name="label_total_number_of_questions">Total number of questions</string>
 
-    <!-- HomeScreen -->
+    <!-- Scheduled Tests Screen -->
     <string name="label_upcoming_tests">Upcoming tests</string>
 
     <!-- Test History Screen-->
