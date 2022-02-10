@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.examer.R
 import com.example.examer.data.domain.ExamerUser
@@ -133,7 +134,6 @@ private fun NavigationDrawerHeader(
     currentlyLoggedInUser: ExamerUser,
     modifier: Modifier = Modifier,
 ) {
-    // TODO add elipses
     Column(modifier = modifier) {
         val paddingStartModifier = Modifier.padding(start = 16.dp)
         Text(
@@ -141,7 +141,8 @@ private fun NavigationDrawerHeader(
             text = currentlyLoggedInUser.name,
             style = MaterialTheme.typography.h5,
             fontWeight = FontWeight.Bold,
-            maxLines = 1
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
         Text(
             modifier = paddingStartModifier,
