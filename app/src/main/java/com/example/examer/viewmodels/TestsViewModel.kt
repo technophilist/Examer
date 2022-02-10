@@ -11,9 +11,9 @@ import com.example.examer.data.domain.TestDetails
 import kotlinx.coroutines.launch
 
 /**
- * An enum indicating the state of the HomeScreen.
+ * An enum indicating the state of a screen using [TestsViewModel].
  */
-enum class HomeScreenUiState { LOADING, SUCCESSFULLY_LOADED } // TODO remove
+enum class TestsViewModelUiState { LOADING, SUCCESSFULLY_LOADED }
 
 /**
  *  An enum indicating which type of [TestDetails] list
@@ -22,9 +22,13 @@ enum class HomeScreenUiState { LOADING, SUCCESSFULLY_LOADED } // TODO remove
  */
 enum class TestDetailsListType { SCHEDULED_TESTS, PREVIOUS_TESTS }
 
+/**
+ * An interface that contains all the properties and methods required
+ * for a concrete implementation of [TestsViewModel]
+ */
 interface TestsViewModel {
     val testDetailsList: State<List<TestDetails>>
-    val homeScreenUiState: State<HomeScreenUiState>
+    val testsViewModelUiState: State<TestsViewModelUiState>
     fun refreshTestDetailsList()
 }
 
@@ -46,10 +50,10 @@ class ExamerTestsViewModel(
     private val testDetailsListType: TestDetailsListType
 ) : ViewModel(), TestsViewModel {
     private val _testDetailsList: MutableState<List<TestDetails>> = mutableStateOf(listOf())
-    private var _homeScreenUiState: MutableState<HomeScreenUiState> =
-        mutableStateOf(HomeScreenUiState.LOADING)
+    private var _testsViewModelUiState: MutableState<TestsViewModelUiState> =
+        mutableStateOf(TestsViewModelUiState.LOADING)
     override val testDetailsList: State<List<TestDetails>> = _testDetailsList
-    override val homeScreenUiState: State<HomeScreenUiState> = _homeScreenUiState
+    override val testsViewModelUiState: State<TestsViewModelUiState> = _testsViewModelUiState
 
     init {
         fetchAndAssignTestDetailsList(testDetailsListType)
@@ -63,16 +67,16 @@ class ExamerTestsViewModel(
      * Used to fetch the list of [TestDetails] associated with the
      * [AuthenticationService.currentUser] and setting it to the
      * [_testDetailsList] backing property. It also manages
-     * the [homeScreenUiState].
+     * the [testsViewModelUiState].
      */
     private fun fetchAndAssignTestDetailsList(listType: TestDetailsListType) {
         viewModelScope.launch {
-            _homeScreenUiState.value = HomeScreenUiState.LOADING
+            _testsViewModelUiState.value = TestsViewModelUiState.LOADING
             _testDetailsList.value = when (listType) {
                 TestDetailsListType.SCHEDULED_TESTS -> fetchScheduledTestListForCurrentUser()
                 TestDetailsListType.PREVIOUS_TESTS -> fetchPreviousTestListForCurrentUser()
             } ?: emptyList()
-            _homeScreenUiState.value = HomeScreenUiState.SUCCESSFULLY_LOADED
+            _testsViewModelUiState.value = TestsViewModelUiState.SUCCESSFULLY_LOADED
         }
     }
 
