@@ -10,5 +10,5 @@ interface Repository {
 
 class ExamerRepository(private val remoteDatabase: RemoteDatabase) : Repository {
     override suspend fun fetchScheduledTestListForUser(user: ExamerUser): List<TestDetails> =
-        remoteDatabase.fetchTestListForUser(user)
+        remoteDatabase.fetchScheduledTestListForUser(user)
 }
