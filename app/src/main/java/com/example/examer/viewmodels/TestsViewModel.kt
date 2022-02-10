@@ -33,11 +33,11 @@ class ExamerTestsViewModel(
     override val homeScreenUiState: State<HomeScreenUiState> = _homeScreenUiState
 
     init {
-        fetchAndAssignTestDetailsList()
+        fetchAndAssignTestDetailsList(testDetailsListType)
     }
 
     override fun refreshTestDetailsList() {
-        fetchAndAssignTestDetailsList()
+        fetchAndAssignTestDetailsList(testDetailsListType)
     }
 
     /**
@@ -46,10 +46,13 @@ class ExamerTestsViewModel(
      * [_testDetailsList] backing property. It also manages
      * the [homeScreenUiState].
      */
-    private fun fetchAndAssignTestDetailsList() {
+    private fun fetchAndAssignTestDetailsList(listType: TestDetailsListType) {
         viewModelScope.launch {
             _homeScreenUiState.value = HomeScreenUiState.LOADING
-            _testDetailsList.value = fetchTestListForCurrentUser() ?: emptyList()
+            _testDetailsList.value = when (listType) {
+                TestDetailsListType.SCHEDULED_TESTS -> fetchScheduledTestListForCurrentUser()
+                TestDetailsListType.PREVIOUS_TESTS -> fetchPreviousTestListForCurrentUser()
+            } ?: emptyList()
             _homeScreenUiState.value = HomeScreenUiState.SUCCESSFULLY_LOADED
         }
     }
@@ -59,7 +62,12 @@ class ExamerTestsViewModel(
      *[AuthenticationService.currentUser]. This function will return
      * null if the current user is null.
      */
-    private suspend fun fetchTestListForCurrentUser(): List<TestDetails>? = authenticationService
-        .currentUser?.let { repository.fetchTestListForUser(it) }
+    private suspend fun fetchScheduledTestListForCurrentUser(): List<TestDetails>? =
+        authenticationService
+            .currentUser?.let { repository.fetchTestListForUser(it) }
+
+    private suspend fun fetchPreviousTestListForCurrentUser(): List<TestDetails>? {
+        TODO()
+    }
 
 }
