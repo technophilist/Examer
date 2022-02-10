@@ -8,17 +8,23 @@ import com.example.examer.data.remote.RemoteDatabase
 import com.example.examer.utils.TestsViewModelFactory
 import com.example.examer.utils.LogInViewModelFactory
 import com.example.examer.utils.SignUpViewModelFactory
+import com.example.examer.viewmodels.TestDetailsListType
 
 class AppContainer {
     private val remoteDatabase =
         FirebaseRemoteDatabase(StandardDispatchersProvider()) as RemoteDatabase
     private val repository = ExamerRepository(remoteDatabase) as Repository
-    
+
     val authenticationService = FirebaseAuthenticationService()
     val isUserLoggedIn get() = authenticationService.currentUser != null
     val logInViewModelFactory = LogInViewModelFactory(authenticationService)
     val signUpViewModelFactory = SignUpViewModelFactory(authenticationService)
-    val homeViewModelFactory = TestsViewModelFactory(authenticationService, repository)
 
-
+    // TODO rename to testsViewModelFactory
+    val homeViewModelFactory = TestsViewModelFactory(
+        authenticationService = authenticationService,
+        repository = repository,
+        testDetailsListType = TestDetailsListType.SCHEDULED_TESTS // TODO
+    )
 }
+
