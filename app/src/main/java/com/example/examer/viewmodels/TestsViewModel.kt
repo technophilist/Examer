@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.examer.auth.AuthenticationService
 import com.example.examer.data.Repository
+import com.example.examer.data.domain.ExamerUser
 import com.example.examer.data.domain.TestDetails
 import kotlinx.coroutines.launch
 
@@ -56,11 +57,11 @@ class ExamerTestsViewModel(
     override val testsViewModelUiState: State<TestsViewModelUiState> = _testsViewModelUiState
 
     init {
-        fetchAndAssignTestDetailsList(testDetailsListType)
+        fetchAndAssignTestDetailsList()
     }
 
     override fun refreshTestDetailsList() {
-        fetchAndAssignTestDetailsList(testDetailsListType)
+        fetchAndAssignTestDetailsList()
     }
 
     /**
@@ -69,28 +70,21 @@ class ExamerTestsViewModel(
      * [_testDetailsList] backing property. It also manages
      * the [testsViewModelUiState].
      */
-    private fun fetchAndAssignTestDetailsList(listType: TestDetailsListType) {
+    private fun fetchAndAssignTestDetailsList() {
         viewModelScope.launch {
             _testsViewModelUiState.value = TestsViewModelUiState.LOADING
-            _testDetailsList.value = when (listType) {
-                TestDetailsListType.SCHEDULED_TESTS -> fetchScheduledTestListForCurrentUser()
-                TestDetailsListType.PREVIOUS_TESTS -> fetchPreviousTestListForCurrentUser()
-            } ?: emptyList()
+            _testDetailsList.value = authenticationService
+                .currentUser?.let { fetchTestDetailsList(it) } ?: emptyList()
             _testsViewModelUiState.value = TestsViewModelUiState.SUCCESSFULLY_LOADED
         }
     }
 
     /**
-     * Used to fetch the list of [TestDetails] associated with the
-     *[AuthenticationService.currentUser]. This function will return
-     * null if the current user is null.
+     * A suspend function that is used to get a list of [TestDetails]
+     * based on the [testDetailsListType].
      */
-    private suspend fun fetchScheduledTestListForCurrentUser(): List<TestDetails>? =
-        authenticationService
-            .currentUser?.let { repository.fetchScheduledTestListForUser(it) }
-
-    private suspend fun fetchPreviousTestListForCurrentUser(): List<TestDetails>? {
-        TODO()
+    private suspend fun fetchTestDetailsList(user: ExamerUser) = when (testDetailsListType) {
+        TestDetailsListType.SCHEDULED_TESTS -> repository.fetchScheduledTestListForUser(user)
+        TestDetailsListType.PREVIOUS_TESTS -> repository.fetchPreviousTestListForUser(user)
     }
-
 }
