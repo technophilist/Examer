@@ -14,17 +14,36 @@ import kotlinx.coroutines.launch
  * An enum indicating the state of the HomeScreen.
  */
 enum class HomeScreenUiState { LOADING, SUCCESSFULLY_LOADED } // TODO remove
+
+/**
+ *  An enum indicating which type of [TestDetails] list
+ *  a particular instance of [ExamerTestsViewModel] will
+ *  be working with.
+ */
 enum class TestDetailsListType { SCHEDULED_TESTS, PREVIOUS_TESTS }
+
 interface TestsViewModel {
     val testDetailsList: State<List<TestDetails>>
     val homeScreenUiState: State<HomeScreenUiState>
     fun refreshTestDetailsList()
 }
 
+/**
+ * A viewModel that can be used to in conjunction with a screen used
+ * to display a list of [TestDetails] items.
+ * @param authenticationService the authentication service to be used.
+ * @param repository a reference to the repository that the viewModel
+ * will use to fetch the data.
+ * @param testDetailsListType the type of [TestDetailsListType] that
+ * the viewModel would be responsible for. For example, if the viewModel
+ * is passed [TestDetailsListType.SCHEDULED_TESTS] all operations
+ * within the viewModel will be performed with respect to scheduled
+ * tests.
+ */
 class ExamerTestsViewModel(
     private val authenticationService: AuthenticationService,
     private val repository: Repository,
-    private val testDetailsListType: TestDetailsListType // TODO add doc
+    private val testDetailsListType: TestDetailsListType
 ) : ViewModel(), TestsViewModel {
     private val _testDetailsList: MutableState<List<TestDetails>> = mutableStateOf(listOf())
     private var _homeScreenUiState: MutableState<HomeScreenUiState> =
