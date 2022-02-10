@@ -5,7 +5,7 @@ import com.example.examer.data.ExamerRepository
 import com.example.examer.data.Repository
 import com.example.examer.data.remote.FirebaseRemoteDatabase
 import com.example.examer.data.remote.RemoteDatabase
-import com.example.examer.utils.HomeViewModelFactory
+import com.example.examer.utils.TestsViewModelFactory
 import com.example.examer.utils.LogInViewModelFactory
 import com.example.examer.utils.SignUpViewModelFactory
 
@@ -18,7 +18,7 @@ class AppContainer {
     val isUserLoggedIn get() = authenticationService.currentUser != null
     val logInViewModelFactory = LogInViewModelFactory(authenticationService)
     val signUpViewModelFactory = SignUpViewModelFactory(authenticationService)
-    val homeViewModelFactory = HomeViewModelFactory(authenticationService, repository)
+    val homeViewModelFactory = TestsViewModelFactory(authenticationService, repository)
 
 
 }
