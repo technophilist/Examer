@@ -6,7 +6,7 @@ import com.example.examer.auth.AuthenticationService
 import com.example.examer.data.Repository
 import com.example.examer.di.DispatcherProvider
 import com.example.examer.di.StandardDispatchersProvider
-import com.example.examer.viewmodels.ExamerHomeViewModel
+import com.example.examer.viewmodels.ExamerTestsViewModel
 import com.example.examer.viewmodels.ExamerLogInViewModel
 import com.example.examer.viewmodels.ExamerSignUpViewModel
 import kotlinx.coroutines.Dispatchers
@@ -54,11 +54,11 @@ class SignUpViewModelFactory(
         ExamerSignUpViewModel(authenticationService, dispatcherProvider) as T
 }
 
-class HomeViewModelFactory(
+class TestsViewModelFactory(
     private val authenticationService: AuthenticationService,
     private val repository: Repository,
 ) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T =
-        ExamerHomeViewModel(authenticationService, repository) as T
+        ExamerTestsViewModel(authenticationService, repository) as T
 }

@@ -14,17 +14,16 @@ import kotlinx.coroutines.launch
  * An enum indicating the state of the HomeScreen.
  */
 enum class HomeScreenUiState { LOADING, SUCCESSFULLY_LOADED }
-interface HomeViewModel {
+interface TestsViewModel {
     val testDetailsList: State<List<TestDetails>>
     val homeScreenUiState: State<HomeScreenUiState>
     fun refreshTestDetailsList()
 }
 
-// TODO change HomeViewModel to ScheduledTestViewModel
-class ExamerHomeViewModel(
+class ExamerTestsViewModel(
     private val authenticationService: AuthenticationService,
     private val repository: Repository,
-) : ViewModel(), HomeViewModel {
+) : ViewModel(), TestsViewModel {
     private val _testDetailsList: MutableState<List<TestDetails>> = mutableStateOf(listOf())
     private var _homeScreenUiState: MutableState<HomeScreenUiState> =
         mutableStateOf(HomeScreenUiState.LOADING)

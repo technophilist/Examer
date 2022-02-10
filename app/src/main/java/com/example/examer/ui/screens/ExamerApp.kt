@@ -31,7 +31,7 @@ import com.example.examer.ui.navigation.OnBoardingDestinations
 import com.example.examer.ui.screens.onboarding.LoginScreen
 import com.example.examer.ui.screens.onboarding.SignUpScreen
 import com.example.examer.ui.screens.onboarding.WelcomeScreen
-import com.example.examer.viewmodels.ExamerHomeViewModel
+import com.example.examer.viewmodels.ExamerTestsViewModel
 import com.example.examer.viewmodels.HomeScreenUiState
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -194,7 +194,7 @@ private fun LoggedInScreen(
             startDestination = ExamerDestinations.ScheduledTestsScreen.route
         ) {
             composable(route = ExamerDestinations.ScheduledTestsScreen.route) {
-                val homeViewModel = viewModel<ExamerHomeViewModel>(
+                val homeViewModel = viewModel<ExamerTestsViewModel>(
                     factory = appContainer.homeViewModelFactory,
                     viewModelStoreOwner = it
                 )
