@@ -25,6 +25,11 @@ class AppContainer {
         repository = repository,
         testDetailsListType = TestDetailsListType.SCHEDULED_TESTS
     )
-    
+
+    val previousTestsViewModelFactory = TestsViewModelFactory(
+        authenticationService = authenticationService,
+        repository = repository,
+        testDetailsListType = TestDetailsListType.PREVIOUS_TESTS
+    )
 }
 
