@@ -21,7 +21,7 @@ class AppContainer {
     val signUpViewModelFactory = SignUpViewModelFactory(authenticationService)
 
     // TODO rename to testsViewModelFactory
-    val homeViewModelFactory = TestsViewModelFactory(
+    val testsViewModelFactory = TestsViewModelFactory(
         authenticationService = authenticationService,
         repository = repository,
         testDetailsListType = TestDetailsListType.SCHEDULED_TESTS // TODO
