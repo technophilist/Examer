@@ -194,18 +194,19 @@ private fun LoggedInScreen(
             startDestination = ExamerDestinations.ScheduledTestsScreen.route
         ) {
             composable(route = ExamerDestinations.ScheduledTestsScreen.route) {
-                val homeViewModel = viewModel<ExamerTestsViewModel>(
-                    factory = appContainer.scheduledTestsViewModelFactory,
+                val scheduledTestsViewModelFactory = appContainer.scheduledTestsViewModelFactory
+                val testsViewModel = viewModel<ExamerTestsViewModel>(
+                    factory = scheduledTestsViewModelFactory,
                     viewModelStoreOwner = it
                 )
-                val testList by homeViewModel.testDetailsList
+                val testList by testsViewModel.testDetailsList
                 val swipeRefreshState = rememberSwipeRefreshState(
-                    isRefreshing = homeViewModel.homeScreenUiState.value == HomeScreenUiState.LOADING
+                    isRefreshing = testsViewModel.homeScreenUiState.value == HomeScreenUiState.LOADING
                 )
                 ScheduledTestsScreen(
                     swipeRefreshState = swipeRefreshState,
                     tests = testList,
-                    onRefresh = homeViewModel::refreshTestDetailsList
+                    onRefresh = testsViewModel::refreshTestDetailsList
                 )
             }
             composable(route = ExamerDestinations.TestHistoryScreen.route) {
