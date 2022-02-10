@@ -17,14 +17,20 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
 
     override suspend fun fetchScheduledTestListForUser(user: ExamerUser): List<TestDetails> =
         withContext(dispatcherProvider.io) {
-            val scheduledTestsCollection = Firebase.firestore
-                .collection("users/${user.id}/scheduledTests")
-                .get()
-                .await()
+            val scheduledTestsCollection = fetchCollection("users/${user.id}/scheduledTests")
             // if no collection exists for the user, which likely indicates
             // that the user is a newly registered user, an empty list will
             // be returned.
             scheduledTestsCollection.documents.map { it.toTestDetails() }
+        }
+
+    override suspend fun fetchPreviousTestListForUser(user: ExamerUser): List<TestDetails> =
+        withContext(dispatcherProvider.io) {
+            val previousTestsCollection = fetchCollection("users/${user.id}/previousTests")
+            // if no collection exists for the user, which likely indicates
+            // that the user is a newly registered user, an empty list will
+            // be returned.
+            previousTestsCollection.documents.map { it.toTestDetails() }
         }
 
     private fun DocumentSnapshot.toTestDetails() = TestDetails(
@@ -43,6 +49,11 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
             .ofEpochMilli(timestamp)
             .atZone(ZoneId.systemDefault())
             .toLocalDateTime()
+
+    private suspend fun fetchCollection(collectionPath: String) = Firebase.firestore
+        .collection(collectionPath)
+        .get()
+        .await()
 
 
 }
