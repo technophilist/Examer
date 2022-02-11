@@ -21,6 +21,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import coil.compose.rememberImagePainter
 import com.example.examer.R
 import com.example.examer.data.domain.ExamerUser
 import com.example.examer.di.AppContainer
@@ -150,6 +151,7 @@ private fun LoggedInScreen(
             )
         )
     }
+    val imagePainter = rememberImagePainter(data = currentlyLoggedInUser.photoUrl)
     // if the drawer is open, close the drawer instead of
     // quitting the app.
     BackHandler(enabled = scaffoldState.drawerState.isOpen) {
@@ -157,6 +159,7 @@ private fun LoggedInScreen(
     }
     ExamerNavigationScaffold(
         scaffoldState = scaffoldState,
+        imagePainter = imagePainter,
         currentlyLoggedInUser = currentlyLoggedInUser,
         navigationDrawerDestinations = navigationDrawerDestinations,
         onSignOutButtonClick = { isAlertDialogVisible = true },
