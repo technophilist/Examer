@@ -2,9 +2,6 @@ package com.example.examer.ui.screens
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -13,7 +10,6 @@ import androidx.compose.material.icons.filled.List
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -29,7 +25,6 @@ import com.example.examer.data.domain.ExamerUser
 import com.example.examer.di.AppContainer
 import com.example.examer.ui.components.ExamerNavigationScaffold
 import com.example.examer.ui.components.NavigationDrawerDestination
-import com.example.examer.ui.components.examerTestCard.DefaultExamerExpandableTestCard
 import com.example.examer.ui.navigation.ExamerDestinations
 import com.example.examer.ui.navigation.OnBoardingDestinations
 import com.example.examer.ui.screens.onboarding.LoginScreen
@@ -157,7 +152,10 @@ private fun LoggedInScreen(
     }
     val imagePainter = rememberImagePainter(
         data = currentlyLoggedInUser.photoUrl,
-        builder = { diskCachePolicy(CachePolicy.ENABLED) }
+        builder = {
+            error(R.drawable.blank_profile_picture)
+            diskCachePolicy(CachePolicy.ENABLED)
+        }
     )
 
     // if the drawer is open, close the drawer instead of
