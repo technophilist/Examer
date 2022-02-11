@@ -21,7 +21,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
+import coil.request.CachePolicy
 import com.example.examer.R
 import com.example.examer.data.domain.ExamerUser
 import com.example.examer.di.AppContainer
@@ -39,6 +41,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlinx.coroutines.launch
 
+@ExperimentalCoilApi
 @ExperimentalMaterialApi
 @ExperimentalAnimationApi
 @ExperimentalPagerApi
@@ -106,6 +109,7 @@ fun ExamerApp(appContainer: AppContainer) {
 }
 
 
+@ExperimentalCoilApi
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
@@ -151,7 +155,11 @@ private fun LoggedInScreen(
             )
         )
     }
-    val imagePainter = rememberImagePainter(data = currentlyLoggedInUser.photoUrl)
+    val imagePainter = rememberImagePainter(
+        data = currentlyLoggedInUser.photoUrl,
+        builder = { diskCachePolicy(CachePolicy.ENABLED) }
+    )
+
     // if the drawer is open, close the drawer instead of
     // quitting the app.
     BackHandler(enabled = scaffoldState.drawerState.isOpen) {
