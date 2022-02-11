@@ -105,6 +105,8 @@ fun ExamerNavigationScaffold(
                     currentlyLoggedInUser = currentlyLoggedInUser,
                     imagePainter = imagePainter,
                 )
+                Spacer(modifier = Modifier.height(16.dp))
+                Divider(modifier = Modifier.fillMaxWidth())
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -146,7 +148,7 @@ fun ExamerNavigationScaffold(
 private fun NavigationDrawerHeader(
     currentlyLoggedInUser: ExamerUser,
     modifier: Modifier = Modifier,
-    imagePainter:ImagePainter
+    imagePainter: ImagePainter
 ) {
     val paddingStartModifier = Modifier.padding(start = 16.dp)
     Row(
@@ -176,8 +178,6 @@ private fun NavigationDrawerHeader(
                 color = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium),
                 maxLines = 1,
             )
-            Spacer(modifier = Modifier.height(16.dp))
-//            Divider(modifier = Modifier.fillMaxWidth()) TODO
         }
     }
 }
