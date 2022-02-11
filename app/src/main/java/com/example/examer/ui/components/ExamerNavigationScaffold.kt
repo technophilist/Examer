@@ -19,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import coil.annotation.ExperimentalCoilApi
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import coil.request.ImageRequest
@@ -27,6 +28,9 @@ import com.example.examer.data.domain.ExamerUser
 import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.statusBarsPadding
 import com.google.accompanist.insets.systemBarsPadding
+import com.google.accompanist.placeholder.PlaceholderHighlight
+import com.google.accompanist.placeholder.material.placeholder
+import com.google.accompanist.placeholder.material.shimmer
 
 /**
  * A data class that models a destination in a navigation drawer.
@@ -44,7 +48,7 @@ data class NavigationDrawerDestination(
  * name and email of the user will be displayed in the header of the
  * navigation drawer.
  * @param imagePainter the painter to use for drawing the profile
- * picture in the header.
+ * picture in the header. //  TODO shimmeranim
  * @param modifier the Modifier to be applied to the composable.
  * @param scaffoldState  state of this scaffold widget. It contains
  * the state of the screen, e.g. variables to provide manual control
@@ -66,6 +70,7 @@ data class NavigationDrawerDestination(
  * If you're using VerticalScroller,apply this modifier to the child of the
  * scroller, and not on the scroller itself.
  */
+@ExperimentalCoilApi
 @Composable
 fun ExamerNavigationScaffold(
     currentlyLoggedInUser: ExamerUser,
@@ -144,6 +149,7 @@ fun ExamerNavigationScaffold(
     )
 }
 
+@ExperimentalCoilApi
 @Composable
 private fun NavigationDrawerHeader(
     currentlyLoggedInUser: ExamerUser,
@@ -159,7 +165,11 @@ private fun NavigationDrawerHeader(
             modifier = Modifier
                 .fillMaxHeight()
                 .aspectRatio(1f)
-                .clip(CircleShape),
+                .clip(CircleShape)
+                .placeholder(
+                    visible = imagePainter.state is ImagePainter.State.Loading,
+                    highlight = PlaceholderHighlight.shimmer()
+                ),
             painter = imagePainter,
             contentScale = ContentScale.Crop,
             contentDescription = null
