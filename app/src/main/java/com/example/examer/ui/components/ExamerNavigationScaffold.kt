@@ -1,18 +1,27 @@
 package com.example.examer.ui.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import coil.compose.ImagePainter
+import coil.compose.rememberImagePainter
+import coil.request.ImageRequest
 import com.example.examer.R
 import com.example.examer.data.domain.ExamerUser
 import com.google.accompanist.insets.navigationBarsPadding
@@ -58,6 +67,7 @@ data class NavigationDrawerDestination(
 @Composable
 fun ExamerNavigationScaffold(
     currentlyLoggedInUser: ExamerUser,
+    imagePainter: ImagePainter, // TODO add doc
     modifier: Modifier = Modifier,
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     onNavigationIconClick: (() -> Unit)? = null,
@@ -90,7 +100,8 @@ fun ExamerNavigationScaffold(
                         .fillMaxWidth()
                         .padding(top = 16.dp)
                         .weight(0.13f),
-                    currentlyLoggedInUser = currentlyLoggedInUser
+                    currentlyLoggedInUser = currentlyLoggedInUser,
+                    imagePainter = imagePainter,
                 )
                 Column(
                     modifier = Modifier
@@ -133,26 +144,39 @@ fun ExamerNavigationScaffold(
 private fun NavigationDrawerHeader(
     currentlyLoggedInUser: ExamerUser,
     modifier: Modifier = Modifier,
+    imagePainter:ImagePainter
 ) {
-    Column(modifier = modifier) {
-        val paddingStartModifier = Modifier.padding(start = 16.dp)
-        Text(
-            modifier = paddingStartModifier,
-            text = currentlyLoggedInUser.name,
-            style = MaterialTheme.typography.h5,
-            fontWeight = FontWeight.Bold,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
+    val paddingStartModifier = Modifier.padding(start = 16.dp)
+    Row(
+        modifier = modifier.then(paddingStartModifier),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Image(
+            modifier = Modifier
+                .fillMaxHeight()
+                .aspectRatio(1f)
+                .clip(CircleShape),
+            painter = imagePainter,
+            contentScale = ContentScale.Crop,
+            contentDescription = null
         )
-        Text(
-            modifier = paddingStartModifier,
-            text = currentlyLoggedInUser.email,
-            style = MaterialTheme.typography.subtitle1,
-            color = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium),
-            maxLines = 1,
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Divider(modifier = Modifier.fillMaxWidth())
+        Column(modifier = paddingStartModifier) {
+            Text(
+                text = currentlyLoggedInUser.name,
+                style = MaterialTheme.typography.h5,
+                fontWeight = FontWeight.Bold,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Text(
+                text = currentlyLoggedInUser.email,
+                style = MaterialTheme.typography.subtitle1,
+                color = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium),
+                maxLines = 1,
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+//            Divider(modifier = Modifier.fillMaxWidth())
+        }
     }
 }
 
