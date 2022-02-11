@@ -20,6 +20,8 @@ import androidx.navigation.compose.rememberNavController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import coil.request.CachePolicy
+import coil.transition.CrossfadeTransition
+import coil.transition.Transition
 import com.example.examer.R
 import com.example.examer.data.domain.ExamerUser
 import com.example.examer.di.AppContainer
@@ -155,6 +157,7 @@ private fun LoggedInScreen(
         builder = {
             error(R.drawable.blank_profile_picture)
             diskCachePolicy(CachePolicy.ENABLED)
+            crossfade(true)
         }
     )
 
