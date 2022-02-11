@@ -43,6 +43,8 @@ data class NavigationDrawerDestination(
  * @param currentlyLoggedInUser the currently authenticated user. The
  * name and email of the user will be displayed in the header of the
  * navigation drawer.
+ * @param imagePainter the painter to use for drawing the profile
+ * picture in the header.
  * @param modifier the Modifier to be applied to the composable.
  * @param scaffoldState  state of this scaffold widget. It contains
  * the state of the screen, e.g. variables to provide manual control
@@ -67,7 +69,7 @@ data class NavigationDrawerDestination(
 @Composable
 fun ExamerNavigationScaffold(
     currentlyLoggedInUser: ExamerUser,
-    imagePainter: ImagePainter, // TODO add doc
+    imagePainter: ImagePainter,
     modifier: Modifier = Modifier,
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     onNavigationIconClick: (() -> Unit)? = null,
@@ -175,7 +177,7 @@ private fun NavigationDrawerHeader(
                 maxLines = 1,
             )
             Spacer(modifier = Modifier.height(16.dp))
-//            Divider(modifier = Modifier.fillMaxWidth())
+//            Divider(modifier = Modifier.fillMaxWidth()) TODO
         }
     }
 }
