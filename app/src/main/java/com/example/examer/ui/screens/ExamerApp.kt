@@ -152,8 +152,10 @@ private fun LoggedInScreen(
             )
         )
     }
+    // need to pass an empty string if photoUrl is null
+    // else the error drawable will not be visible
     val imagePainter = rememberImagePainter(
-        data = currentlyLoggedInUser.photoUrl,
+        data = currentlyLoggedInUser.photoUrl ?: "",
         builder = {
             error(R.drawable.blank_profile_picture)
             diskCachePolicy(CachePolicy.ENABLED)
