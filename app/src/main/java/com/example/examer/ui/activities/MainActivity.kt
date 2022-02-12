@@ -11,6 +11,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.tooling.preview.Preview
+import coil.annotation.ExperimentalCoilApi
 import com.example.examer.di.AppContainer
 import com.example.examer.di.ExamerApplication
 import com.example.examer.ui.screens.ExamerApp
@@ -21,6 +22,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 class MainActivity : ComponentActivity() {
     private lateinit var appContainer: AppContainer
 
+    @ExperimentalCoilApi
     @ExperimentalMaterialApi
     @ExperimentalAnimationApi
     @ExperimentalPagerApi
