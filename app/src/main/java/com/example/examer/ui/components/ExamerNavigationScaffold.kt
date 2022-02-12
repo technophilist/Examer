@@ -99,25 +99,24 @@ fun ExamerNavigationScaffold(
                 modifier = Modifier
                     .fillMaxSize()
                     .systemBarsPadding(),
-                verticalArrangement = Arrangement.SpaceBetween
+//                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 // Header
                 NavigationDrawerHeader(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 16.dp)
-                        .weight(0.13f),
+                        .height(100.dp)
+                        .padding(top = 16.dp),
                     currentlyLoggedInUser = currentlyLoggedInUser,
                     imagePainter = imagePainter,
                 )
-                Spacer(modifier = Modifier.height(16.dp))
-                Divider(modifier = Modifier.fillMaxWidth())
                 Column(
                     modifier = Modifier
+                        .weight(9f)
                         .fillMaxWidth()
                         .padding(top = 8.dp)
-                        .weight(0.77f),
                 ) {
+                    Divider(modifier = Modifier.fillMaxWidth())
                     navigationDrawerDestinations.forEach { item ->
                         NavigationDrawerItem(
                             icon = item.icon,
@@ -131,9 +130,8 @@ fun ExamerNavigationScaffold(
                 // Footer
                 Column(
                     modifier = Modifier
+                        .weight(1f)
                         .fillMaxWidth()
-                        .navigationBarsPadding()
-                        .weight(0.1f)
                 ) {
                     Divider(modifier = Modifier.fillMaxWidth())
                     NavigationDrawerItem(
