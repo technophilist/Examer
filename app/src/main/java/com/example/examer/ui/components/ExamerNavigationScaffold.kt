@@ -48,7 +48,9 @@ data class NavigationDrawerDestination(
  * name and email of the user will be displayed in the header of the
  * navigation drawer.
  * @param imagePainter the painter to use for drawing the profile
- * picture in the header. //  TODO shimmeranim
+ * picture in the header. A shimmer animation will be automatically
+ * added when the value of the 'state' member variable of the
+ * image painter is [ImagePainter.State.Loading].
  * @param modifier the Modifier to be applied to the composable.
  * @param scaffoldState  state of this scaffold widget. It contains
  * the state of the screen, e.g. variables to provide manual control
@@ -99,7 +101,6 @@ fun ExamerNavigationScaffold(
                 modifier = Modifier
                     .fillMaxSize()
                     .systemBarsPadding(),
-//                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 // Header
                 NavigationDrawerHeader(
