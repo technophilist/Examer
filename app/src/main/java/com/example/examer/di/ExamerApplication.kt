@@ -1,8 +1,7 @@
 package com.example.examer.di
 
 import android.app.Application
-import com.google.firebase.BuildConfig
-import com.google.firebase.FirebaseApp
+import com.example.examer.BuildConfig
 import timber.log.Timber
 
 class ExamerApplication : Application() {
