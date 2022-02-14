@@ -11,5 +11,6 @@ data class ExamerUser(
     val id: String,
     val name: String,
     val email: String,
+    val phoneNumber: String?,
     val photoUrl: Uri? = null
 )
