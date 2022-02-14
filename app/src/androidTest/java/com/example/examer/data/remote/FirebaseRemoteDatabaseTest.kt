@@ -16,7 +16,7 @@ class FirebaseRemoteDatabaseTest {
     @Before
     fun setup() {
         remoteDatabase = FirebaseRemoteDatabase(StandardDispatchersProvider(io = Dispatchers.Main))
-        currentUser = ExamerUser(id = testUserID, "testUserName", "testUserEmail")
+        currentUser = ExamerUser(id = testUserID, "testUserName", "testUserEmail", null)
     }
 
     @Test
