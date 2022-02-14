@@ -88,7 +88,7 @@ class FirebaseAuthenticationService(
         id = uid,
         name = displayName ?: "",
         email = email!!,
-        phoneNumber = phoneNumber,
+        phoneNumber = if (phoneNumber?.isEmpty() == true) null else phoneNumber,
         photoUrl = photoUrl
     )
 }
