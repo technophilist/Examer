@@ -25,14 +25,10 @@ import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.material.shimmer
 
 data class UserAttribute(
-    val attributeType: TYPE,
     val label: String,
     val value: String,
     val onClick: () -> Unit
-) {
-    enum class TYPE { NAME, EMAIL, PHONE, PASSWORD }
-}
-
+)
 
 @ExperimentalCoilApi
 @Composable
