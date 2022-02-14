@@ -84,5 +84,11 @@ class FirebaseAuthenticationService(
      * Utility method to convert an instance of [FirebaseUser] to
      * [ExamerUser]
      */
-    private fun FirebaseUser.toExamerUser() = ExamerUser(uid, displayName ?: "", email!!, photoUrl)
+    private fun FirebaseUser.toExamerUser() = ExamerUser(
+        id = uid,
+        name = displayName ?: "",
+        email = email!!,
+        phoneNumber = phoneNumber,
+        photoUrl = photoUrl
+    )
 }
