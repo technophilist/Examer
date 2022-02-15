@@ -3,12 +3,15 @@ package com.example.examer.auth
 import android.net.Uri
 import com.example.examer.auth.AuthenticationResult.*
 import com.example.examer.data.domain.ExamerUser
+import com.example.examer.data.remote.RemoteDatabase
 
 /**
  * An interface that contains the requisite fields and methods required
  * for an authentication service.
  */
 interface AuthenticationService {
+    enum class UpdateAttributeType { NAME, EMAIL, PASSWORD }
+
     /**
      * The current user represents the user that is
      * currently logged in. If it is null, it implies
@@ -40,6 +43,13 @@ interface AuthenticationService {
      * Used to sign out the current user.
      */
     fun signOut()
+
+    suspend fun updateAttributeForUser(
+        user: ExamerUser,
+        updateAttributeType: UpdateAttributeType,
+        newValue: String,
+        password: String,
+    ):AuthenticationResult
 }
 
 /**
