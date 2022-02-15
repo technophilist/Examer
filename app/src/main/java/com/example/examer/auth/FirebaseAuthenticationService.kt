@@ -1,7 +1,10 @@
 package com.example.examer.auth
 
 import android.net.Uri
+import com.example.examer.auth.AuthenticationService.*
 import com.example.examer.data.domain.ExamerUser
+import com.google.firebase.FirebaseException
+import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.*
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -13,7 +16,7 @@ import kotlinx.coroutines.withContext
  * of Firebase.
  */
 class FirebaseAuthenticationService(
-    private val defaultDispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val defaultDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : AuthenticationService {
 
     private val firebaseAuth = FirebaseAuth.getInstance()
@@ -57,6 +60,7 @@ class FirebaseAuthenticationService(
         password: String,
         profilePhotoUri: Uri?
     ): AuthenticationResult = withContext(defaultDispatcher) {
+        // Does the run cathcing block also catch cancellation exception?
         runCatching {
             val firebaseUser = firebaseAuth.createUser(username, email, password, profilePhotoUri)
             AuthenticationResult.Success(firebaseUser.toExamerUser())
@@ -79,6 +83,29 @@ class FirebaseAuthenticationService(
     override fun signOut() {
         firebaseAuth.signOut()
     }
+
+    override suspend fun updateAttributeForUser(
+        user: ExamerUser,
+        updateAttributeType: UpdateAttributeType,
+        newValue: String,
+        password: String
+    ): AuthenticationResult = withContext(defaultDispatcher) {
+        runCatching {
+            val currentUser = firebaseAuth.currentUser
+            when (updateAttributeType) {
+                UpdateAttributeType.NAME -> currentUser?.changeUserName(newValue)
+                UpdateAttributeType.EMAIL -> currentUser?.changeEmail(newValue, password)
+                UpdateAttributeType.PASSWORD -> currentUser?.changePassword(newValue, password)
+            }
+            AuthenticationResult.Success(firebaseAuth.currentUser!!.toExamerUser())
+        }.getOrElse {
+            AuthenticationResult.Failure(
+                if (it is FirebaseNetworkException) AuthenticationResult.FailureType.NetworkFailure
+                else AuthenticationResult.FailureType.InvalidCredentials
+            )
+        }
+    }
+
 
     /**
      * Utility method to convert an instance of [FirebaseUser] to
