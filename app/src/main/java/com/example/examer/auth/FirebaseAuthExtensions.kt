@@ -35,11 +35,11 @@ suspend fun FirebaseAuth.createUser(
 
 
 suspend fun FirebaseUser.changeEmail(newEmail: String, password: String) {
-    runCatchingRecentLoginException(password) { updateEmail(newEmail) }
+    runCatchingRecentLoginException(password) { updateEmail(newEmail).await() }
 }
 
 suspend fun FirebaseUser.changePassword(newPassword: String, oldPassword: String) {
-    runCatchingRecentLoginException(oldPassword) { updatePassword(newPassword) }
+    runCatchingRecentLoginException(oldPassword) { updatePassword(newPassword).await() }
 }
 
 /**
