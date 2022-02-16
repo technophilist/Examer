@@ -59,6 +59,8 @@
     <!-- Navigation Drawer Item-->
     <string name="navigation_drawer_label_scheduled_test">Scheduled Tests</string>
     <string name="navigation_drawer_label_test_history">Test History</string>
+    <!-- Profile Screen-->
+    <string name="button_label_edit_profile_picture">Edit profile picture</string>
 
 
 </resources>
