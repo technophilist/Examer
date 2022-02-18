@@ -49,6 +49,13 @@ class ExamerPasswordManager(application: Application) : PasswordManager {
      * Used to securely save the [password] of the [examerUser].
      */
     override fun savePasswordForUser(examerUser: ExamerUser, password: String) {
-        encryptedSharedPreferences.edit { putString(examerUser.hashCode().toString(), password) }
+        encryptedSharedPreferences.edit {
+            // since only one user can be logged in at a given time,
+            // clear the shared preferences before adding a new entry
+            // in order to remove the key,value pair stored for the
+            // previously logged in user.
+            clear()
+            putString(examerUser.hashCode().toString(), password)
+        }
     }
 }
