@@ -142,10 +142,11 @@ fun DefaultExamerProfileScreen(
             )
         ) { backstackEntry ->
             backstackEntry.arguments?.let { arguments ->
-                var textFieldValue by remember { mutableStateOf(arguments["previousValue"].toString()) }
+                var textFieldValue by remember { mutableStateOf("") }
                 val nameOfValueToBeEdited = arguments["nameOfValueToEdit"].toString()
                 EditScreen(
                     nameOfValueToBeEdited = nameOfValueToBeEdited,
+                    textFieldPlaceHolder = arguments["previousValue"].toString(),
                     textFieldValue = textFieldValue,
                     onTextFieldValueChange = { textFieldValue = it },
                     onSaveButtonClick = {
@@ -169,6 +170,7 @@ fun DefaultExamerProfileScreen(
 @Composable
 private fun EditScreen(
     nameOfValueToBeEdited: String,
+    textFieldPlaceHolder: String,
     textFieldValue: String,
     onTextFieldValueChange: (String) -> Unit,
     onSaveButtonClick: () -> Unit,
@@ -183,7 +185,8 @@ private fun EditScreen(
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = textFieldValue,
-            onValueChange = onTextFieldValueChange
+            onValueChange = onTextFieldValueChange,
+            placeholder = { Text(text = textFieldPlaceHolder) }
         )
         Button(
             modifier = Modifier.fillMaxWidth(),
