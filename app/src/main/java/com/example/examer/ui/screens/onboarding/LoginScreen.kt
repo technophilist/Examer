@@ -1,7 +1,5 @@
 package com.example.examer.ui.screens.onboarding
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
@@ -14,9 +12,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -140,7 +136,7 @@ fun LoginScreen(
                 onValueChange = onEmailAddressTextChange,
                 isError = isErrorMessageVisible,
                 keyboardActions = keyboardActions,
-                label = { Text(text = stringResource(R.string.placeholder_email_address)) },
+                label = { Text(text = stringResource(R.string.label_email_address)) },
             )
 
             Spacer(modifier = Modifier.padding(8.dp))
@@ -149,7 +145,7 @@ fun LoginScreen(
                 modifier = Modifier.fillMaxWidth(),
                 value = passwordText,
                 onValueChange = onPasswordTextChange,
-                label = { Text(text = stringResource(R.string.placeholder_password)) },
+                label = { Text(text = stringResource(R.string.label_password)) },
                 visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 isError = isErrorMessageVisible,
                 trailingIcon = {

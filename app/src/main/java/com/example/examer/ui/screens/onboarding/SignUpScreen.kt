@@ -1,7 +1,5 @@
 package com.example.examer.ui.screens.onboarding
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
@@ -14,7 +12,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -168,7 +165,7 @@ fun SignUpScreen(
                     modifier = Modifier.fillMaxWidth(0.5f),
                     value = firstNameText,
                     onValueChange = onFirstNameTextChange,
-                    label = { Text(text = stringResource(id = R.string.placeholder_first_name)) },
+                    label = { Text(text = stringResource(id = R.string.label_first_name)) },
                     keyboardActions = keyboardActions,
                 )
 
@@ -177,7 +174,7 @@ fun SignUpScreen(
                 ExamerSingleLineTextField(
                     value = lastNameText,
                     onValueChange = onLastNameTextChange,
-                    label = { Text(text = stringResource(id = R.string.placeholder_last_name)) },
+                    label = { Text(text = stringResource(id = R.string.label_last_name)) },
                     keyboardActions = keyboardActions
                 )
 
@@ -189,7 +186,7 @@ fun SignUpScreen(
                 modifier = Modifier.fillMaxWidth(),
                 value = emailAddressText,
                 onValueChange = onEmailAddressTextChange,
-                label = { Text(text = stringResource(id = R.string.placeholder_email_address)) },
+                label = { Text(text = stringResource(id = R.string.label_email_address)) },
                 keyboardActions = keyboardActions,
                 isError = isErrorMessageVisible
             )
@@ -200,7 +197,7 @@ fun SignUpScreen(
                 modifier = Modifier.fillMaxWidth(),
                 value = passwordText,
                 onValueChange = onPasswordTextChange,
-                label = { Text(text = stringResource(id = R.string.placeholder_password)) },
+                label = { Text(text = stringResource(id = R.string.label_password)) },
                 visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 trailingIcon = {
                     Icon(
