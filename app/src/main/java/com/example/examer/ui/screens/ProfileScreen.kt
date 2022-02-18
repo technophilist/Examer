@@ -32,6 +32,7 @@ import com.example.examer.viewmodels.ProfileScreenViewModel
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.material.shimmer
+import java.lang.IllegalArgumentException
 
 data class UserAttribute(
     val label: String,
@@ -120,11 +121,18 @@ fun DefaultExamerProfileScreen(
         ) { backstackEntry ->
             var textFieldValue by remember { mutableStateOf("") }
             backstackEntry.arguments?.let { arguments ->
+                val nameOfValueToBeEdited = arguments["nameOfValueToEdit"].toString()
                 EditScreen(
-                    nameOfValueToBeEdited = arguments["nameOfValueToEdit"].toString(),
+                    nameOfValueToBeEdited = nameOfValueToBeEdited,
                     textFieldValue = textFieldValue,
                     onTextFieldValueChange = { textFieldValue = it },
                     onSaveButtonClick = {
+                        when (nameOfValueToBeEdited) {
+                            "name" -> updateName(textFieldValue)
+                            "email" -> updateEmail(textFieldValue)
+                            "password" -> updatePassword(textFieldValue)
+                            else -> throw IllegalArgumentException(nameOfValueToBeEdited)
+                        }
                         navController.navigate(DefaultExamerProfileScreenDestinations.ProfileScreen.route)
                     }
                 )
