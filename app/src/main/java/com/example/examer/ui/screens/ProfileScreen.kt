@@ -1,5 +1,6 @@
 package com.example.examer.ui.screens
 
+import android.graphics.Bitmap
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -12,7 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
@@ -20,6 +23,7 @@ import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import com.example.examer.R
 import com.example.examer.data.domain.ExamerUser
+import com.example.examer.viewmodels.ProfileScreenViewModel
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.material.shimmer
@@ -30,6 +34,53 @@ data class UserAttribute(
     val onClick: () -> Unit
 )
 
+@ExperimentalCoilApi
+@Composable
+fun DefaultExamerProfileScreen(
+    currentlyLoggedInUser: ExamerUser,
+    onEditProfilePictureButtonClick: (image: ImageBitmap) -> Unit,
+    updateName: (newName: String) -> Unit,
+    updateEmail: (newEmail: String) -> Unit,
+    updatePassword: (newPassword: String) -> Unit
+) {
+    // need to pass an empty string if photoUrl is null
+    // else the error drawable will not be visible
+    val profileScreenImagePainter = rememberImagePainter(
+        data = currentlyLoggedInUser.photoUrl ?: "",
+        builder = {
+            error(R.drawable.blank_profile_picture)
+            crossfade(true)
+        }
+    )
+
+    val resources = LocalContext.current.resources
+    val profileScreenUserAttributes = listOf(
+        UserAttribute(
+            label = resources.getString(R.string.label_name), // TODO string resources
+            value = currentlyLoggedInUser.name,
+            onClick = {/* TODO */ }
+        ),
+        UserAttribute(
+            label = resources.getString(R.string.label_email_address), // TODO string resources
+            value = currentlyLoggedInUser.email,
+            onClick = { /* TODO */ }
+        ),
+        UserAttribute(
+            label = resources.getString(R.string.label_password),// TODO string resources
+            value = "**********",
+            onClick = { /* TODO */ }
+        )
+    )
+    ProfileScreen(
+        imagePainter = profileScreenImagePainter,
+        onEditProfilePictureButtonClick = { /*TODO*/ },
+        userAttributes = profileScreenUserAttributes
+    )
+}
+
+/**
+ * Stateless implementation of profile screen
+ */
 @ExperimentalCoilApi
 @Composable
 fun ProfileScreen(
