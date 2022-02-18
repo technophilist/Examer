@@ -33,19 +33,10 @@ data class UserAttribute(
 @ExperimentalCoilApi
 @Composable
 fun ProfileScreen(
-    examerUser: ExamerUser,
+    imagePainter: ImagePainter,
     onEditProfilePictureButtonClick: () -> Unit,
     userAttributes: List<UserAttribute>,
 ) {
-    // need to pass an empty string if photoUrl is null
-    // else the error drawable will not be visible
-    val imagePainter = rememberImagePainter(
-        data = examerUser.photoUrl ?: "",
-        builder = {
-            error(R.drawable.blank_profile_picture)
-            crossfade(true)
-        }
-    )
     Column(modifier = Modifier.fillMaxSize()) {
         Header(
             modifier = Modifier
