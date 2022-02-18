@@ -33,20 +33,23 @@ class ExamerPasswordManager(application: Application) : PasswordManager {
 
     /**
      * Used to get the password associated with the [examerUser].
-     * The hashcode of the [examerUser] will be used as the key
+     * The [ExamerUser.id] of the [examerUser] will be used as the key
      * to get the value of the password.
      * @throws IllegalArgumentException if there is no password associated
      * with the user.
      */
     override fun getPasswordForUser(examerUser: ExamerUser): String {
-        if (encryptedSharedPreferences.contains(examerUser.hashCode().toString())) {
-            return encryptedSharedPreferences.getString(examerUser.hashCode().toString(), null)!!
+        if (encryptedSharedPreferences.contains(examerUser.id)) {
+            return encryptedSharedPreferences.getString(examerUser.id, null)!!
         }
         throw IllegalArgumentException("There password for the user ${examerUser.name} does not exist")
     }
 
     /**
      * Used to securely save the [password] of the [examerUser].
+     *
+     * The [ExamerUser.id] of the [examerUser] will be used as the key
+     * to save the value of the password.
      */
     override fun savePasswordForUser(examerUser: ExamerUser, password: String) {
         encryptedSharedPreferences.edit {
@@ -55,7 +58,7 @@ class ExamerPasswordManager(application: Application) : PasswordManager {
             // in order to remove the key,value pair stored for the
             // previously logged in user.
             clear()
-            putString(examerUser.hashCode().toString(), password)
+            putString(examerUser.id, password)
         }
     }
 }
