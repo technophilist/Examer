@@ -1,15 +1,14 @@
 package com.example.examer.utils
 
+import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.examer.auth.AuthenticationService
 import com.example.examer.data.Repository
 import com.example.examer.di.DispatcherProvider
+import com.example.examer.di.ExamerApplication
 import com.example.examer.di.StandardDispatchersProvider
-import com.example.examer.viewmodels.ExamerTestsViewModel
-import com.example.examer.viewmodels.ExamerLogInViewModel
-import com.example.examer.viewmodels.ExamerSignUpViewModel
-import com.example.examer.viewmodels.TestDetailsListType
+import com.example.examer.viewmodels.*
 import kotlinx.coroutines.Dispatchers
 
 /**
@@ -25,7 +24,7 @@ import kotlinx.coroutines.Dispatchers
  */
 class LogInViewModelFactory(
     private val authenticationService: AuthenticationService,
-    private val passwordManager:PasswordManager,
+    private val passwordManager: PasswordManager,
     private val dispatcherProvider: DispatcherProvider = StandardDispatchersProvider(io = Dispatchers.Main)
 ) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
@@ -65,4 +64,17 @@ class TestsViewModelFactory(
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T =
         ExamerTestsViewModel(authenticationService, repository, testDetailsListType) as T
+}
+
+class ProfileScreenViewModelFactory(
+    private val application: Application,
+    private val authenticationService: AuthenticationService,
+    private val passwordManager: PasswordManager
+) : ViewModelProvider.Factory {
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T = ExamerProfileScreenViewModel(
+        application = application,
+        authenticationService = authenticationService,
+        passwordManager = passwordManager
+    ) as T
 }
