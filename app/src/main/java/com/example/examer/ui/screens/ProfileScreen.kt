@@ -46,8 +46,11 @@ private sealed class DefaultExamerProfileScreenDestinations(val route: String) {
     )
 
     object EditScreen : DefaultExamerProfileScreenDestinations(
-        route = "examer.ui.screens.DefaultProfileScreenDestinations.EDIT_SCREEN_ROUTE/{nameOfValueToEdit}"
-    )
+        route = "examer.ui.screens.DefaultProfileScreenDestinations.EDIT_SCREEN_ROUTE/{nameOfValueToEdit}/{previousValue}"
+    ) {
+        fun buildRoute(nameOfValueToBeEdited: String, previousValue: String) =
+            "examer.ui.screens.DefaultProfileScreenDestinations.EDIT_SCREEN_ROUTE/$nameOfValueToBeEdited/$previousValue"
+    }
 }
 
 /**
@@ -79,21 +82,36 @@ fun DefaultExamerProfileScreen(
             label = resources.getString(R.string.label_name),
             value = currentlyLoggedInUser.name,
             onClick = {
-                navController.navigate("${DefaultExamerProfileScreenDestinations.EditScreen.route}/name")
+                navController.navigate(
+                    DefaultExamerProfileScreenDestinations.EditScreen.buildRoute(
+                        "name",
+                        currentlyLoggedInUser.name
+                    )
+                )
             }
         ),
         UserAttribute(
             label = resources.getString(R.string.label_email_address),
             value = currentlyLoggedInUser.email,
             onClick = {
-                navController.navigate("${DefaultExamerProfileScreenDestinations.EditScreen.route}/email")
+                navController.navigate(
+                    DefaultExamerProfileScreenDestinations.EditScreen.buildRoute(
+                        "email",
+                        currentlyLoggedInUser.email
+                    )
+                )
             }
         ),
         UserAttribute(
             label = resources.getString(R.string.label_password),
             value = "**********",
             onClick = {
-                navController.navigate("${DefaultExamerProfileScreenDestinations.EditScreen.route}/password")
+                navController.navigate(
+                    DefaultExamerProfileScreenDestinations.EditScreen.buildRoute(
+                        "password",
+                        "********"
+                    )
+                )
             }
         )
     )
@@ -111,16 +129,20 @@ fun DefaultExamerProfileScreen(
             )
         }
         composable(
-            route = "${DefaultExamerProfileScreenDestinations.EditScreen.route}/{nameOfValueToEdit}",
+            route = DefaultExamerProfileScreenDestinations.EditScreen.route,
             arguments = listOf(
                 navArgument(name = "nameOfValueToEdit") {
+                    nullable = false
+                    type = NavType.StringType
+                },
+                navArgument(name = "previousValue") {
                     nullable = false
                     type = NavType.StringType
                 }
             )
         ) { backstackEntry ->
-            var textFieldValue by remember { mutableStateOf("") }
             backstackEntry.arguments?.let { arguments ->
+                var textFieldValue by remember { mutableStateOf(arguments["previousValue"].toString()) }
                 val nameOfValueToBeEdited = arguments["nameOfValueToEdit"].toString()
                 EditScreen(
                     nameOfValueToBeEdited = nameOfValueToBeEdited,
