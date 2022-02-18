@@ -19,6 +19,11 @@ class AppContainer(application: Application) {
     val isUserLoggedIn get() = authenticationService.currentUser != null
     val logInViewModelFactory = LogInViewModelFactory(authenticationService, passwordManager)
     val signUpViewModelFactory = SignUpViewModelFactory(authenticationService)
+    val profileScreenViewModelFactory = ProfileScreenViewModelFactory(
+        application,
+        authenticationService,
+        passwordManager
+    )
 
     val scheduledTestsViewModelFactory = TestsViewModelFactory(
         authenticationService = authenticationService,
