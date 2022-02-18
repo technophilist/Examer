@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Examer</string>
     <!-- Common -->
-    <string name="placeholder_email_address">Email Address</string>
-    <string name="placeholder_password">Password</string>
+    <string name="label_email_address">Email Address</string>
+    <string name="label_password">Password</string>
     <string name="label_terms_and_conditions">By clicking below, you agree to our Terms of Use and consent to our Privacy Policy.</string>
     <string name="label_network_error_message">A network error occurred.</string>
 
@@ -31,8 +31,8 @@
     <string name="label_user_already_exists">A user with the same email already exists.</string>
     <string name="label_enter_valid_email_and_password">Please enter a valid email and password. A password is valid if, and only if,it is of length 8 , contains atleast one uppercase and lowercase letter and contains atleast one digit.</string>
     <string name="label_signup_for_new_account">Sign up for a new account</string>
-    <string name="placeholder_first_name">First Name</string>
-    <string name="placeholder_last_name">Last Name</string>
+    <string name="label_first_name">First Name</string>
+    <string name="label_last_name">Last Name</string>
     <string name="label_signup">Sign up</string>
 
     <!-- Examer Test Card -->
