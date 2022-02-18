@@ -7,7 +7,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.NavigateNext
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -18,11 +18,16 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.*
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import com.example.examer.R
 import com.example.examer.data.domain.ExamerUser
+import com.example.examer.ui.navigation.ExamerDestinations
 import com.example.examer.viewmodels.ProfileScreenViewModel
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
@@ -34,6 +39,19 @@ data class UserAttribute(
     val onClick: () -> Unit
 )
 
+private sealed class DefaultExamerProfileScreenDestinations(val route: String) {
+    object ProfileScreen : DefaultExamerProfileScreenDestinations(
+        route = "examer.ui.screens.DefaultProfileScreenDestinations.PROFILE_SCREEN_ROUTE"
+    )
+
+    object EditScreen : DefaultExamerProfileScreenDestinations(
+        route = "examer.ui.screens.DefaultProfileScreenDestinations.EDIT_SCREEN_ROUTE/{nameOfValueToEdit}"
+    )
+}
+
+/**
+ * A stateful implementation of [ProfileScreen].
+ */
 @ExperimentalCoilApi
 @Composable
 fun DefaultExamerProfileScreen(
@@ -43,6 +61,7 @@ fun DefaultExamerProfileScreen(
     updateEmail: (newEmail: String) -> Unit,
     updatePassword: (newPassword: String) -> Unit
 ) {
+    val navController = rememberNavController()
     // need to pass an empty string if photoUrl is null
     // else the error drawable will not be visible
     val profileScreenImagePainter = rememberImagePainter(
@@ -56,26 +75,93 @@ fun DefaultExamerProfileScreen(
     val resources = LocalContext.current.resources
     val profileScreenUserAttributes = listOf(
         UserAttribute(
-            label = resources.getString(R.string.label_name), // TODO string resources
+            label = resources.getString(R.string.label_name),
             value = currentlyLoggedInUser.name,
-            onClick = {/* TODO */ }
+            onClick = {
+                navController.navigate("${DefaultExamerProfileScreenDestinations.EditScreen.route}/name")
+            }
         ),
         UserAttribute(
-            label = resources.getString(R.string.label_email_address), // TODO string resources
+            label = resources.getString(R.string.label_email_address),
             value = currentlyLoggedInUser.email,
-            onClick = { /* TODO */ }
+            onClick = {
+                navController.navigate("${DefaultExamerProfileScreenDestinations.EditScreen.route}/email")
+            }
         ),
         UserAttribute(
-            label = resources.getString(R.string.label_password),// TODO string resources
+            label = resources.getString(R.string.label_password),
             value = "**********",
-            onClick = { /* TODO */ }
+            onClick = {
+                navController.navigate("${DefaultExamerProfileScreenDestinations.EditScreen.route}/password")
+            }
         )
     )
-    ProfileScreen(
-        imagePainter = profileScreenImagePainter,
-        onEditProfilePictureButtonClick = { /*TODO*/ },
-        userAttributes = profileScreenUserAttributes
-    )
+    NavHost(
+        navController = navController,
+        startDestination = DefaultExamerProfileScreenDestinations.ProfileScreen.route
+    ) {
+        composable(DefaultExamerProfileScreenDestinations.ProfileScreen.route) {
+            ProfileScreen(
+                imagePainter = profileScreenImagePainter,
+                onEditProfilePictureButtonClick = {
+                    navController.navigate(DefaultExamerProfileScreenDestinations.EditScreen.route)
+                },
+                userAttributes = profileScreenUserAttributes
+            )
+        }
+        composable(
+            route = "${DefaultExamerProfileScreenDestinations.EditScreen.route}/{nameOfValueToEdit}",
+            arguments = listOf(
+                navArgument(name = "nameOfValueToEdit") {
+                    nullable = false
+                    type = NavType.StringType
+                }
+            )
+        ) { backstackEntry ->
+            var textFieldValue by remember { mutableStateOf("") }
+            backstackEntry.arguments?.let { arguments ->
+                EditScreen(
+                    nameOfValueToBeEdited = arguments["nameOfValueToEdit"].toString(),
+                    textFieldValue = textFieldValue,
+                    onTextFieldValueChange = { textFieldValue = it },
+                    onSaveButtonClick = {
+                        navController.navigate(DefaultExamerProfileScreenDestinations.ProfileScreen.route)
+                    }
+                )
+            }
+        }
+    }
+}
+
+/**
+ * An edit screen for [DefaultExamerProfileScreen]
+ */
+@Composable
+private fun EditScreen(
+    nameOfValueToBeEdited: String,
+    textFieldValue: String,
+    onTextFieldValueChange: (String) -> Unit,
+    onSaveButtonClick: () -> Unit,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Text(text = "Enter the new ${nameOfValueToBeEdited.lowercase()}") // TODO string res
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = textFieldValue,
+            onValueChange = onTextFieldValueChange
+        )
+        Button(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = onSaveButtonClick
+        ) {
+            Text(text = "Save") // TODO string res
+        }
+    }
 }
 
 /**
