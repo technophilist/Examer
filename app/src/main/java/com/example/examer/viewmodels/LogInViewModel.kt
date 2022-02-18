@@ -10,6 +10,7 @@ import com.example.examer.auth.AuthenticationResult.FailureType.*
 import com.example.examer.auth.AuthenticationService
 import com.example.examer.di.DispatcherProvider
 import com.example.examer.di.StandardDispatchersProvider
+import com.example.examer.utils.PasswordManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -64,6 +65,7 @@ interface LogInViewModel {
  */
 class ExamerLogInViewModel(
     private val authenticationService: AuthenticationService,
+    private val passwordManager: PasswordManager,
     private val dispatcherProvider: DispatcherProvider = StandardDispatchersProvider(io = Dispatchers.Main),
 ) : ViewModel(), LogInViewModel {
     private var _uiState = mutableStateOf(LoginUiState.SIGNED_OUT)
@@ -77,7 +79,10 @@ class ExamerLogInViewModel(
         viewModelScope.launch(dispatcherProvider.io) {
             _uiState.value = LoginUiState.LOADING
             when (val result = authenticationService.signIn(emailAddress.trimEnd(), password)) {
-                is AuthenticationResult.Success -> withContext(dispatcherProvider.main) { onSuccess() }
+                is AuthenticationResult.Success -> {
+                    passwordManager.savePasswordForUser(result.user, password)
+                    withContext(dispatcherProvider.main) { onSuccess() }
+                }
                 is AuthenticationResult.Failure -> setUiStateForFailureType(result.failureType)
             }
         }

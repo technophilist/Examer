@@ -25,12 +25,14 @@ import kotlinx.coroutines.Dispatchers
  */
 class LogInViewModelFactory(
     private val authenticationService: AuthenticationService,
+    private val passwordManager:PasswordManager,
     private val dispatcherProvider: DispatcherProvider = StandardDispatchersProvider(io = Dispatchers.Main)
 ) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T =
         ExamerLogInViewModel(
             authenticationService = authenticationService,
+            passwordManager = passwordManager,
             dispatcherProvider = dispatcherProvider
         ) as T
 }
