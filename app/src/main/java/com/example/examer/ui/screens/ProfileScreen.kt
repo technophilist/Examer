@@ -182,7 +182,7 @@ private fun EditScreen(
     onTextFieldValueChange: (String) -> Unit,
     isSaveButtonEnabled: Boolean,
     onSaveButtonClick: () -> Unit,
-    isTextFieldValueError: Boolean = false,
+    isErrorMessageVisible: Boolean = false,
     currentErrorText: String = ""
 ) {
     Column(
@@ -197,7 +197,7 @@ private fun EditScreen(
                 nameOfValueToBeEdited.lowercase()
             )
         )
-        if (isTextFieldValueError) {
+        if (isErrorMessageVisible) {
             Text(
                 text = currentErrorText,
                 color = MaterialTheme.colors.error
