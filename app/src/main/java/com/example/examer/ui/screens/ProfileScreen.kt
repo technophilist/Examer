@@ -27,6 +27,7 @@ import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import com.example.examer.R
 import com.example.examer.data.domain.ExamerUser
+import com.example.examer.ui.components.CircularLoadingProgressOverlay
 import com.example.examer.ui.navigation.ExamerDestinations
 import com.example.examer.viewmodels.ProfileScreenViewModel
 import com.google.accompanist.placeholder.PlaceholderHighlight
@@ -60,6 +61,7 @@ private sealed class DefaultExamerProfileScreenDestinations(val route: String) {
 @Composable
 fun DefaultExamerProfileScreen(
     currentlyLoggedInUser: ExamerUser,
+    isLoadingOverlayVisible: Boolean,
     onEditProfilePictureButtonClick: (image: ImageBitmap) -> Unit,
     updateName: (newName: String) -> Unit,
     updateEmail: (newEmail: String) -> Unit,
@@ -115,50 +117,52 @@ fun DefaultExamerProfileScreen(
             }
         )
     )
-    NavHost(
-        navController = navController,
-        startDestination = DefaultExamerProfileScreenDestinations.ProfileScreen.route
-    ) {
-        composable(DefaultExamerProfileScreenDestinations.ProfileScreen.route) {
-            ProfileScreen(
-                imagePainter = profileScreenImagePainter,
-                onEditProfilePictureButtonClick = {
-                    navController.navigate(DefaultExamerProfileScreenDestinations.EditScreen.route)
-                },
-                userAttributes = profileScreenUserAttributes
-            )
-        }
-        composable(
-            route = DefaultExamerProfileScreenDestinations.EditScreen.route,
-            arguments = listOf(
-                navArgument(name = "nameOfValueToEdit") {
-                    nullable = false
-                    type = NavType.StringType
-                },
-                navArgument(name = "previousValue") {
-                    nullable = false
-                    type = NavType.StringType
-                }
-            )
-        ) { backstackEntry ->
-            backstackEntry.arguments?.let { arguments ->
-                var textFieldValue by remember { mutableStateOf("") }
-                val nameOfValueToBeEdited = arguments["nameOfValueToEdit"].toString()
-                EditScreen(
-                    nameOfValueToBeEdited = nameOfValueToBeEdited,
-                    textFieldPlaceHolder = arguments["previousValue"].toString(),
-                    textFieldValue = textFieldValue,
-                    onTextFieldValueChange = { textFieldValue = it },
-                    onSaveButtonClick = {
-                        when (nameOfValueToBeEdited) {
-                            "name" -> updateName(textFieldValue)
-                            "email" -> updateEmail(textFieldValue)
-                            "password" -> updatePassword(textFieldValue)
-                            else -> throw IllegalArgumentException(nameOfValueToBeEdited)
-                        }
-                        navController.navigate(DefaultExamerProfileScreenDestinations.ProfileScreen.route)
+    CircularLoadingProgressOverlay(isOverlayVisible = isLoadingOverlayVisible) {
+        NavHost(
+            navController = navController,
+            startDestination = DefaultExamerProfileScreenDestinations.ProfileScreen.route
+        ) {
+            composable(DefaultExamerProfileScreenDestinations.ProfileScreen.route) {
+                ProfileScreen(
+                    imagePainter = profileScreenImagePainter,
+                    onEditProfilePictureButtonClick = {
+                        navController.navigate(DefaultExamerProfileScreenDestinations.EditScreen.route)
+                    },
+                    userAttributes = profileScreenUserAttributes
+                )
+            }
+            composable(
+                route = DefaultExamerProfileScreenDestinations.EditScreen.route,
+                arguments = listOf(
+                    navArgument(name = "nameOfValueToEdit") {
+                        nullable = false
+                        type = NavType.StringType
+                    },
+                    navArgument(name = "previousValue") {
+                        nullable = false
+                        type = NavType.StringType
                     }
                 )
+            ) { backstackEntry ->
+                backstackEntry.arguments?.let { arguments ->
+                    var textFieldValue by remember { mutableStateOf("") }
+                    val nameOfValueToBeEdited = arguments["nameOfValueToEdit"].toString()
+                    EditScreen(
+                        nameOfValueToBeEdited = nameOfValueToBeEdited,
+                        textFieldPlaceHolder = arguments["previousValue"].toString(),
+                        textFieldValue = textFieldValue,
+                        onTextFieldValueChange = { textFieldValue = it },
+                        onSaveButtonClick = {
+                            when (nameOfValueToBeEdited) {
+                                "name" -> updateName(textFieldValue)
+                                "email" -> updateEmail(textFieldValue)
+                                "password" -> updatePassword(textFieldValue)
+                                else -> throw IllegalArgumentException(nameOfValueToBeEdited)
+                            }
+                            navController.navigate(DefaultExamerProfileScreenDestinations.ProfileScreen.route)
+                        }
+                    )
+                }
             }
         }
     }

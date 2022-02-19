@@ -130,7 +130,7 @@ private fun LoggedInScreen(
         mapOf(
             ExamerDestinations.ScheduledTestsScreen.route to resources.getString(R.string.navigation_drawer_label_scheduled_test),
             ExamerDestinations.TestHistoryScreen.route to resources.getString(R.string.navigation_drawer_label_test_history),
-                ExamerDestinations.ProfileScreen.route to resources.getString(R.string.navigation_drawer_label_profile)
+            ExamerDestinations.ProfileScreen.route to resources.getString(R.string.navigation_drawer_label_profile)
         )
     }
     val onNavigationDrawerDestinationClick = remember {
@@ -157,7 +157,7 @@ private fun LoggedInScreen(
             NavigationDrawerDestination(
                 icon = Icons.Filled.AccountCircle,
                 name = navigationDrawerDestinationRouteAndNameMap.getValue(ExamerDestinations.ProfileScreen.route),
-                onClick = { onNavigationDrawerDestinationClick(ExamerDestinations.ProfileScreen.route)}
+                onClick = { onNavigationDrawerDestinationClick(ExamerDestinations.ProfileScreen.route) }
             )
         )
     }
@@ -256,6 +256,7 @@ private fun LoggedInScreen(
                 )
                 DefaultExamerProfileScreen(
                     currentlyLoggedInUser = currentlyLoggedInUser,
+                    isLoadingOverlayVisible = profileScreenViewModel.uiState.value == ProfileScreenViewModel.UiState.LOADING,
                     onEditProfilePictureButtonClick = {},
                     updateName = {
                         profileScreenViewModel.updateAttributeForCurrentUser(
