@@ -274,7 +274,9 @@ private fun LoggedInScreen(
                             ProfileScreenViewModel.UpdateAttribute.PASSWORD,
                             it
                         )
-                    }
+                    },
+                    isValidEmail = profileScreenViewModel::isValidEmail,
+                    isValidPassword = profileScreenViewModel::isValidPassword
                 )
             }
         }

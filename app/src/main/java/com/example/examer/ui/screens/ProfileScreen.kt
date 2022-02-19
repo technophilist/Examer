@@ -62,7 +62,9 @@ fun DefaultExamerProfileScreen(
     onEditProfilePictureButtonClick: (image: ImageBitmap) -> Unit,
     updateName: (newName: String) -> Unit,
     updateEmail: (newEmail: String) -> Unit,
-    updatePassword: (newPassword: String) -> Unit
+    updatePassword: (newPassword: String) -> Unit,
+    isValidEmail: ((String) -> Boolean)? = null,
+    isValidPassword: ((String) -> Boolean)? = null
 ) {
     val navController = rememberNavController()
     // need to pass an empty string if photoUrl is null
