@@ -58,8 +58,8 @@ fun ExamerApp(appContainer: AppContainer) {
     }
     NavHost(
         navController = onBoardingNavController,
-        startDestination = if (appContainer.isUserLoggedIn) ExamerDestinations.LoggedInScreen.route
-        else OnBoardingDestinations.WelcomeScreen.route
+        startDestination = if (appContainer.authenticationService.currentUser != null)
+            ExamerDestinations.LoggedInScreen.route else OnBoardingDestinations.WelcomeScreen.route
     ) {
         composable(OnBoardingDestinations.WelcomeScreen.route) {
             WelcomeScreen(

@@ -16,7 +16,6 @@ class AppContainer(application: Application) {
     private val passwordManager = ExamerPasswordManager(application) as PasswordManager
 
     val authenticationService = FirebaseAuthenticationService()
-    val isUserLoggedIn get() = authenticationService.currentUser != null
     val logInViewModelFactory = LogInViewModelFactory(authenticationService, passwordManager)
     val signUpViewModelFactory = SignUpViewModelFactory(authenticationService)
     val profileScreenViewModelFactory = ProfileScreenViewModelFactory(
