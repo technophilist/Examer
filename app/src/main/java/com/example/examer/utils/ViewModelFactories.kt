@@ -8,6 +8,7 @@ import com.example.examer.data.Repository
 import com.example.examer.di.DispatcherProvider
 import com.example.examer.di.ExamerApplication
 import com.example.examer.di.StandardDispatchersProvider
+import com.example.examer.usecases.CredentialsValidationUseCase
 import com.example.examer.viewmodels.*
 import kotlinx.coroutines.Dispatchers
 
@@ -49,11 +50,16 @@ class LogInViewModelFactory(
  */
 class SignUpViewModelFactory(
     private val authenticationService: AuthenticationService,
+    private val credentialsValidationUseCase: CredentialsValidationUseCase,
     private val dispatcherProvider: DispatcherProvider = StandardDispatchersProvider(io = Dispatchers.Main)
 ) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T =
-        ExamerSignUpViewModel(authenticationService, dispatcherProvider) as T
+        ExamerSignUpViewModel(
+            authenticationService,
+            credentialsValidationUseCase,
+            dispatcherProvider
+        ) as T
 }
 
 class TestsViewModelFactory(

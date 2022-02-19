@@ -13,6 +13,8 @@ import com.example.examer.auth.AuthenticationResult.FailureType.UserCollision
 import com.example.examer.auth.AuthenticationService
 import com.example.examer.di.DispatcherProvider
 import com.example.examer.di.StandardDispatchersProvider
+import com.example.examer.usecases.CredentialsValidationUseCase
+import com.example.examer.usecases.ExamerCredentialsValidationUseCase
 import com.example.examer.utils.containsDigit
 import com.example.examer.utils.containsLowercase
 import com.example.examer.utils.containsUppercase
@@ -87,27 +89,11 @@ interface SignUpViewModel {
  */
 class ExamerSignUpViewModel(
     private val authenticationService: AuthenticationService,
+    private val credentialsValidationUseCase: CredentialsValidationUseCase,
     private val dispatcherProvider: DispatcherProvider = StandardDispatchersProvider(io = Dispatchers.Main)
-) : ViewModel(), SignUpViewModel {
+) : ViewModel(), SignUpViewModel, CredentialsValidationUseCase by credentialsValidationUseCase {
     private val _uiState = mutableStateOf<SignUpUiState>(SignUpUiState.SignedOut)
     override val uiState = _uiState as State<SignUpUiState>
-
-    /**
-     * The method is used to check whether the [email] is valid .An email is valid
-     * if, and only if, it is not blank(ie. is not empty and doesn't contain whitespace characters)
-     * and matches the [Patterns.EMAIL_ADDRESS] regex.
-     */
-    private fun isValidEmail(email: String) =
-        email.isNotBlank() && Patterns.EMAIL_ADDRESS.matcher(email).matches()
-
-    /**
-     * The method is used to check whether the [password] is valid.A password is valid if, and only if,
-     * it is of length 8 , contains atleast one uppercase and lowercase letter and contains atleast one digit.
-     */
-    private fun isValidPassword(
-        password: String
-    ) =
-        password.length >= 8 && password.containsUppercase() && password.containsLowercase() && password.containsDigit()
 
     override fun createNewAccount(
         name: String,

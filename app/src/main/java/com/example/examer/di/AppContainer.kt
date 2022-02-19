@@ -6,6 +6,7 @@ import com.example.examer.data.ExamerRepository
 import com.example.examer.data.Repository
 import com.example.examer.data.remote.FirebaseRemoteDatabase
 import com.example.examer.data.remote.RemoteDatabase
+import com.example.examer.usecases.ExamerCredentialsValidationUseCase
 import com.example.examer.utils.*
 import com.example.examer.viewmodels.TestDetailsListType
 
@@ -17,19 +18,20 @@ class AppContainer(application: Application) {
 
     val authenticationService = FirebaseAuthenticationService()
     val logInViewModelFactory = LogInViewModelFactory(authenticationService, passwordManager)
-    val signUpViewModelFactory = SignUpViewModelFactory(authenticationService)
+    val signUpViewModelFactory = SignUpViewModelFactory(
+        authenticationService,
+        ExamerCredentialsValidationUseCase()
+    )
     val profileScreenViewModelFactory = ProfileScreenViewModelFactory(
         application,
         authenticationService,
         passwordManager
     )
-
     val scheduledTestsViewModelFactory = TestsViewModelFactory(
         authenticationService = authenticationService,
         repository = repository,
         testDetailsListType = TestDetailsListType.SCHEDULED_TESTS
     )
-
     val previousTestsViewModelFactory = TestsViewModelFactory(
         authenticationService = authenticationService,
         repository = repository,
