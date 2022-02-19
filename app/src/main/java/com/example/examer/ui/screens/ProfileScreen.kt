@@ -180,6 +180,8 @@ private fun EditScreen(
     onTextFieldValueChange: (String) -> Unit,
     isSaveButtonEnabled: Boolean,
     onSaveButtonClick: () -> Unit,
+    isTextFieldValueError: Boolean = false,
+    currentErrorText: String = ""
 ) {
     Column(
         modifier = Modifier
@@ -193,6 +195,13 @@ private fun EditScreen(
                 nameOfValueToBeEdited.lowercase()
             )
         )
+        if (isTextFieldValueError) {
+            Text(
+                text = currentErrorText,
+                color = MaterialTheme.colors.error
+            )
+        }
+
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = textFieldValue,
