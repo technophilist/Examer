@@ -1,9 +1,9 @@
 package com.example.examer.auth
 
 import android.net.Uri
+import androidx.lifecycle.LiveData
 import com.example.examer.auth.AuthenticationResult.*
 import com.example.examer.data.domain.ExamerUser
-import com.example.examer.data.remote.RemoteDatabase
 
 /**
  * An interface that contains the requisite fields and methods required
@@ -17,7 +17,7 @@ interface AuthenticationService {
      * currently logged in. If it is null, it implies
      * that there is no logged in user.
      */
-    val currentUser: ExamerUser?
+    val currentUser: LiveData<ExamerUser?>
 
     /***
      * Used to sign in a user with the provided [email]

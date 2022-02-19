@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.List
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -21,8 +22,6 @@ import androidx.navigation.compose.rememberNavController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import coil.request.CachePolicy
-import coil.transition.CrossfadeTransition
-import coil.transition.Transition
 import com.example.examer.R
 import com.example.examer.data.domain.ExamerUser
 import com.example.examer.di.AppContainer
@@ -39,7 +38,9 @@ import com.example.examer.viewmodels.ProfileScreenViewModel
 import com.example.examer.viewmodels.TestsViewModelUiState
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
@@ -56,9 +57,10 @@ fun ExamerApp(appContainer: AppContainer) {
             }
         }
     }
+    val currentlyLoggedInUser by appContainer.authenticationService.currentUser.observeAsState()
     NavHost(
         navController = onBoardingNavController,
-        startDestination = if (appContainer.authenticationService.currentUser != null)
+        startDestination = if (currentlyLoggedInUser != null)
             ExamerDestinations.LoggedInScreen.route else OnBoardingDestinations.WelcomeScreen.route
     ) {
         composable(OnBoardingDestinations.WelcomeScreen.route) {
@@ -91,19 +93,16 @@ fun ExamerApp(appContainer: AppContainer) {
         }
 
         composable(ExamerDestinations.LoggedInScreen.route) {
-            appContainer.authenticationService.currentUser?.let { currentUser ->
-                LoggedInScreen(
-                    onSignOut = {
-                        onBoardingNavController.navigate(OnBoardingDestinations.WelcomeScreen.route) {
-                            popUpTo(ExamerDestinations.LoggedInScreen.route) { inclusive = true }
-                            appContainer.authenticationService.signOut()
-                        }
-                    },
-                    appContainer = appContainer,
-                    currentlyLoggedInUser = currentUser
-                )
-            }
-
+            LoggedInScreen(
+                onSignOut = {
+                    onBoardingNavController.navigate(OnBoardingDestinations.WelcomeScreen.route) {
+                        popUpTo(ExamerDestinations.LoggedInScreen.route) { inclusive = true }
+                        appContainer.authenticationService.signOut()
+                    }
+                },
+                appContainer = appContainer,
+                currentlyLoggedInUser = currentlyLoggedInUser!!
+            )
         }
     }
 }

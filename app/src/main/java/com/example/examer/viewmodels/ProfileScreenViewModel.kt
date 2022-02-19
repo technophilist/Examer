@@ -43,7 +43,7 @@ class ExamerProfileScreenViewModel(
         newValue: String
     ) {
         viewModelScope.launch {
-            val currentUser = authenticationService.currentUser!!
+            val currentUser = authenticationService.currentUser.value!!
             // set the ui state to loading
             _uiState.value = ProfileScreenViewModel.UiState.LOADING
             try {
