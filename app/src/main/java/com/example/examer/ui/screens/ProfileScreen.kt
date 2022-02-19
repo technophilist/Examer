@@ -30,6 +30,7 @@ import com.example.examer.ui.components.CircularLoadingProgressOverlay
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.material.shimmer
+import timber.log.Timber
 import java.lang.IllegalArgumentException
 
 data class UserAttribute(
@@ -63,8 +64,8 @@ fun DefaultExamerProfileScreen(
     updateName: (newName: String) -> Unit,
     updateEmail: (newEmail: String) -> Unit,
     updatePassword: (newPassword: String) -> Unit,
-    isValidEmail: ((String) -> Boolean)? = null,
-    isValidPassword: ((String) -> Boolean)? = null
+    isValidEmail: ((String) -> Boolean),
+    isValidPassword: ((String) -> Boolean)
 ) {
     val navController = rememberNavController()
     // need to pass an empty string if photoUrl is null
@@ -149,21 +150,42 @@ fun DefaultExamerProfileScreen(
                     val isSaveButtonEnabled by remember(textFieldValue) {
                         mutableStateOf(textFieldValue.isNotBlank())
                     }
+                    val isErrorMessageVisible = when (nameOfValueToBeEdited) {
+                        "email" -> !isValidEmail(textFieldValue)
+                        "password" -> !isValidPassword(textFieldValue)
+                        else -> false
+                    }
+                    val currentErrorMessage by remember(isErrorMessageVisible) {
+                        mutableStateOf(
+                            when (nameOfValueToBeEdited) {
+                                "email" -> resources.getString(R.string.label_invalid_email)
+                                "password" -> resources.getString(R.string.label_invalid_email)
+                                else -> ""
+                            }
+                        )
+                    }
+                    val onSaveButtonClick = {
+                        if (!isErrorMessageVisible) {
+                            // if the error message is not visible, then update the values
+                            // and navigate to the profile screen.
+//                            when (nameOfValueToBeEdited) {
+//                                "name" -> updateName(textFieldValue)
+//                                "email" -> updateEmail(textFieldValue)
+//                                "password" -> updatePassword(textFieldValue)
+//                                else -> throw IllegalArgumentException(nameOfValueToBeEdited)
+//                            }
+                            navController.navigate(DefaultExamerProfileScreenDestinations.ProfileScreen.route)
+                        }
+                    }
                     EditScreen(
                         nameOfValueToBeEdited = nameOfValueToBeEdited,
                         textFieldPlaceHolder = arguments["previousValue"].toString(),
                         textFieldValue = textFieldValue,
                         onTextFieldValueChange = { textFieldValue = it },
                         isSaveButtonEnabled = isSaveButtonEnabled,
-                        onSaveButtonClick = {
-                            when (nameOfValueToBeEdited) {
-                                "name" -> updateName(textFieldValue)
-                                "email" -> updateEmail(textFieldValue)
-                                "password" -> updatePassword(textFieldValue)
-                                else -> throw IllegalArgumentException(nameOfValueToBeEdited)
-                            }
-                            navController.navigate(DefaultExamerProfileScreenDestinations.ProfileScreen.route)
-                        }
+                        onSaveButtonClick = onSaveButtonClick,
+                        isErrorMessageVisible = isErrorMessageVisible,
+                        errorMessage = currentErrorMessage,
                     )
                 }
             }
@@ -183,7 +205,7 @@ private fun EditScreen(
     isSaveButtonEnabled: Boolean,
     onSaveButtonClick: () -> Unit,
     isErrorMessageVisible: Boolean = false,
-    currentErrorText: String = ""
+    errorMessage: String = ""
 ) {
     Column(
         modifier = Modifier
@@ -197,13 +219,6 @@ private fun EditScreen(
                 nameOfValueToBeEdited.lowercase()
             )
         )
-        if (isErrorMessageVisible) {
-            Text(
-                text = currentErrorText,
-                color = MaterialTheme.colors.error
-            )
-        }
-
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = textFieldValue,
@@ -211,6 +226,12 @@ private fun EditScreen(
             placeholder = { Text(text = textFieldPlaceHolder) },
             singleLine = true
         )
+        if (isErrorMessageVisible) {
+            Text(
+                text = errorMessage,
+                color = MaterialTheme.colors.error
+            )
+        }
         Button(
             modifier = Modifier.fillMaxWidth(),
             onClick = onSaveButtonClick,
