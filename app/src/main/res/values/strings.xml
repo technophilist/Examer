@@ -63,4 +63,6 @@
     <!-- Profile Screen-->
     <string name="button_label_edit_profile_picture">Edit profile picture</string>
     <string name="label_name">Name</string>
+    <string name="button_label_save">Save</string>
+    <string name="label_enter_value_to_be_edited">Enter the new %1$s</string>
 </resources>
