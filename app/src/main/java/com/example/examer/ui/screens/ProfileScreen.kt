@@ -1,6 +1,5 @@
 package com.example.examer.ui.screens
 
-import android.graphics.Bitmap
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -28,8 +27,6 @@ import coil.compose.rememberImagePainter
 import com.example.examer.R
 import com.example.examer.data.domain.ExamerUser
 import com.example.examer.ui.components.CircularLoadingProgressOverlay
-import com.example.examer.ui.navigation.ExamerDestinations
-import com.example.examer.viewmodels.ProfileScreenViewModel
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.material.shimmer
@@ -190,7 +187,12 @@ private fun EditScreen(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Text(text = "Enter the new ${nameOfValueToBeEdited.lowercase()}") // TODO string res
+        Text(
+            text = stringResource(
+                id = R.string.label_enter_value_to_be_edited,
+                nameOfValueToBeEdited.lowercase()
+            )
+        )
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = textFieldValue,
@@ -203,7 +205,7 @@ private fun EditScreen(
             onClick = onSaveButtonClick,
             enabled = isSaveButtonEnabled
         ) {
-            Text(text = "Save") // TODO string res
+            Text(text = stringResource(id = R.string.button_label_save))
         }
     }
 }
