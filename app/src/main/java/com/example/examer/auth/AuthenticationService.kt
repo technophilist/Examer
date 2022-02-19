@@ -16,6 +16,11 @@ interface AuthenticationService {
      * The current user represents the user that is
      * currently logged in. If it is null, it implies
      * that there is no logged in user.
+     *
+     * This value is a [LiveData] instead of [ExamerUser]
+     * in order to ensure that any modifications to the
+     * attributes of the user are propagated to the
+     * entire app.
      */
     val currentUser: LiveData<ExamerUser?>
 
