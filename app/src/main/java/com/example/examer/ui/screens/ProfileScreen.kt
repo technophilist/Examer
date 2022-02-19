@@ -190,7 +190,8 @@ private fun EditScreen(
             modifier = Modifier.fillMaxWidth(),
             value = textFieldValue,
             onValueChange = onTextFieldValueChange,
-            placeholder = { Text(text = textFieldPlaceHolder) }
+            placeholder = { Text(text = textFieldPlaceHolder) },
+            singleLine = true
         )
         Button(
             modifier = Modifier.fillMaxWidth(),
