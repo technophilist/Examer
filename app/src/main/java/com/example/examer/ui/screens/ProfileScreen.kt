@@ -147,11 +147,15 @@ fun DefaultExamerProfileScreen(
                 backstackEntry.arguments?.let { arguments ->
                     var textFieldValue by remember { mutableStateOf("") }
                     val nameOfValueToBeEdited = arguments["nameOfValueToEdit"].toString()
+                    val isSaveButtonEnabled by remember(textFieldValue) {
+                        mutableStateOf(textFieldValue.isNotBlank())
+                    }
                     EditScreen(
                         nameOfValueToBeEdited = nameOfValueToBeEdited,
                         textFieldPlaceHolder = arguments["previousValue"].toString(),
                         textFieldValue = textFieldValue,
                         onTextFieldValueChange = { textFieldValue = it },
+                        isSaveButtonEnabled = isSaveButtonEnabled,
                         onSaveButtonClick = {
                             when (nameOfValueToBeEdited) {
                                 "name" -> updateName(textFieldValue)
@@ -177,6 +181,7 @@ private fun EditScreen(
     textFieldPlaceHolder: String,
     textFieldValue: String,
     onTextFieldValueChange: (String) -> Unit,
+    isSaveButtonEnabled: Boolean,
     onSaveButtonClick: () -> Unit,
 ) {
     Column(
@@ -195,7 +200,8 @@ private fun EditScreen(
         )
         Button(
             modifier = Modifier.fillMaxWidth(),
-            onClick = onSaveButtonClick
+            onClick = onSaveButtonClick,
+            enabled = isSaveButtonEnabled
         ) {
             Text(text = "Save") // TODO string res
         }
