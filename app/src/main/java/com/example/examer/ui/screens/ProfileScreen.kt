@@ -150,30 +150,31 @@ fun DefaultExamerProfileScreen(
                     val isSaveButtonEnabled by remember(textFieldValue) {
                         mutableStateOf(textFieldValue.isNotBlank())
                     }
-                    val isErrorMessageVisible = when (nameOfValueToBeEdited) {
-                        "email" -> !isValidEmail(textFieldValue)
-                        "password" -> !isValidPassword(textFieldValue)
-                        else -> false
-                    }
+                    var isErrorMessageVisible by remember { mutableStateOf(false) }
                     val currentErrorMessage by remember(isErrorMessageVisible) {
                         mutableStateOf(
                             when (nameOfValueToBeEdited) {
                                 "email" -> resources.getString(R.string.label_invalid_email)
-                                "password" -> resources.getString(R.string.label_invalid_email)
+                                "password" -> resources.getString(R.string.label_invalid_password)
                                 else -> ""
                             }
                         )
                     }
                     val onSaveButtonClick = {
+                        isErrorMessageVisible = when (nameOfValueToBeEdited) {
+                            "email" -> !isValidEmail(textFieldValue)
+                            "password" -> !isValidPassword(textFieldValue)
+                            else -> false
+                        }
                         if (!isErrorMessageVisible) {
                             // if the error message is not visible, then update the values
                             // and navigate to the profile screen.
-//                            when (nameOfValueToBeEdited) {
-//                                "name" -> updateName(textFieldValue)
-//                                "email" -> updateEmail(textFieldValue)
-//                                "password" -> updatePassword(textFieldValue)
-//                                else -> throw IllegalArgumentException(nameOfValueToBeEdited)
-//                            }
+                            when (nameOfValueToBeEdited) {
+                                "name" -> updateName(textFieldValue)
+                                "email" -> updateEmail(textFieldValue)
+                                "password" -> updatePassword(textFieldValue)
+                                else -> throw IllegalArgumentException(nameOfValueToBeEdited)
+                            }
                             navController.navigate(DefaultExamerProfileScreenDestinations.ProfileScreen.route)
                         }
                     }
