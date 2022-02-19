@@ -5,6 +5,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.List
 import androidx.compose.runtime.*
@@ -32,7 +33,9 @@ import com.example.examer.ui.navigation.OnBoardingDestinations
 import com.example.examer.ui.screens.onboarding.LoginScreen
 import com.example.examer.ui.screens.onboarding.SignUpScreen
 import com.example.examer.ui.screens.onboarding.WelcomeScreen
+import com.example.examer.viewmodels.ExamerProfileScreenViewModel
 import com.example.examer.viewmodels.ExamerTestsViewModel
+import com.example.examer.viewmodels.ProfileScreenViewModel
 import com.example.examer.viewmodels.TestsViewModelUiState
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -126,7 +129,8 @@ private fun LoggedInScreen(
     val navigationDrawerDestinationRouteAndNameMap = remember {
         mapOf(
             ExamerDestinations.ScheduledTestsScreen.route to resources.getString(R.string.navigation_drawer_label_scheduled_test),
-            ExamerDestinations.TestHistoryScreen.route to resources.getString(R.string.navigation_drawer_label_test_history)
+            ExamerDestinations.TestHistoryScreen.route to resources.getString(R.string.navigation_drawer_label_test_history),
+                ExamerDestinations.ProfileScreen.route to resources.getString(R.string.navigation_drawer_label_profile)
         )
     }
     val onNavigationDrawerDestinationClick = remember {
@@ -149,6 +153,11 @@ private fun LoggedInScreen(
                 icon = Icons.Filled.History,
                 name = navigationDrawerDestinationRouteAndNameMap.getValue(ExamerDestinations.TestHistoryScreen.route),
                 onClick = { onNavigationDrawerDestinationClick(ExamerDestinations.TestHistoryScreen.route) }
+            ),
+            NavigationDrawerDestination(
+                icon = Icons.Filled.AccountCircle,
+                name = navigationDrawerDestinationRouteAndNameMap.getValue(ExamerDestinations.ProfileScreen.route),
+                onClick = { onNavigationDrawerDestinationClick(ExamerDestinations.ProfileScreen.route)}
             )
         )
     }
@@ -238,6 +247,34 @@ private fun LoggedInScreen(
                     onRefresh = testsViewModel::refreshTestDetailsList,
                     tests = testsViewModel.testDetailsList.value,
                     onReviewButtonClick = {}
+                )
+            }
+            composable(route = ExamerDestinations.ProfileScreen.route) { navBackStackEntry ->
+                val profileScreenViewModel = viewModel<ExamerProfileScreenViewModel>(
+                    factory = appContainer.profileScreenViewModelFactory,
+                    viewModelStoreOwner = navBackStackEntry
+                )
+                DefaultExamerProfileScreen(
+                    currentlyLoggedInUser = currentlyLoggedInUser,
+                    onEditProfilePictureButtonClick = {},
+                    updateName = {
+                        profileScreenViewModel.updateAttributeForCurrentUser(
+                            ProfileScreenViewModel.UpdateAttribute.NAME,
+                            it
+                        )
+                    },
+                    updateEmail = {
+                        profileScreenViewModel.updateAttributeForCurrentUser(
+                            ProfileScreenViewModel.UpdateAttribute.EMAIL,
+                            it
+                        )
+                    },
+                    updatePassword = {
+                        profileScreenViewModel.updateAttributeForCurrentUser(
+                            ProfileScreenViewModel.UpdateAttribute.PASSWORD,
+                            it
+                        )
+                    }
                 )
             }
         }
