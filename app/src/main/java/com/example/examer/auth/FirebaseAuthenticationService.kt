@@ -1,15 +1,17 @@
 package com.example.examer.auth
 
 import android.net.Uri
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.examer.auth.AuthenticationService.*
 import com.example.examer.data.domain.ExamerUser
-import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.*
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 /**
  * A concrete implementation of [AuthenticationService] that makes use
@@ -20,7 +22,9 @@ class FirebaseAuthenticationService(
 ) : AuthenticationService {
 
     private val firebaseAuth = FirebaseAuth.getInstance()
-    override val currentUser get() = firebaseAuth.currentUser?.toExamerUser()
+    private val _currentUser =
+        MutableLiveData<ExamerUser?>(firebaseAuth.currentUser?.toExamerUser())
+    override val currentUser: LiveData<ExamerUser?> = _currentUser
 
     /**
      * Used to signIn an existing user with the specified [email] and
@@ -97,6 +101,7 @@ class FirebaseAuthenticationService(
                 UpdateAttributeType.EMAIL -> currentUser?.changeEmail(newValue, password)
                 UpdateAttributeType.PASSWORD -> currentUser?.changePassword(newValue, password)
             }
+            _currentUser.postValue(firebaseAuth.currentUser!!.toExamerUser())
             AuthenticationResult.Success(firebaseAuth.currentUser!!.toExamerUser())
         }.getOrElse {
             AuthenticationResult.Failure(

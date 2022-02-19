@@ -74,7 +74,7 @@ class ExamerTestsViewModel(
         viewModelScope.launch {
             _testsViewModelUiState.value = TestsViewModelUiState.LOADING
             _testDetailsList.value = authenticationService
-                .currentUser?.let { fetchTestDetailsList(it) } ?: emptyList()
+                .currentUser.value?.let { fetchTestDetailsList(it) } ?: emptyList()
             _testsViewModelUiState.value = TestsViewModelUiState.SUCCESSFULLY_LOADED
         }
     }
