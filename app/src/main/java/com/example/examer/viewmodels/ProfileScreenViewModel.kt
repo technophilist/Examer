@@ -14,6 +14,8 @@ import com.example.examer.auth.AuthenticationResult
 import com.example.examer.auth.AuthenticationService
 import com.example.examer.data.domain.ExamerUser
 import com.example.examer.di.ExamerApplication
+import com.example.examer.usecases.CredentialsValidationUseCase
+import com.example.examer.usecases.ExamerCredentialsValidationUseCase
 import com.example.examer.utils.PasswordManager
 import com.example.examer.viewmodels.ProfileScreenViewModel.UpdateAttribute.*
 import kotlinx.coroutines.launch
@@ -27,13 +29,17 @@ interface ProfileScreenViewModel {
 
     val uiState: State<UiState>
     fun updateAttributeForCurrentUser(updateAttribute: UpdateAttribute, newValue: String)
+    fun isValidEmail(email: String): Boolean
+    fun isValidPassword(password: String): Boolean
 }
 
 class ExamerProfileScreenViewModel(
     application: Application,
     private val authenticationService: AuthenticationService,
-    private val passwordManager: PasswordManager
-) : AndroidViewModel(application), ProfileScreenViewModel {
+    private val passwordManager: PasswordManager,
+    private val credentialsValidationUseCase: CredentialsValidationUseCase,
+) : AndroidViewModel(application), ProfileScreenViewModel,
+    CredentialsValidationUseCase by credentialsValidationUseCase {
 
     private val _uiState = mutableStateOf(ProfileScreenViewModel.UiState.IDLE)
     override val uiState: State<ProfileScreenViewModel.UiState> = _uiState
