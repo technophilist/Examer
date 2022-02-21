@@ -4,6 +4,7 @@ import android.app.Application
 import android.security.keystore.KeyGenParameterSpec
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -29,6 +30,7 @@ interface ProfileScreenViewModel {
 
     val uiState: State<UiState>
     fun updateAttributeForCurrentUser(updateAttribute: UpdateAttribute, newValue: String)
+    fun updateProfilePicture(imageBitmap: ImageBitmap)
     fun isValidEmail(email: String): Boolean
     fun isValidPassword(password: String): Boolean
 }
@@ -76,5 +78,9 @@ class ExamerProfileScreenViewModel(
                 _uiState.value = ProfileScreenViewModel.UiState.UPDATE_FAILURE
             }
         }
+    }
+
+    override fun updateProfilePicture(imageBitmap: ImageBitmap) {
+        TODO("Not yet implemented")
     }
 }
