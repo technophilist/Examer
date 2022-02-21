@@ -1,5 +1,7 @@
 package com.example.examer.data.remote
 
+import android.graphics.Bitmap
+import android.net.Uri
 import com.example.examer.data.domain.ExamerUser
 import com.example.examer.data.domain.Status
 import com.example.examer.data.domain.TestDetails
@@ -32,6 +34,10 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
             // be returned.
             previousTestsCollection.documents.map { it.toTestDetails() }
         }
+
+    override suspend fun saveBitmap(bitmap: Bitmap, fileName: String): Uri {
+        TODO("Not yet implemented")
+    }
 
     private fun DocumentSnapshot.toTestDetails() = TestDetails(
         id = id,
