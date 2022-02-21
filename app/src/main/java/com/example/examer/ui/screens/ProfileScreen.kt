@@ -65,7 +65,7 @@ private sealed class DefaultExamerProfileScreenDestinations(val route: String) {
 fun DefaultExamerProfileScreen(
     currentlyLoggedInUser: ExamerUser,
     isLoadingOverlayVisible: Boolean,
-    onEditProfilePictureButtonClick: (image: ImageBitmap) -> Unit,
+    updateProfilePicture: (image: ImageBitmap) -> Unit,
     updateName: (newName: String) -> Unit,
     updateEmail: (newEmail: String) -> Unit,
     updatePassword: (newPassword: String) -> Unit,
