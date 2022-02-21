@@ -1,5 +1,9 @@
 package com.example.examer.ui.screens
 
+import android.graphics.Bitmap
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.launch
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -15,6 +19,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -82,7 +87,10 @@ fun DefaultExamerProfileScreen(
             crossfade(true)
         }
     )
-
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicturePreview(),
+        onResult = { bitmap -> bitmap?.let { updateProfilePicture(it.asImageBitmap()) } }
+    )
     val resources = LocalContext.current.resources
     val profileScreenUserAttributes = listOf(
         UserAttribute(
@@ -130,9 +138,7 @@ fun DefaultExamerProfileScreen(
             composable(DefaultExamerProfileScreenDestinations.ProfileScreen.route) {
                 ProfileScreen(
                     imagePainter = profileScreenImagePainter,
-                    onEditProfilePictureButtonClick = {
-                        navController.navigate(DefaultExamerProfileScreenDestinations.EditScreen.route)
-                    },
+                    onEditProfilePictureButtonClick = { launcher.launch() },
                     userAttributes = profileScreenUserAttributes
                 )
             }
