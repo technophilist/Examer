@@ -9,8 +9,11 @@ import com.example.examer.di.DispatcherProvider
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.UploadTask
+import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import java.io.ByteArrayOutputStream
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -35,8 +38,25 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
             previousTestsCollection.documents.map { it.toTestDetails() }
         }
 
-    override suspend fun saveBitmap(bitmap: Bitmap, fileName: String): Uri {
-        TODO("Not yet implemented")
+    override suspend fun saveBitmap(
+        bitmap: Bitmap,
+        fileName: String
+    ): Uri = withContext(dispatcherProvider.io) {
+        // TODO Handle Exceptions
+        val byteArrayOutputStream = ByteArrayOutputStream().use {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
+            it
+        }
+        val data = byteArrayOutputStream.toByteArray()
+        Firebase.storage
+            .reference
+            .child("profile_pics/$fileName.jpg")
+            .putBytes(data)
+            .await()
+        Firebase.storage.reference
+            .child("profile_pics/$fileName.jpg")
+            .downloadUrl
+            .await()
     }
 
     private fun DocumentSnapshot.toTestDetails() = TestDetails(
