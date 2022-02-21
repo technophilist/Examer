@@ -74,6 +74,7 @@ class TestsViewModelFactory(
 
 class ProfileScreenViewModelFactory(
     private val application: Application,
+    private val repository: Repository,
     private val authenticationService: AuthenticationService,
     private val passwordManager: PasswordManager,
     private val credentialsValidationUseCase: CredentialsValidationUseCase
@@ -81,6 +82,7 @@ class ProfileScreenViewModelFactory(
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T = ExamerProfileScreenViewModel(
         application = application,
+        repository = repository,
         authenticationService = authenticationService,
         passwordManager = passwordManager,
         credentialsValidationUseCase = credentialsValidationUseCase

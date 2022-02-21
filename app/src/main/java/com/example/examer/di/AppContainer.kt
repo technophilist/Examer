@@ -24,6 +24,7 @@ class AppContainer(application: Application) {
     )
     val profileScreenViewModelFactory = ProfileScreenViewModelFactory(
         application,
+        repository,
         authenticationService,
         passwordManager,
         credentialsValidationUseCase = ExamerCredentialsValidationUseCase()

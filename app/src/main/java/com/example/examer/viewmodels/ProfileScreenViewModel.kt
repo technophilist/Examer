@@ -5,6 +5,7 @@ import android.security.keystore.KeyGenParameterSpec
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -13,6 +14,7 @@ import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
 import com.example.examer.auth.AuthenticationResult
 import com.example.examer.auth.AuthenticationService
+import com.example.examer.data.Repository
 import com.example.examer.data.domain.ExamerUser
 import com.example.examer.di.ExamerApplication
 import com.example.examer.usecases.CredentialsValidationUseCase
@@ -37,6 +39,7 @@ interface ProfileScreenViewModel {
 
 class ExamerProfileScreenViewModel(
     application: Application,
+    private val repository: Repository,
     private val authenticationService: AuthenticationService,
     private val passwordManager: PasswordManager,
     private val credentialsValidationUseCase: CredentialsValidationUseCase,
@@ -51,6 +54,7 @@ class ExamerProfileScreenViewModel(
         newValue: String
     ) {
         viewModelScope.launch {
+            // TODO Remove non null assertion
             val currentUser = authenticationService.currentUser.value!!
             // set the ui state to loading
             _uiState.value = ProfileScreenViewModel.UiState.LOADING
@@ -81,6 +85,10 @@ class ExamerProfileScreenViewModel(
     }
 
     override fun updateProfilePicture(imageBitmap: ImageBitmap) {
-        TODO("Not yet implemented")
+        authenticationService.currentUser.value?.let { user ->
+            viewModelScope.launch {
+                repository.saveProfilePictureForUser(user, imageBitmap.asAndroidBitmap())
+            }
+        }
     }
 }
