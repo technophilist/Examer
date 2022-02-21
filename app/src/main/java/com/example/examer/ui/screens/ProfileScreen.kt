@@ -6,6 +6,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.NavigateNext
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,6 +18,8 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.*
 import androidx.navigation.compose.NavHost
@@ -27,6 +31,7 @@ import coil.compose.rememberImagePainter
 import com.example.examer.R
 import com.example.examer.data.domain.ExamerUser
 import com.example.examer.ui.components.CircularLoadingProgressOverlay
+import com.example.examer.ui.components.ExamerSingleLineTextField
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.material.shimmer
@@ -220,13 +225,34 @@ private fun EditScreen(
                 nameOfValueToBeEdited.lowercase()
             )
         )
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = textFieldValue,
-            onValueChange = onTextFieldValueChange,
-            placeholder = { Text(text = textFieldPlaceHolder) },
-            singleLine = true
-        )
+        if (nameOfValueToBeEdited == "password") {
+            var isPasswordVisible by remember { mutableStateOf(false) }
+            val trailingIcon = @Composable {
+                IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
+                    Icon(
+                        imageVector = if (isPasswordVisible) Icons.Filled.Visibility
+                        else Icons.Filled.VisibilityOff,
+                        contentDescription = null
+                    )
+                }
+            }
+            ExamerSingleLineTextField(
+                modifier = Modifier.fillMaxWidth(),
+                value = textFieldValue,
+                onValueChange = onTextFieldValueChange,
+                placeholder = { Text(text = textFieldPlaceHolder) },
+                visualTransformation = if (isPasswordVisible) VisualTransformation.None
+                else PasswordVisualTransformation(),
+                trailingIcon = trailingIcon
+            )
+        } else {
+            ExamerSingleLineTextField(
+                modifier = Modifier.fillMaxWidth(),
+                value = textFieldValue,
+                onValueChange = onTextFieldValueChange,
+                placeholder = { Text(text = textFieldPlaceHolder) },
+            )
+        }
         if (isErrorMessageVisible) {
             Text(
                 text = errorMessage,
