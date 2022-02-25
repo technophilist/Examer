@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import com.example.examer.data.domain.ExamerUser
 import com.example.examer.data.domain.TestDetails
 import com.example.examer.data.remote.RemoteDatabase
+import com.example.examer.usecases.UpdateProfilePhotoUriUseCase
 
 interface Repository {
     suspend fun fetchScheduledTestListForUser(user: ExamerUser): List<TestDetails>
@@ -11,7 +12,10 @@ interface Repository {
     suspend fun saveProfilePictureForUser(user: ExamerUser, bitmap: Bitmap)
 }
 
-class ExamerRepository(private val remoteDatabase: RemoteDatabase) : Repository {
+class ExamerRepository(
+    private val remoteDatabase: RemoteDatabase,
+    private val updateProfilePhotoUriUseCase: UpdateProfilePhotoUriUseCase
+) : Repository {
     override suspend fun fetchScheduledTestListForUser(user: ExamerUser): List<TestDetails> =
         remoteDatabase.fetchScheduledTestListForUser(user)
 
@@ -19,6 +23,7 @@ class ExamerRepository(private val remoteDatabase: RemoteDatabase) : Repository 
         remoteDatabase.fetchPreviousTestListForUser(user)
 
     override suspend fun saveProfilePictureForUser(user: ExamerUser, bitmap: Bitmap) {
-        remoteDatabase.saveBitmap(bitmap = bitmap, fileName = user.id)
+        val photoUri = remoteDatabase.saveBitmap(bitmap = bitmap, fileName = user.id)
+        updateProfilePhotoUriUseCase.update(photoUri)
     }
 }

@@ -7,16 +7,22 @@ import com.example.examer.data.Repository
 import com.example.examer.data.remote.FirebaseRemoteDatabase
 import com.example.examer.data.remote.RemoteDatabase
 import com.example.examer.usecases.ExamerCredentialsValidationUseCase
+import com.example.examer.usecases.UpdateProfilePhotoUriUseCaseImpl
 import com.example.examer.utils.*
 import com.example.examer.viewmodels.TestDetailsListType
 
 class AppContainer(application: Application) {
     private val remoteDatabase =
         FirebaseRemoteDatabase(StandardDispatchersProvider()) as RemoteDatabase
-    private val repository = ExamerRepository(remoteDatabase) as Repository
     private val passwordManager = ExamerPasswordManager(application) as PasswordManager
-
     val authenticationService = FirebaseAuthenticationService()
+    private val repository = ExamerRepository(
+        remoteDatabase = remoteDatabase,
+        updateProfilePhotoUriUseCase = UpdateProfilePhotoUriUseCaseImpl(
+            authenticationService,
+            passwordManager
+        )
+    ) as Repository
     val logInViewModelFactory = LogInViewModelFactory(authenticationService, passwordManager)
     val signUpViewModelFactory = SignUpViewModelFactory(
         authenticationService,
