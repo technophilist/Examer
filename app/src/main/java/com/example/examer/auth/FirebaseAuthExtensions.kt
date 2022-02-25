@@ -5,6 +5,14 @@ import com.google.firebase.auth.*
 import kotlinx.coroutines.tasks.await
 
 /**
+ * Returns a new [UserProfileChangeRequest] by applying the [builderAction]
+ * to a new instance of [UserProfileChangeRequest].
+ */
+inline fun buildProfileChangeRequest(
+    builderAction: UserProfileChangeRequest.Builder.() -> Unit
+): UserProfileChangeRequest = UserProfileChangeRequest.Builder().apply(builderAction).build()
+
+/**
  * This extension method is used for creating a [FirebaseUser] with the
  * provided [name],[email],[password] and [profilePhotoUri].
  *
@@ -25,10 +33,10 @@ suspend fun FirebaseAuth.createUser(
 ): FirebaseUser = runCatching {
     createUserWithEmailAndPassword(email, password).await()
     //if user is created successfully, set the display name and profile picture
-    val userProfileChangeRequest = UserProfileChangeRequest.Builder()
-        .setDisplayName(name)
-        .setPhotoUri(profilePhotoUri)
-        .build()
+    val userProfileChangeRequest = buildProfileChangeRequest {
+        displayName = name
+        photoUri = profilePhotoUri
+    }
     currentUser!!.updateProfile(userProfileChangeRequest).await()
     currentUser!!
 }.getOrThrow()
@@ -83,16 +91,12 @@ suspend fun FirebaseUser.runCatchingRecentLoginException(
  * it throws the exception.
  */
 suspend fun FirebaseUser.changeUserName(newName: String) {
-    val userProfileChangeRequest = UserProfileChangeRequest.Builder()
-        .setDisplayName(newName)
-        .build()
+    val userProfileChangeRequest = buildProfileChangeRequest { displayName = newName }
     updateProfile(userProfileChangeRequest).await()
 }
 
 suspend fun FirebaseUser.changePhotoUri(uri: Uri) {
-    val userProfileChangeRequest = UserProfileChangeRequest.Builder()
-        .setPhotoUri(uri)
-        .build()
+    val userProfileChangeRequest = buildProfileChangeRequest { photoUri = uri }
     updateProfile(userProfileChangeRequest).await()
 }
 
