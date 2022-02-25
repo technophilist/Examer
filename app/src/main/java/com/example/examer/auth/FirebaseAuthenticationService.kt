@@ -100,6 +100,9 @@ class FirebaseAuthenticationService(
                 UpdateAttributeType.NAME -> currentUser?.changeUserName(newValue)
                 UpdateAttributeType.EMAIL -> currentUser?.changeEmail(newValue, password)
                 UpdateAttributeType.PASSWORD -> currentUser?.changePassword(newValue, password)
+                UpdateAttributeType.PROFILE_PHOTO_URI -> currentUser?.changePhotoUri(
+                    Uri.parse(newValue)
+                )
             }
             _currentUser.postValue(firebaseAuth.currentUser!!.toExamerUser())
             AuthenticationResult.Success(firebaseAuth.currentUser!!.toExamerUser())

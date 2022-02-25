@@ -10,7 +10,7 @@ import com.example.examer.data.domain.ExamerUser
  * for an authentication service.
  */
 interface AuthenticationService {
-    enum class UpdateAttributeType { NAME, EMAIL, PASSWORD }
+    enum class UpdateAttributeType { NAME, EMAIL, PASSWORD,PROFILE_PHOTO_URI }
 
     /**
      * The current user represents the user that is
