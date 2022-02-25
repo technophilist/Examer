@@ -6,10 +6,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.examer.auth.AuthenticationService
 import com.example.examer.data.Repository
 import com.example.examer.di.DispatcherProvider
-import com.example.examer.di.ExamerApplication
 import com.example.examer.di.StandardDispatchersProvider
 import com.example.examer.usecases.CredentialsValidationUseCase
 import com.example.examer.viewmodels.*
+import com.example.examer.viewmodels.profileScreenViewModel.ExamerProfileScreenViewModel
 import kotlinx.coroutines.Dispatchers
 
 /**

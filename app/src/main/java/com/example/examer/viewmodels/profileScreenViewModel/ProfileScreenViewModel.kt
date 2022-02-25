@@ -1,29 +1,20 @@
-package com.example.examer.viewmodels
+package com.example.examer.viewmodels.profileScreenViewModel
 
 import android.app.Application
-import android.security.keystore.KeyGenParameterSpec
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKeys
 import com.example.examer.auth.AuthenticationResult
 import com.example.examer.auth.AuthenticationService
 import com.example.examer.data.Repository
-import com.example.examer.data.domain.ExamerUser
-import com.example.examer.di.ExamerApplication
 import com.example.examer.usecases.CredentialsValidationUseCase
-import com.example.examer.usecases.ExamerCredentialsValidationUseCase
 import com.example.examer.utils.PasswordManager
-import com.example.examer.viewmodels.ProfileScreenViewModel.UpdateAttribute.*
+import com.example.examer.viewmodels.profileScreenViewModel.ProfileScreenViewModel.UpdateAttribute.*
 import kotlinx.coroutines.launch
 import java.lang.IllegalArgumentException
-import java.security.KeyStore
 
 
 interface ProfileScreenViewModel {

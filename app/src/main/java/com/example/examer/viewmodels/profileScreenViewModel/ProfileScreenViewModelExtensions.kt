@@ -1,6 +1,4 @@
-package com.example.examer.utils
-
-import com.example.examer.viewmodels.ProfileScreenViewModel
+package com.example.examer.viewmodels.profileScreenViewModel
 
 
 fun ProfileScreenViewModel.updateName(newName: String) {
