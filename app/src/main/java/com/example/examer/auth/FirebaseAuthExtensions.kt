@@ -89,3 +89,10 @@ suspend fun FirebaseUser.changeUserName(newName: String) {
     updateProfile(userProfileChangeRequest).await()
 }
 
+suspend fun FirebaseUser.changePhotoUri(uri: Uri) {
+    val userProfileChangeRequest = UserProfileChangeRequest.Builder()
+        .setPhotoUri(uri)
+        .build()
+    updateProfile(userProfileChangeRequest).await()
+}
+
