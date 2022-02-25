@@ -32,18 +32,16 @@ import com.example.examer.ui.navigation.OnBoardingDestinations
 import com.example.examer.ui.screens.onboarding.LoginScreen
 import com.example.examer.ui.screens.onboarding.SignUpScreen
 import com.example.examer.ui.screens.onboarding.WelcomeScreen
-import com.example.examer.utils.updateEmail
-import com.example.examer.utils.updateName
-import com.example.examer.utils.updatePassword
-import com.example.examer.viewmodels.ExamerProfileScreenViewModel
+import com.example.examer.viewmodels.profileScreenViewModel.updateEmail
+import com.example.examer.viewmodels.profileScreenViewModel.updateName
+import com.example.examer.viewmodels.profileScreenViewModel.updatePassword
+import com.example.examer.viewmodels.profileScreenViewModel.ExamerProfileScreenViewModel
 import com.example.examer.viewmodels.ExamerTestsViewModel
-import com.example.examer.viewmodels.ProfileScreenViewModel
+import com.example.examer.viewmodels.profileScreenViewModel.ProfileScreenViewModel
 import com.example.examer.viewmodels.TestsViewModelUiState
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
