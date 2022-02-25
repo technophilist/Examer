@@ -32,6 +32,9 @@ import com.example.examer.ui.navigation.OnBoardingDestinations
 import com.example.examer.ui.screens.onboarding.LoginScreen
 import com.example.examer.ui.screens.onboarding.SignUpScreen
 import com.example.examer.ui.screens.onboarding.WelcomeScreen
+import com.example.examer.utils.updateEmail
+import com.example.examer.utils.updateName
+import com.example.examer.utils.updatePassword
 import com.example.examer.viewmodels.ExamerProfileScreenViewModel
 import com.example.examer.viewmodels.ExamerTestsViewModel
 import com.example.examer.viewmodels.ProfileScreenViewModel
@@ -257,24 +260,9 @@ private fun LoggedInScreen(
                     currentlyLoggedInUser = currentlyLoggedInUser,
                     isLoadingOverlayVisible = profileScreenViewModel.uiState.value == ProfileScreenViewModel.UiState.LOADING,
                     updateProfilePicture = profileScreenViewModel::updateProfilePicture,
-                    updateName = {
-                        profileScreenViewModel.updateAttributeForCurrentUser(
-                            ProfileScreenViewModel.UpdateAttribute.NAME,
-                            it
-                        )
-                    },
-                    updateEmail = {
-                        profileScreenViewModel.updateAttributeForCurrentUser(
-                            ProfileScreenViewModel.UpdateAttribute.EMAIL,
-                            it
-                        )
-                    },
-                    updatePassword = {
-                        profileScreenViewModel.updateAttributeForCurrentUser(
-                            ProfileScreenViewModel.UpdateAttribute.PASSWORD,
-                            it
-                        )
-                    },
+                    updateName = profileScreenViewModel::updateName,
+                    updateEmail = profileScreenViewModel::updateEmail,
+                    updatePassword = profileScreenViewModel::updatePassword,
                     isValidEmail = profileScreenViewModel::isValidEmail,
                     isValidPassword = profileScreenViewModel::isValidPassword
                 )
