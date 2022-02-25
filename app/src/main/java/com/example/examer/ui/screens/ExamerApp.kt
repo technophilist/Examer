@@ -256,7 +256,7 @@ private fun LoggedInScreen(
                 DefaultExamerProfileScreen(
                     currentlyLoggedInUser = currentlyLoggedInUser,
                     isLoadingOverlayVisible = profileScreenViewModel.uiState.value == ProfileScreenViewModel.UiState.LOADING,
-                    updateProfilePicture = {},
+                    updateProfilePicture = profileScreenViewModel::updateProfilePicture,
                     updateName = {
                         profileScreenViewModel.updateAttributeForCurrentUser(
                             ProfileScreenViewModel.UpdateAttribute.NAME,
