@@ -5,6 +5,7 @@ import com.example.examer.data.domain.ExamerUser
 import com.example.examer.data.domain.TestDetails
 import com.example.examer.data.remote.RemoteDatabase
 import com.example.examer.usecases.UpdateProfilePhotoUriUseCase
+import kotlinx.coroutines.CancellationException
 
 interface Repository {
     suspend fun fetchScheduledTestListForUser(user: ExamerUser): List<TestDetails>
@@ -23,7 +24,10 @@ class ExamerRepository(
         remoteDatabase.fetchPreviousTestListForUser(user)
 
     override suspend fun saveProfilePictureForUser(user: ExamerUser, bitmap: Bitmap) {
-        val photoUri = remoteDatabase.saveBitmap(bitmap = bitmap, fileName = user.id)
+        val photoUri = remoteDatabase.saveBitmap(
+            bitmap = bitmap,
+            fileName = user.id
+        ).getOrThrow()
         updateProfilePhotoUriUseCase.update(photoUri)
     }
 }

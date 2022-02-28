@@ -8,5 +8,5 @@ import com.example.examer.data.domain.TestDetails
 interface RemoteDatabase {
     suspend fun fetchScheduledTestListForUser(user: ExamerUser): List<TestDetails>
     suspend fun fetchPreviousTestListForUser(user: ExamerUser): List<TestDetails>
-    suspend fun saveBitmap(bitmap: Bitmap, fileName: String): Uri
+    suspend fun saveBitmap(bitmap: Bitmap, fileName: String): Result<Uri>
 }

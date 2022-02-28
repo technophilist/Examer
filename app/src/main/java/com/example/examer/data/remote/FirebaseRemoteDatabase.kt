@@ -9,8 +9,10 @@ import com.example.examer.di.DispatcherProvider
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.StorageException
 import com.google.firebase.storage.UploadTask
 import com.google.firebase.storage.ktx.storage
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
@@ -41,22 +43,27 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
     override suspend fun saveBitmap(
         bitmap: Bitmap,
         fileName: String
-    ): Uri = withContext(dispatcherProvider.io) {
-        // TODO Handle Exceptions
-        val byteArrayOutputStream = ByteArrayOutputStream().use {
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
-            it
+    ): Result<Uri> = withContext(dispatcherProvider.io) {
+        try {
+            val byteArrayOutputStream = ByteArrayOutputStream().use {
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
+                it
+            }
+            val data = byteArrayOutputStream.toByteArray()
+            Firebase.storage
+                .reference
+                .child("profile_pics/$fileName.jpg")
+                .putBytes(data)
+                .await()
+            val uri = Firebase.storage.reference
+                .child("profile_pics/$fileName.jpg")
+                .downloadUrl
+                .await()
+            Result.success(uri)
+        } catch (exception: Exception) {
+            if (exception is CancellationException) throw exception
+            Result.failure(exception)
         }
-        val data = byteArrayOutputStream.toByteArray()
-        Firebase.storage
-            .reference
-            .child("profile_pics/$fileName.jpg")
-            .putBytes(data)
-            .await()
-        Firebase.storage.reference
-            .child("profile_pics/$fileName.jpg")
-            .downloadUrl
-            .await()
     }
 
     private fun DocumentSnapshot.toTestDetails() = TestDetails(
