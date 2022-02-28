@@ -186,7 +186,7 @@ fun DefaultExamerProfileScreen(
                                 "password" -> updatePassword(textFieldValue)
                                 else -> throw IllegalArgumentException(nameOfValueToBeEdited)
                             }
-                            navController.navigate(DefaultExamerProfileScreenDestinations.ProfileScreen.route)
+                            navController.popBackStack()
                         }
                     }
                     EditScreen(
