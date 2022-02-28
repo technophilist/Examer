@@ -6,4 +6,5 @@ sealed class ExamerDestinations(val route: String) {
 
     object LoggedInScreen : ExamerDestinations("ExamerDestinations.LoggedInRoute")
     object TestHistoryScreen : ExamerDestinations("ExamerDestinations.TestHistoryScreen")
+    object ProfileScreen : ExamerDestinations("ExamerDestinations.ProfileScreen")
 }

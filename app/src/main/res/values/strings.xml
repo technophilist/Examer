@@ -59,6 +59,12 @@
     <!-- Navigation Drawer Item-->
     <string name="navigation_drawer_label_scheduled_test">Scheduled Tests</string>
     <string name="navigation_drawer_label_test_history">Test History</string>
-
-
+    <string name="navigation_drawer_label_profile">Profile</string>
+    <!-- Profile Screen-->
+    <string name="button_label_edit_profile_picture">Edit profile picture</string>
+    <string name="label_name">Name</string>
+    <string name="button_label_save">Save</string>
+    <string name="label_enter_value_to_be_edited">Enter the new %1$s</string>
+    <string name="snackbar_updated_successfully">Updated Successfully</string>
+    <string name="snackbar_update_failure">Unable to update.A network error occurred.</string>
 </resources>

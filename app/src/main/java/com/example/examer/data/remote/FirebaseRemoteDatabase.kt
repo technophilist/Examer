@@ -1,5 +1,7 @@
 package com.example.examer.data.remote
 
+import android.graphics.Bitmap
+import android.net.Uri
 import com.example.examer.data.domain.ExamerUser
 import com.example.examer.data.domain.Status
 import com.example.examer.data.domain.TestDetails
@@ -7,8 +9,13 @@ import com.example.examer.di.DispatcherProvider
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.StorageException
+import com.google.firebase.storage.UploadTask
+import com.google.firebase.storage.ktx.storage
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import java.io.ByteArrayOutputStream
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -32,6 +39,32 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
             // be returned.
             previousTestsCollection.documents.map { it.toTestDetails() }
         }
+
+    override suspend fun saveBitmap(
+        bitmap: Bitmap,
+        fileName: String
+    ): Result<Uri> = withContext(dispatcherProvider.io) {
+        try {
+            val byteArrayOutputStream = ByteArrayOutputStream().use {
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
+                it
+            }
+            val data = byteArrayOutputStream.toByteArray()
+            Firebase.storage
+                .reference
+                .child("profile_pics/$fileName.jpg")
+                .putBytes(data)
+                .await()
+            val uri = Firebase.storage.reference
+                .child("profile_pics/$fileName.jpg")
+                .downloadUrl
+                .await()
+            Result.success(uri)
+        } catch (exception: Exception) {
+            if (exception is CancellationException) throw exception
+            Result.failure(exception)
+        }
+    }
 
     private fun DocumentSnapshot.toTestDetails() = TestDetails(
         id = id,

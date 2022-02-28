@@ -1,6 +1,7 @@
 package com.example.examer.auth
 
 import android.net.Uri
+import androidx.lifecycle.LiveData
 import com.example.examer.auth.AuthenticationResult.*
 import com.example.examer.data.domain.ExamerUser
 
@@ -9,12 +10,19 @@ import com.example.examer.data.domain.ExamerUser
  * for an authentication service.
  */
 interface AuthenticationService {
+    enum class UpdateAttributeType { NAME, EMAIL, PASSWORD,PROFILE_PHOTO_URI }
+
     /**
      * The current user represents the user that is
      * currently logged in. If it is null, it implies
      * that there is no logged in user.
+     *
+     * This value is a [LiveData] instead of [ExamerUser]
+     * in order to ensure that any modifications to the
+     * attributes of the user are propagated to the
+     * entire app.
      */
-    val currentUser: ExamerUser?
+    val currentUser: LiveData<ExamerUser?>
 
     /***
      * Used to sign in a user with the provided [email]
@@ -40,6 +48,13 @@ interface AuthenticationService {
      * Used to sign out the current user.
      */
     fun signOut()
+
+    suspend fun updateAttributeForUser(
+        user: ExamerUser,
+        updateAttributeType: UpdateAttributeType,
+        newValue: String,
+        password: String,
+    ):AuthenticationResult
 }
 
 /**

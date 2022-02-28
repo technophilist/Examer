@@ -5,9 +5,11 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.List
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -20,8 +22,6 @@ import androidx.navigation.compose.rememberNavController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import coil.request.CachePolicy
-import coil.transition.CrossfadeTransition
-import coil.transition.Transition
 import com.example.examer.R
 import com.example.examer.data.domain.ExamerUser
 import com.example.examer.di.AppContainer
@@ -32,7 +32,12 @@ import com.example.examer.ui.navigation.OnBoardingDestinations
 import com.example.examer.ui.screens.onboarding.LoginScreen
 import com.example.examer.ui.screens.onboarding.SignUpScreen
 import com.example.examer.ui.screens.onboarding.WelcomeScreen
+import com.example.examer.viewmodels.profileScreenViewModel.updateEmail
+import com.example.examer.viewmodels.profileScreenViewModel.updateName
+import com.example.examer.viewmodels.profileScreenViewModel.updatePassword
+import com.example.examer.viewmodels.profileScreenViewModel.ExamerProfileScreenViewModel
 import com.example.examer.viewmodels.ExamerTestsViewModel
+import com.example.examer.viewmodels.profileScreenViewModel.ProfileScreenViewModel
 import com.example.examer.viewmodels.TestsViewModelUiState
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -53,10 +58,11 @@ fun ExamerApp(appContainer: AppContainer) {
             }
         }
     }
+    val currentlyLoggedInUser by appContainer.authenticationService.currentUser.observeAsState()
     NavHost(
         navController = onBoardingNavController,
-        startDestination = if (appContainer.isUserLoggedIn) ExamerDestinations.LoggedInScreen.route
-        else OnBoardingDestinations.WelcomeScreen.route
+        startDestination = if (currentlyLoggedInUser != null)
+            ExamerDestinations.LoggedInScreen.route else OnBoardingDestinations.WelcomeScreen.route
     ) {
         composable(OnBoardingDestinations.WelcomeScreen.route) {
             WelcomeScreen(
@@ -88,19 +94,16 @@ fun ExamerApp(appContainer: AppContainer) {
         }
 
         composable(ExamerDestinations.LoggedInScreen.route) {
-            appContainer.authenticationService.currentUser?.let { currentUser ->
-                LoggedInScreen(
-                    onSignOut = {
-                        onBoardingNavController.navigate(OnBoardingDestinations.WelcomeScreen.route) {
-                            popUpTo(ExamerDestinations.LoggedInScreen.route) { inclusive = true }
-                            appContainer.authenticationService.signOut()
-                        }
-                    },
-                    appContainer = appContainer,
-                    currentlyLoggedInUser = currentUser
-                )
-            }
-
+            LoggedInScreen(
+                onSignOut = {
+                    onBoardingNavController.navigate(OnBoardingDestinations.WelcomeScreen.route) {
+                        popUpTo(ExamerDestinations.LoggedInScreen.route) { inclusive = true }
+                        appContainer.authenticationService.signOut()
+                    }
+                },
+                appContainer = appContainer,
+                currentlyLoggedInUser = currentlyLoggedInUser!!
+            )
         }
     }
 }
@@ -126,7 +129,8 @@ private fun LoggedInScreen(
     val navigationDrawerDestinationRouteAndNameMap = remember {
         mapOf(
             ExamerDestinations.ScheduledTestsScreen.route to resources.getString(R.string.navigation_drawer_label_scheduled_test),
-            ExamerDestinations.TestHistoryScreen.route to resources.getString(R.string.navigation_drawer_label_test_history)
+            ExamerDestinations.TestHistoryScreen.route to resources.getString(R.string.navigation_drawer_label_test_history),
+            ExamerDestinations.ProfileScreen.route to resources.getString(R.string.navigation_drawer_label_profile)
         )
     }
     val onNavigationDrawerDestinationClick = remember {
@@ -149,6 +153,11 @@ private fun LoggedInScreen(
                 icon = Icons.Filled.History,
                 name = navigationDrawerDestinationRouteAndNameMap.getValue(ExamerDestinations.TestHistoryScreen.route),
                 onClick = { onNavigationDrawerDestinationClick(ExamerDestinations.TestHistoryScreen.route) }
+            ),
+            NavigationDrawerDestination(
+                icon = Icons.Filled.AccountCircle,
+                name = navigationDrawerDestinationRouteAndNameMap.getValue(ExamerDestinations.ProfileScreen.route),
+                onClick = { onNavigationDrawerDestinationClick(ExamerDestinations.ProfileScreen.route) }
             )
         )
     }
@@ -239,6 +248,31 @@ private fun LoggedInScreen(
                     tests = testsViewModel.testDetailsList.value,
                     onReviewButtonClick = {}
                 )
+            }
+            composable(route = ExamerDestinations.ProfileScreen.route) { navBackStackEntry ->
+                val profileScreenViewModel = viewModel<ExamerProfileScreenViewModel>(
+                    factory = appContainer.profileScreenViewModelFactory,
+                    viewModelStoreOwner = navBackStackEntry
+                )
+                val profileScreenUiState by profileScreenViewModel.uiState
+                DefaultExamerProfileScreen(
+                    currentlyLoggedInUser = currentlyLoggedInUser,
+                    isLoadingOverlayVisible = profileScreenUiState == ProfileScreenViewModel.UiState.LOADING,
+                    updateProfilePicture = profileScreenViewModel::updateProfilePicture,
+                    updateName = profileScreenViewModel::updateName,
+                    updateEmail = profileScreenViewModel::updateEmail,
+                    updatePassword = profileScreenViewModel::updatePassword,
+                    isValidEmail = profileScreenViewModel::isValidEmail,
+                    isValidPassword = profileScreenViewModel::isValidPassword
+                )
+                LaunchedEffect(profileScreenUiState) {
+                    scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
+                    if (profileScreenUiState == ProfileScreenViewModel.UiState.UPDATE_SUCCESS) {
+                        scaffoldState.snackbarHostState.showSnackbar(resources.getString(R.string.snackbar_updated_successfully))
+                    } else if (profileScreenUiState == ProfileScreenViewModel.UiState.UPDATE_FAILURE) {
+                        scaffoldState.snackbarHostState.showSnackbar(resources.getString(R.string.snackbar_update_failure))
+                    }
+                }
             }
         }
     }

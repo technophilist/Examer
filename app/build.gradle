@@ -90,5 +90,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage-ktx'
     // Coroutines Support for google play services' Task API's. ie. await() support for firebase.
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.1.1'
-
+    // Encrypted shared preferences
+    implementation "androidx.security:security-crypto:1.0.0"
 }

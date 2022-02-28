@@ -1,23 +1,30 @@
 package com.example.examer.auth
 
 import android.net.Uri
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.example.examer.auth.AuthenticationService.*
 import com.example.examer.data.domain.ExamerUser
+import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.*
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 /**
  * A concrete implementation of [AuthenticationService] that makes use
  * of Firebase.
  */
 class FirebaseAuthenticationService(
-    private val defaultDispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val defaultDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : AuthenticationService {
 
     private val firebaseAuth = FirebaseAuth.getInstance()
-    override val currentUser get() = firebaseAuth.currentUser?.toExamerUser()
+    private val _currentUser =
+        MutableLiveData<ExamerUser?>(firebaseAuth.currentUser?.toExamerUser())
+    override val currentUser: LiveData<ExamerUser?> = _currentUser
 
     /**
      * Used to signIn an existing user with the specified [email] and
@@ -57,6 +64,7 @@ class FirebaseAuthenticationService(
         password: String,
         profilePhotoUri: Uri?
     ): AuthenticationResult = withContext(defaultDispatcher) {
+        // Does the run cathcing block also catch cancellation exception?
         runCatching {
             val firebaseUser = firebaseAuth.createUser(username, email, password, profilePhotoUri)
             AuthenticationResult.Success(firebaseUser.toExamerUser())
@@ -80,9 +88,42 @@ class FirebaseAuthenticationService(
         firebaseAuth.signOut()
     }
 
+    override suspend fun updateAttributeForUser(
+        user: ExamerUser,
+        updateAttributeType: UpdateAttributeType,
+        newValue: String,
+        password: String
+    ): AuthenticationResult = withContext(defaultDispatcher) {
+        runCatching {
+            val currentUser = firebaseAuth.currentUser
+            when (updateAttributeType) {
+                UpdateAttributeType.NAME -> currentUser?.changeUserName(newValue)
+                UpdateAttributeType.EMAIL -> currentUser?.changeEmail(newValue, password)
+                UpdateAttributeType.PASSWORD -> currentUser?.changePassword(newValue, password)
+                UpdateAttributeType.PROFILE_PHOTO_URI -> currentUser?.changePhotoUri(
+                    Uri.parse(newValue)
+                )
+            }
+            _currentUser.postValue(firebaseAuth.currentUser!!.toExamerUser())
+            AuthenticationResult.Success(firebaseAuth.currentUser!!.toExamerUser())
+        }.getOrElse {
+            AuthenticationResult.Failure(
+                if (it is FirebaseNetworkException) AuthenticationResult.FailureType.NetworkFailure
+                else AuthenticationResult.FailureType.InvalidCredentials
+            )
+        }
+    }
+
+
     /**
      * Utility method to convert an instance of [FirebaseUser] to
      * [ExamerUser]
      */
-    private fun FirebaseUser.toExamerUser() = ExamerUser(uid, displayName ?: "", email!!, photoUrl)
+    private fun FirebaseUser.toExamerUser() = ExamerUser(
+        id = uid,
+        name = displayName ?: "",
+        email = email!!,
+        phoneNumber = if (phoneNumber?.isEmpty() == true) null else phoneNumber,
+        photoUrl = photoUrl
+    )
 }
