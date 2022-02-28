@@ -265,7 +265,7 @@ private fun LoggedInScreen(
                     isValidEmail = profileScreenViewModel::isValidEmail,
                     isValidPassword = profileScreenViewModel::isValidPassword
                 )
-                coroutineScope.launch {
+                LaunchedEffect(profileScreenUiState) {
                     scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
                     if (profileScreenUiState == ProfileScreenViewModel.UiState.UPDATE_SUCCESS) {
                         scaffoldState.snackbarHostState.showSnackbar(resources.getString(R.string.snackbar_updated_successfully))
