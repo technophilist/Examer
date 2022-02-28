@@ -32,7 +32,11 @@ interface ProfileScreenViewModel {
         resetStateTimeOut: Long = defaultResetStateTimeOut
     )
 
-    fun updateProfilePicture(imageBitmap: ImageBitmap)
+    fun updateProfilePicture(
+        imageBitmap: ImageBitmap,
+        resetStateTimeOut: Long = defaultResetStateTimeOut
+    )
+
     fun isValidEmail(email: String): Boolean
     fun isValidPassword(password: String): Boolean
 }
@@ -94,7 +98,13 @@ class ExamerProfileScreenViewModel(
         }
     }
 
-    override fun updateProfilePicture(imageBitmap: ImageBitmap) {
+    /**
+     * Used to update the profile picture of the currently logged
+     * in user to the [imageBitmap]. The [resetStateTimeOut] is used
+     * to specify the timeout after which the [uiState] will be set back
+     * to [ProfileScreenViewModel.UiState.IDLE].
+     */
+    override fun updateProfilePicture(imageBitmap: ImageBitmap, resetStateTimeOut: Long) {
         // TODO this method has not been tested
         authenticationService.currentUser.value?.let { user ->
             // set the ui state to LOADING
@@ -105,6 +115,8 @@ class ExamerProfileScreenViewModel(
                     // if the profile picture was successfully saved, update
                     // the UI state to UPDATE_SUCCESS
                     _uiState.value = ProfileScreenViewModel.UiState.UPDATE_SUCCESS
+                    delay(resetStateTimeOut)
+                    _uiState.value = ProfileScreenViewModel.UiState.IDLE
                 } catch (exception: Exception) {
                     if (exception is CancellationException) throw exception
                     // if an exception occurred set UI state to UPDATE_FAILURE
