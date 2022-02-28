@@ -254,9 +254,10 @@ private fun LoggedInScreen(
                     factory = appContainer.profileScreenViewModelFactory,
                     viewModelStoreOwner = navBackStackEntry
                 )
+                val profileScreenUiState by profileScreenViewModel.uiState
                 DefaultExamerProfileScreen(
                     currentlyLoggedInUser = currentlyLoggedInUser,
-                    isLoadingOverlayVisible = profileScreenViewModel.uiState.value == ProfileScreenViewModel.UiState.LOADING,
+                    isLoadingOverlayVisible = profileScreenUiState == ProfileScreenViewModel.UiState.LOADING,
                     updateProfilePicture = profileScreenViewModel::updateProfilePicture,
                     updateName = profileScreenViewModel::updateName,
                     updateEmail = profileScreenViewModel::updateEmail,
@@ -264,6 +265,14 @@ private fun LoggedInScreen(
                     isValidEmail = profileScreenViewModel::isValidEmail,
                     isValidPassword = profileScreenViewModel::isValidPassword
                 )
+                coroutineScope.launch {
+                    scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
+                    if (profileScreenUiState == ProfileScreenViewModel.UiState.UPDATE_SUCCESS) {
+                        scaffoldState.snackbarHostState.showSnackbar(resources.getString(R.string.snackbar_updated_successfully))
+                    } else if (profileScreenUiState == ProfileScreenViewModel.UiState.UPDATE_FAILURE) {
+                        scaffoldState.snackbarHostState.showSnackbar(resources.getString(R.string.snackbar_update_failure))
+                    }
+                }
             }
         }
     }
