@@ -88,6 +88,13 @@ fun ExamerNavigationScaffold(
     Scaffold(
         modifier = modifier,
         scaffoldState = scaffoldState,
+        snackbarHost = {
+            // Snackbar host with navigation bars padding
+            SnackbarHost(
+                modifier = Modifier.navigationBarsPadding(),
+                hostState = scaffoldState.snackbarHostState
+            )
+        },
         topBar = {
             ExamerAppbar(
                 modifier = Modifier
