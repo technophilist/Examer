@@ -38,9 +38,22 @@ class FirebaseAuthenticationService(
         password: String
     ): AuthenticationResult = withContext(defaultDispatcher) {
         runCatching {
-            firebaseAuth.signInWithEmailAndPassword(email, password).await()
-            AuthenticationResult.Success(firebaseAuth.currentUser!!.toExamerUser())
+            val authResult = firebaseAuth.signInWithEmailAndPassword(email, password).await()!!
+            val examerUser = authResult.user!!.toExamerUser()
+            // there will be a small moment in time, wherein
+            // the livedata will be null even after the user
+            // is authenticated. This is the time interval
+            // between the user getting authenticated
+            // and when the new user object is actually assigned
+            // to the _currentUser live data.
+            // Assign the examer user to the current user live data
+            // immediately, in order to ensure that the value of
+            // the live data is not null even after the user
+            // is authenticated.
+            _currentUser.postValue(examerUser)
+            AuthenticationResult.Success(examerUser)
         }.getOrElse {
+            Timber.d(it)
             AuthenticationResult.Failure(
                 when (it) {
                     is FirebaseAuthInvalidUserException -> AuthenticationResult.FailureType.InvalidEmail
