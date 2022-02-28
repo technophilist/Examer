@@ -18,6 +18,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.lang.IllegalArgumentException
 
+const val defaultResetStateTimeOut = 4_000L
 
 interface ProfileScreenViewModel {
     enum class UpdateAttribute { NAME, EMAIL, PASSWORD }
@@ -27,7 +28,7 @@ interface ProfileScreenViewModel {
     fun updateAttributeForCurrentUser(
         updateAttribute: UpdateAttribute,
         newValue: String,
-        resetStateTimeOut: Long = 2_000L
+        resetStateTimeOut: Long = defaultResetStateTimeOut
     )
 
     fun updateProfilePicture(imageBitmap: ImageBitmap)
