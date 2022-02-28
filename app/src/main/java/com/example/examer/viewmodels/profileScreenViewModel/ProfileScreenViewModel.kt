@@ -47,7 +47,12 @@ class ExamerProfileScreenViewModel(
     private val _uiState = mutableStateOf(ProfileScreenViewModel.UiState.IDLE)
     override val uiState: State<ProfileScreenViewModel.UiState> = _uiState
 
-    // TODO docs
+    /**
+     * Used to update the specified [updateAttribute] to the [newValue]
+     * for the currently logged in user. The [resetStateTimeOut] is used
+     * to specify the timeout after which the [uiState] will be set back
+     * to [ProfileScreenViewModel.UiState.IDLE].
+     */
     override fun updateAttributeForCurrentUser(
         updateAttribute: ProfileScreenViewModel.UpdateAttribute,
         newValue: String,
