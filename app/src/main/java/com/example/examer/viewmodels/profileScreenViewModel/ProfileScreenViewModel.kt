@@ -17,6 +17,7 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import kotlin.coroutines.EmptyCoroutineContext
 
 const val defaultResetStateTimeOut = 4_000L
@@ -64,8 +65,11 @@ class ExamerProfileScreenViewModel(
         newValue: String,
         resetStateTimeOut: Long
     ) {
-        // TODO Remove non null assertion
-        val currentUser = authenticationService.currentUser.value!!
+        val currentUser = authenticationService.currentUser.value
+        if (currentUser == null) {
+            Timber.w("The currently logged in user is null")
+            return
+        }
         runUpdate {
             val result = authenticationService.updateAttributeForUser(
                 currentUser,
