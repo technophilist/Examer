@@ -1,6 +1,7 @@
 package com.example.examer.viewmodels.profileScreenViewModel
 
 import android.app.Application
+import androidx.compose.material.SnackbarDuration
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.ImageBitmap
@@ -13,6 +14,7 @@ import com.example.examer.data.Repository
 import com.example.examer.usecases.CredentialsValidationUseCase
 import com.example.examer.utils.PasswordManager
 import com.example.examer.viewmodels.profileScreenViewModel.ProfileScreenViewModel.UpdateAttribute.*
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.lang.IllegalArgumentException
 
@@ -22,7 +24,12 @@ interface ProfileScreenViewModel {
     enum class UiState { UPDATE_SUCCESS, UPDATE_FAILURE, LOADING, IDLE }
 
     val uiState: State<UiState>
-    fun updateAttributeForCurrentUser(updateAttribute: UpdateAttribute, newValue: String)
+    fun updateAttributeForCurrentUser(
+        updateAttribute: UpdateAttribute,
+        newValue: String,
+        resetStateTimeOut: Long = 2_000L
+    )
+
     fun updateProfilePicture(imageBitmap: ImageBitmap)
     fun isValidEmail(email: String): Boolean
     fun isValidPassword(password: String): Boolean
@@ -40,9 +47,11 @@ class ExamerProfileScreenViewModel(
     private val _uiState = mutableStateOf(ProfileScreenViewModel.UiState.IDLE)
     override val uiState: State<ProfileScreenViewModel.UiState> = _uiState
 
+    // TODO docs
     override fun updateAttributeForCurrentUser(
         updateAttribute: ProfileScreenViewModel.UpdateAttribute,
-        newValue: String
+        newValue: String,
+        resetStateTimeOut: Long
     ) {
         viewModelScope.launch {
             // TODO Remove non null assertion
@@ -66,6 +75,9 @@ class ExamerProfileScreenViewModel(
                     is AuthenticationResult.Failure -> ProfileScreenViewModel.UiState.UPDATE_FAILURE
                     is AuthenticationResult.Success -> ProfileScreenViewModel.UiState.UPDATE_SUCCESS
                 }
+                // set the state back to IDLE after the specified timeout
+                delay(resetStateTimeOut)
+                _uiState.value = ProfileScreenViewModel.UiState.IDLE
             } catch (exception: IllegalArgumentException) {
                 // indicates that the PasswordManager#getPasswordForUser()
                 // threw an exception because the password of the current
