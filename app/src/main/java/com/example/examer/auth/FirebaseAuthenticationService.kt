@@ -79,8 +79,20 @@ class FirebaseAuthenticationService(
     ): AuthenticationResult = withContext(defaultDispatcher) {
         // Does the run cathcing block also catch cancellation exception?
         runCatching {
-            val firebaseUser = firebaseAuth.createUser(username, email, password, profilePhotoUri)
-            AuthenticationResult.Success(firebaseUser.toExamerUser())
+            val user = firebaseAuth.createUser(username, email, password, profilePhotoUri)
+                .toExamerUser()
+            // there will be a small moment in time, wherein
+            // the livedata will be null even after the user
+            // is authenticated. This is the time interval
+            // between the user getting authenticated
+            // and when the new user object is actually assigned
+            // to the _currentUser live data.
+            // Assign the examer user to the current user live data
+            // immediately, in order to ensure that the value of
+            // the live data is not null even after the user
+            // is authenticated.
+            _currentUser.postValue(user)
+            AuthenticationResult.Success(user)
         }.getOrElse {
             AuthenticationResult.Failure(
                 when (it) {
