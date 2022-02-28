@@ -14,6 +14,7 @@ import com.example.examer.data.Repository
 import com.example.examer.usecases.CredentialsValidationUseCase
 import com.example.examer.utils.PasswordManager
 import com.example.examer.viewmodels.profileScreenViewModel.ProfileScreenViewModel.UpdateAttribute.*
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.lang.IllegalArgumentException
@@ -94,9 +95,21 @@ class ExamerProfileScreenViewModel(
     }
 
     override fun updateProfilePicture(imageBitmap: ImageBitmap) {
+        // TODO this method has not been tested
         authenticationService.currentUser.value?.let { user ->
+            // set the ui state to LOADING
+            _uiState.value = ProfileScreenViewModel.UiState.LOADING
             viewModelScope.launch {
-                repository.saveProfilePictureForUser(user, imageBitmap.asAndroidBitmap())
+                try {
+                    repository.saveProfilePictureForUser(user, imageBitmap.asAndroidBitmap())
+                    // if the profile picture was successfully saved, update
+                    // the UI state to UPDATE_SUCCESS
+                    _uiState.value = ProfileScreenViewModel.UiState.UPDATE_SUCCESS
+                } catch (exception: Exception) {
+                    if (exception is CancellationException) throw exception
+                    // if an exception occurred set UI state to UPDATE_FAILURE
+                    _uiState.value = ProfileScreenViewModel.UiState.UPDATE_FAILURE
+                }
             }
         }
     }
