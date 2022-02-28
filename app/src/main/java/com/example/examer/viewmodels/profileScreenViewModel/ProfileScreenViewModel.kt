@@ -82,18 +82,21 @@ class ExamerProfileScreenViewModel(
                     password = passwordManager.getPasswordForUser(currentUser) // can throw exception
                 )
                 // set the ui state based on the result
-                _uiState.value = when (result) {
-                    is AuthenticationResult.Failure -> ProfileScreenViewModel.UiState.UPDATE_FAILURE
-                    is AuthenticationResult.Success -> ProfileScreenViewModel.UiState.UPDATE_SUCCESS
-                }
-                // set the state back to IDLE after the specified timeout
-                delay(resetStateTimeOut)
-                _uiState.value = ProfileScreenViewModel.UiState.IDLE
+                resetUiStateToIdleAfterTimeOut(
+                    currentUiState = when (result) {
+                        is AuthenticationResult.Failure -> ProfileScreenViewModel.UiState.UPDATE_FAILURE
+                        is AuthenticationResult.Success -> ProfileScreenViewModel.UiState.UPDATE_SUCCESS
+                    },
+                    timeOut = resetStateTimeOut
+                )
             } catch (exception: IllegalArgumentException) {
                 // indicates that the PasswordManager#getPasswordForUser()
                 // threw an exception because the password of the current
                 // user was not saved using the password manager.
-                _uiState.value = ProfileScreenViewModel.UiState.UPDATE_FAILURE
+                resetUiStateToIdleAfterTimeOut(
+                    currentUiState = ProfileScreenViewModel.UiState.UPDATE_FAILURE,
+                    timeOut = resetStateTimeOut
+                )
             }
         }
     }
@@ -114,15 +117,33 @@ class ExamerProfileScreenViewModel(
                     repository.saveProfilePictureForUser(user, imageBitmap.asAndroidBitmap())
                     // if the profile picture was successfully saved, update
                     // the UI state to UPDATE_SUCCESS
-                    _uiState.value = ProfileScreenViewModel.UiState.UPDATE_SUCCESS
-                    delay(resetStateTimeOut)
-                    _uiState.value = ProfileScreenViewModel.UiState.IDLE
+                    resetUiStateToIdleAfterTimeOut(
+                        currentUiState = ProfileScreenViewModel.UiState.UPDATE_SUCCESS,
+                        timeOut = resetStateTimeOut
+                    )
                 } catch (exception: Exception) {
                     if (exception is CancellationException) throw exception
                     // if an exception occurred set UI state to UPDATE_FAILURE
-                    _uiState.value = ProfileScreenViewModel.UiState.UPDATE_FAILURE
+                    resetUiStateToIdleAfterTimeOut(
+                        currentUiState = ProfileScreenViewModel.UiState.UPDATE_FAILURE,
+                        timeOut = resetStateTimeOut
+                    )
                 }
             }
         }
+    }
+
+    /**
+     * A helper method that will set the [uiState] to the [currentUiState]
+     * and reset it back to [ProfileScreenViewModel.UiState.IDLE] after the
+     * specified [timeOut].
+     */
+    private suspend fun resetUiStateToIdleAfterTimeOut(
+        currentUiState: ProfileScreenViewModel.UiState,
+        timeOut: Long = defaultResetStateTimeOut
+    ) {
+        _uiState.value = currentUiState
+        delay(timeOut)
+        _uiState.value = ProfileScreenViewModel.UiState.IDLE
     }
 }
