@@ -1,7 +1,6 @@
 package com.example.examer.viewmodels.profileScreenViewModel
 
 import android.app.Application
-import androidx.compose.material.SnackbarDuration
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.ImageBitmap
@@ -15,9 +14,10 @@ import com.example.examer.usecases.CredentialsValidationUseCase
 import com.example.examer.utils.PasswordManager
 import com.example.examer.viewmodels.profileScreenViewModel.ProfileScreenViewModel.UpdateAttribute.*
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.lang.IllegalArgumentException
+import kotlin.coroutines.EmptyCoroutineContext
 
 const val defaultResetStateTimeOut = 4_000L
 
@@ -64,39 +64,22 @@ class ExamerProfileScreenViewModel(
         newValue: String,
         resetStateTimeOut: Long
     ) {
-        viewModelScope.launch {
-            // TODO Remove non null assertion
-            val currentUser = authenticationService.currentUser.value!!
-            // set the ui state to loading
-            _uiState.value = ProfileScreenViewModel.UiState.LOADING
-            try {
-                // update the attribute using authentication service
-                val result = authenticationService.updateAttributeForUser(
-                    currentUser,
-                    updateAttributeType = when (updateAttribute) {
-                        NAME -> AuthenticationService.UpdateAttributeType.NAME
-                        EMAIL -> AuthenticationService.UpdateAttributeType.EMAIL
-                        PASSWORD -> AuthenticationService.UpdateAttributeType.PASSWORD
-                    },
-                    newValue = newValue,
-                    password = passwordManager.getPasswordForUser(currentUser) // can throw exception
-                )
-                // set the ui state based on the result
-                resetUiStateToIdleAfterTimeOut(
-                    currentUiState = when (result) {
-                        is AuthenticationResult.Failure -> ProfileScreenViewModel.UiState.UPDATE_FAILURE
-                        is AuthenticationResult.Success -> ProfileScreenViewModel.UiState.UPDATE_SUCCESS
-                    },
-                    timeOut = resetStateTimeOut
-                )
-            } catch (exception: IllegalArgumentException) {
-                // indicates that the PasswordManager#getPasswordForUser()
-                // threw an exception because the password of the current
-                // user was not saved using the password manager.
-                resetUiStateToIdleAfterTimeOut(
-                    currentUiState = ProfileScreenViewModel.UiState.UPDATE_FAILURE,
-                    timeOut = resetStateTimeOut
-                )
+        // TODO Remove non null assertion
+        val currentUser = authenticationService.currentUser.value!!
+        runUpdate {
+            val result = authenticationService.updateAttributeForUser(
+                currentUser,
+                updateAttributeType = when (updateAttribute) {
+                    NAME -> AuthenticationService.UpdateAttributeType.NAME
+                    EMAIL -> AuthenticationService.UpdateAttributeType.EMAIL
+                    PASSWORD -> AuthenticationService.UpdateAttributeType.PASSWORD
+                },
+                newValue = newValue,
+                password = passwordManager.getPasswordForUser(currentUser) // can throw exception
+            )
+            when (result) {
+                is AuthenticationResult.Success -> ProfileScreenViewModel.UiState.UPDATE_SUCCESS
+                is AuthenticationResult.Failure -> ProfileScreenViewModel.UiState.UPDATE_FAILURE
             }
         }
     }
@@ -108,27 +91,66 @@ class ExamerProfileScreenViewModel(
      * to [ProfileScreenViewModel.UiState.IDLE].
      */
     override fun updateProfilePicture(imageBitmap: ImageBitmap, resetStateTimeOut: Long) {
-        // TODO this method has not been tested
         authenticationService.currentUser.value?.let { user ->
-            // set the ui state to LOADING
+            runUpdate {
+                repository.saveProfilePictureForUser(user, imageBitmap.asAndroidBitmap())
+                ProfileScreenViewModel.UiState.UPDATE_SUCCESS
+            }
+        }
+    }
+
+    /**
+     * A utility function that simplifies the managing of [uiState] when
+     * an update is to be performed.
+     *
+     * The function will automatically set the [uiState] to
+     * [ProfileScreenViewModel.UiState.LOADING] before the
+     * [updateBlock] is executed.
+     *
+     * If the block executes without any exception, then the
+     * [ProfileScreenViewModel.UiState] returned by the [updateBlock]
+     * will be set as the value of the [uiState] before resetting the
+     * [uiState] back to [ProfileScreenViewModel.UiState.IDLE] after
+     * the specified [resetStateTimeOut].
+     *
+     * If the update block throws an exception that is not an
+     * instance of [CancellationException], then the [uiState]
+     * will be set to [ProfileScreenViewModel.UiState.UPDATE_FAILURE]
+     * before resetting it back to [ProfileScreenViewModel.UiState.IDLE]
+     * after the specified [resetStateTimeOut].If the update block
+     * throws an instance of [CancellationException], it will be
+     * re-thrown.
+     *
+     * @param coroutineExceptionHandler the exception handler for the
+     * coroutines launched using [viewModelScope].
+     * @param onFailed the callback to execute in the case of an
+     * exception. The lambda receives an instance of [Exception].
+     * @param resetStateTimeOut the amount of time in millis before
+     * the [uiState] is set back to [ProfileScreenViewModel.UiState.IDLE].
+     * @param updateBlock the block that is to be executed in order to
+     * perform the update operation.
+     */
+    private fun runUpdate(
+        coroutineExceptionHandler: CoroutineExceptionHandler? = null,
+        onFailed: (Exception) -> Unit = {},
+        resetStateTimeOut: Long = defaultResetStateTimeOut,
+        updateBlock: suspend () -> ProfileScreenViewModel.UiState,
+    ) {
+        viewModelScope.launch(coroutineExceptionHandler ?: EmptyCoroutineContext) {
             _uiState.value = ProfileScreenViewModel.UiState.LOADING
-            viewModelScope.launch {
-                try {
-                    repository.saveProfilePictureForUser(user, imageBitmap.asAndroidBitmap())
-                    // if the profile picture was successfully saved, update
-                    // the UI state to UPDATE_SUCCESS
-                    resetUiStateToIdleAfterTimeOut(
-                        currentUiState = ProfileScreenViewModel.UiState.UPDATE_SUCCESS,
-                        timeOut = resetStateTimeOut
-                    )
-                } catch (exception: Exception) {
-                    if (exception is CancellationException) throw exception
-                    // if an exception occurred set UI state to UPDATE_FAILURE
-                    resetUiStateToIdleAfterTimeOut(
-                        currentUiState = ProfileScreenViewModel.UiState.UPDATE_FAILURE,
-                        timeOut = resetStateTimeOut
-                    )
-                }
+            try {
+                val uiState = updateBlock()
+                resetUiStateToIdleAfterTimeOut(
+                    currentUiState = uiState,
+                    timeOut = resetStateTimeOut
+                )
+            } catch (exception: Exception) {
+                if (exception is CancellationException) throw exception
+                onFailed(exception)
+                resetUiStateToIdleAfterTimeOut(
+                    currentUiState = ProfileScreenViewModel.UiState.UPDATE_FAILURE,
+                    timeOut = resetStateTimeOut
+                )
             }
         }
     }
