@@ -71,6 +71,9 @@ class ExamerProfileScreenViewModel(
             return
         }
         runUpdate {
+            // if the password of the current user was not saved using the password manager,
+            // this method will throw an exception.
+            val password = passwordManager.getPasswordForUser(currentUser)
             val result = authenticationService.updateAttributeForUser(
                 currentUser,
                 updateAttributeType = when (updateAttribute) {
@@ -79,7 +82,7 @@ class ExamerProfileScreenViewModel(
                     PASSWORD -> AuthenticationService.UpdateAttributeType.PASSWORD
                 },
                 newValue = newValue,
-                password = passwordManager.getPasswordForUser(currentUser) // can throw exception
+                password = password
             )
             when (result) {
                 is AuthenticationResult.Success -> ProfileScreenViewModel.UiState.UPDATE_SUCCESS
