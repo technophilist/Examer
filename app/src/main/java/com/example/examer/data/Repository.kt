@@ -24,10 +24,14 @@ class ExamerRepository(
         remoteDatabase.fetchPreviousTestListForUser(user)
 
     override suspend fun saveProfilePictureForUser(user: ExamerUser, bitmap: Bitmap) {
-        val photoUri = remoteDatabase.saveBitmap(
-            bitmap = bitmap,
-            fileName = user.id
-        ).getOrThrow()
-        updateProfilePhotoUriUseCase.update(photoUri)
+        try {
+            val photoUri = remoteDatabase.saveBitmap(
+                bitmap = bitmap,
+                fileName = user.id
+            ).getOrThrow()
+            updateProfilePhotoUriUseCase.update(photoUri) // can throw exception
+        } catch (exception: Exception) {
+            throw exception
+        }
     }
 }
