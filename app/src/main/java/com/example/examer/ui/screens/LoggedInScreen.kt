@@ -8,6 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -94,6 +95,9 @@ fun LoggedInScreen(
             crossfade(true)
         }
     )
+    val navigationIconImageVector by remember {
+        mutableStateOf(Icons.Filled.Menu)
+    }
 
     // if the drawer is open, close the drawer instead of
     // quitting the app.
@@ -104,6 +108,7 @@ fun LoggedInScreen(
         scaffoldState = scaffoldState,
         imagePainter = imagePainter,
         currentlyLoggedInUser = currentlyLoggedInUser,
+        navigationIconImageVector = navigationIconImageVector,
         navigationDrawerDestinations = navigationDrawerDestinations,
         onSignOutButtonClick = { isAlertDialogVisible = true },
         isNavigationDrawerDestinationSelected = {
