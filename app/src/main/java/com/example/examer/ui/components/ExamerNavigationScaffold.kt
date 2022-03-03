@@ -81,6 +81,7 @@ fun ExamerNavigationScaffold(
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     navigationIconImageVector: ImageVector = Icons.Filled.Menu,
     onNavigationIconClick: (() -> Unit)? = null,
+    isDrawerGesturesEnabled: Boolean = true,
     isNavigationDrawerDestinationSelected: ((NavigationDrawerDestination) -> Boolean)? = null,
     navigationDrawerDestinations: List<NavigationDrawerDestination>,
     onSignOutButtonClick: (() -> Unit)? = null,
@@ -164,6 +165,7 @@ fun ExamerNavigationScaffold(
                 }
             }
         },
+        drawerGesturesEnabled = isDrawerGesturesEnabled,
         content = content
     )
 }
