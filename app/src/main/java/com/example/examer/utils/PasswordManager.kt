@@ -42,7 +42,7 @@ class ExamerPasswordManager(application: Application) : PasswordManager {
         if (encryptedSharedPreferences.contains(examerUser.id)) {
             return encryptedSharedPreferences.getString(examerUser.id, null)!!
         }
-        throw IllegalArgumentException("There password for the user ${examerUser.name} does not exist")
+        throw IllegalArgumentException("The password for the user ${examerUser.name} does not exist.")
     }
 
     /**
