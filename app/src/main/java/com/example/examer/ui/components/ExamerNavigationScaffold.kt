@@ -79,12 +79,24 @@ fun ExamerNavigationScaffold(
     imagePainter: ImagePainter,
     modifier: Modifier = Modifier,
     scaffoldState: ScaffoldState = rememberScaffoldState(),
+    navigationIconImageVector: ImageVector = Icons.Filled.Menu,
     onNavigationIconClick: (() -> Unit)? = null,
     isNavigationDrawerDestinationSelected: ((NavigationDrawerDestination) -> Boolean)? = null,
     navigationDrawerDestinations: List<NavigationDrawerDestination>,
     onSignOutButtonClick: (() -> Unit)? = null,
     content: @Composable (PaddingValues) -> Unit,
 ) {
+    val navigationIcon = @Composable {
+        IconButton(
+            onClick = { onNavigationIconClick?.invoke() },
+            content = {
+                Icon(
+                    imageVector = navigationIconImageVector,
+                    contentDescription = null
+                )
+            }
+        )
+    }
     Scaffold(
         modifier = modifier,
         scaffoldState = scaffoldState,
@@ -96,11 +108,12 @@ fun ExamerNavigationScaffold(
             )
         },
         topBar = {
-            ExamerAppbar(
+            TopAppBar(
                 modifier = Modifier
                     .background(MaterialTheme.colors.primarySurface)
                     .statusBarsPadding(),
-                onNavigationIconClick = onNavigationIconClick
+                title = { Text(stringResource(id = R.string.app_name)) },
+                navigationIcon = navigationIcon,
             )
         },
         drawerContent = {
@@ -198,31 +211,3 @@ private fun NavigationDrawerHeader(
     }
 }
 
-/**
- * An appbar customized for Examer.
- * @param modifier the modifier to be applied to the composable.
- * @param onNavigationIconClick an optional callback that will be
- * executed when the navigation icon is clicked.
- */
-@Composable
-private fun ExamerAppbar(
-    modifier: Modifier = Modifier,
-    onNavigationIconClick: (() -> Unit)? = null
-) {
-    val navigationIcon = @Composable {
-        IconButton(
-            onClick = { onNavigationIconClick?.invoke() },
-            content = {
-                Icon(
-                    imageVector = Icons.Filled.Menu,
-                    contentDescription = null
-                )
-            }
-        )
-    }
-    TopAppBar(
-        modifier = modifier,
-        title = { Text(stringResource(id = R.string.app_name)) },
-        navigationIcon = navigationIcon,
-    )
-}
