@@ -1,6 +1,5 @@
 package com.example.examer.ui.screens
 
-import android.graphics.Bitmap
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
@@ -40,7 +39,6 @@ import com.example.examer.ui.components.ExamerSingleLineTextField
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.material.shimmer
-import timber.log.Timber
 import java.lang.IllegalArgumentException
 
 data class UserAttribute(
@@ -156,8 +154,18 @@ fun DefaultExamerProfileScreen(
                 )
             ) { backstackEntry ->
                 backstackEntry.arguments?.let { arguments ->
-                    var textFieldValue by remember { mutableStateOf("") }
                     val nameOfValueToBeEdited = arguments["nameOfValueToEdit"].toString()
+                    val isTextFieldPlaceHolderVisible by remember(nameOfValueToBeEdited) {
+                        mutableStateOf(nameOfValueToBeEdited == "password")
+                    }
+                    var textFieldValue by remember {
+                        // initialise the value of the text field with the previous value
+                        // if the isTextFieldPlaceHolderVisible is not set to true
+                        mutableStateOf(
+                            if (!isTextFieldPlaceHolderVisible) arguments["previousValue"].toString()
+                            else ""
+                        )
+                    }
                     val isSaveButtonEnabled by remember(textFieldValue) {
                         mutableStateOf(textFieldValue.isNotBlank())
                     }
@@ -191,7 +199,8 @@ fun DefaultExamerProfileScreen(
                     }
                     EditScreen(
                         nameOfValueToBeEdited = nameOfValueToBeEdited,
-                        textFieldPlaceHolder = arguments["previousValue"].toString(),
+                        textFieldPlaceHolder = if (isTextFieldPlaceHolderVisible) arguments["previousValue"].toString()
+                        else null,
                         textFieldValue = textFieldValue,
                         onTextFieldValueChange = { textFieldValue = it },
                         isSaveButtonEnabled = isSaveButtonEnabled,
@@ -211,11 +220,11 @@ fun DefaultExamerProfileScreen(
 @Composable
 private fun EditScreen(
     nameOfValueToBeEdited: String,
-    textFieldPlaceHolder: String,
     textFieldValue: String,
     onTextFieldValueChange: (String) -> Unit,
     isSaveButtonEnabled: Boolean,
     onSaveButtonClick: () -> Unit,
+    textFieldPlaceHolder: String?,
     isErrorMessageVisible: Boolean = false,
     errorMessage: String = ""
 ) {
@@ -246,7 +255,7 @@ private fun EditScreen(
                 modifier = Modifier.fillMaxWidth(),
                 value = textFieldValue,
                 onValueChange = onTextFieldValueChange,
-                placeholder = { Text(text = textFieldPlaceHolder) },
+                placeholder = { textFieldPlaceHolder?.let { Text(text = it) } },
                 visualTransformation = if (isPasswordVisible) VisualTransformation.None
                 else PasswordVisualTransformation(),
                 trailingIcon = trailingIcon
@@ -256,7 +265,7 @@ private fun EditScreen(
                 modifier = Modifier.fillMaxWidth(),
                 value = textFieldValue,
                 onValueChange = onTextFieldValueChange,
-                placeholder = { Text(text = textFieldPlaceHolder) },
+                placeholder = { textFieldPlaceHolder?.let { Text(text = it) } },
             )
         }
         if (isErrorMessageVisible) {
