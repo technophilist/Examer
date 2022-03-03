@@ -1,5 +1,6 @@
 package com.example.examer.ui.screens
 
+import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -30,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.ImagePainter
@@ -41,6 +43,7 @@ import com.example.examer.ui.components.ExamerSingleLineTextField
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.material.shimmer
+import timber.log.Timber
 import java.lang.IllegalArgumentException
 
 data class UserAttribute(
@@ -71,6 +74,7 @@ fun DefaultExamerProfileScreen(
     currentlyLoggedInUser: ExamerUser,
     isLoadingOverlayVisible: Boolean,
     onNavigateToEditScreen: (() -> Unit)? = null,
+    onNavigateFromEditScreen: (() -> Unit)? = null,
     updateProfilePicture: (image: ImageBitmap) -> Unit,
     updateName: (newName: String) -> Unit,
     updateEmail: (newEmail: String) -> Unit,
@@ -79,6 +83,18 @@ fun DefaultExamerProfileScreen(
     isValidPassword: ((String) -> Boolean)
 ) {
     val navController = rememberNavController()
+    val onDestinationChangedListener = remember {
+        NavController.OnDestinationChangedListener { controller, _, _ ->
+            val currentBackStackEntry = controller.currentBackStackEntry
+            val previousBackStackEntry = controller.previousBackStackEntry
+            // if the current user is navigating from the edit screen to
+            // the profile screen (pop exit) then run the callback if
+            // it is not null
+            if (previousBackStackEntry?.destination?.route == null &&
+                currentBackStackEntry?.destination?.route == DefaultExamerProfileScreenDestinations.ProfileScreen.route
+            ) onNavigateFromEditScreen?.invoke()
+        }
+    }
     // need to pass an empty string if photoUrl is null
     // else the error drawable will not be visible
     val profileScreenImagePainter = rememberImagePainter(
@@ -119,6 +135,10 @@ fun DefaultExamerProfileScreen(
             onClick = { onProfileScreeUserAttributeClick("password", "********") }
         )
     )
+    DisposableEffect(key1 = Unit) {
+        navController.addOnDestinationChangedListener(onDestinationChangedListener)
+        onDispose { navController.removeOnDestinationChangedListener(onDestinationChangedListener) }
+    }
     CircularLoadingProgressOverlay(isOverlayVisible = isLoadingOverlayVisible) {
         NavHost(
             navController = navController,
@@ -187,6 +207,7 @@ fun DefaultExamerProfileScreen(
                                 else -> throw IllegalArgumentException(nameOfValueToBeEdited)
                             }
                             navController.popBackStack()
+                            onNavigateFromEditScreen?.invoke()
                         }
                     }
                     val context = LocalContext.current
