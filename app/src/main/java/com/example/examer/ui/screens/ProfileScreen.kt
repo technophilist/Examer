@@ -1,11 +1,13 @@
 package com.example.examer.ui.screens
 
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.NavigateNext
@@ -39,6 +41,7 @@ import com.example.examer.ui.components.ExamerSingleLineTextField
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.material.shimmer
+import timber.log.Timber
 import java.lang.IllegalArgumentException
 
 data class UserAttribute(
@@ -198,6 +201,17 @@ fun DefaultExamerProfileScreen(
                             navController.popBackStack()
                         }
                     }
+                    val context = LocalContext.current
+                    val keyboardActions = remember {
+                        KeyboardActions(onDone = {
+                            if (isSaveButtonEnabled) onSaveButtonClick()
+                            else Toast.makeText(
+                                context,
+                                "The new $nameOfValueToBeEdited is same as the old $nameOfValueToBeEdited",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        })
+                    }
                     EditScreen(
                         nameOfValueToBeEdited = nameOfValueToBeEdited,
                         textFieldPlaceHolder = if (isTextFieldPlaceHolderVisible) previousValue
@@ -208,6 +222,7 @@ fun DefaultExamerProfileScreen(
                         onSaveButtonClick = onSaveButtonClick,
                         isErrorMessageVisible = isErrorMessageVisible,
                         errorMessage = currentErrorMessage,
+                        keyboardActions = keyboardActions
                     )
                 }
             }
@@ -226,6 +241,7 @@ private fun EditScreen(
     isSaveButtonEnabled: Boolean,
     onSaveButtonClick: () -> Unit,
     textFieldPlaceHolder: String?,
+    keyboardActions: KeyboardActions? = null,
     isErrorMessageVisible: Boolean = false,
     errorMessage: String = ""
 ) {
@@ -259,7 +275,8 @@ private fun EditScreen(
                 placeholder = { textFieldPlaceHolder?.let { Text(text = it) } },
                 visualTransformation = if (isPasswordVisible) VisualTransformation.None
                 else PasswordVisualTransformation(),
-                trailingIcon = trailingIcon
+                trailingIcon = trailingIcon,
+                keyboardActions = keyboardActions ?: KeyboardActions.Default,
             )
         } else {
             ExamerSingleLineTextField(
@@ -267,6 +284,7 @@ private fun EditScreen(
                 value = textFieldValue,
                 onValueChange = onTextFieldValueChange,
                 placeholder = { textFieldPlaceHolder?.let { Text(text = it) } },
+                keyboardActions = keyboardActions ?: KeyboardActions.Default,
             )
         }
         if (isErrorMessageVisible) {
