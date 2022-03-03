@@ -50,6 +50,7 @@ class LogInViewModelFactory(
  */
 class SignUpViewModelFactory(
     private val authenticationService: AuthenticationService,
+    private val passwordManager: PasswordManager,
     private val credentialsValidationUseCase: CredentialsValidationUseCase,
     private val dispatcherProvider: DispatcherProvider = StandardDispatchersProvider(io = Dispatchers.Main)
 ) : ViewModelProvider.Factory {
@@ -57,6 +58,7 @@ class SignUpViewModelFactory(
     override fun <T : ViewModel?> create(modelClass: Class<T>): T =
         ExamerSignUpViewModel(
             authenticationService,
+            passwordManager,
             credentialsValidationUseCase,
             dispatcherProvider
         ) as T

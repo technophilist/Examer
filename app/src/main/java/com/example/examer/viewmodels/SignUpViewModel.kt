@@ -15,9 +15,7 @@ import com.example.examer.di.DispatcherProvider
 import com.example.examer.di.StandardDispatchersProvider
 import com.example.examer.usecases.CredentialsValidationUseCase
 import com.example.examer.usecases.ExamerCredentialsValidationUseCase
-import com.example.examer.utils.containsDigit
-import com.example.examer.utils.containsLowercase
-import com.example.examer.utils.containsUppercase
+import com.example.examer.utils.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -89,6 +87,7 @@ interface SignUpViewModel {
  */
 class ExamerSignUpViewModel(
     private val authenticationService: AuthenticationService,
+    private val passwordManager: PasswordManager,
     private val credentialsValidationUseCase: CredentialsValidationUseCase,
     private val dispatcherProvider: DispatcherProvider = StandardDispatchersProvider(io = Dispatchers.Main)
 ) : ViewModel(), SignUpViewModel, CredentialsValidationUseCase by credentialsValidationUseCase {
@@ -109,7 +108,10 @@ class ExamerSignUpViewModel(
             val authenticationResult =
                 authenticationService.createAccount(name, email.trim(), password, profilePhotoUri)
             when (authenticationResult) {
-                is AuthenticationResult.Success -> withContext(dispatcherProvider.main) { onSuccess() }
+                is AuthenticationResult.Success -> {
+                    passwordManager.savePasswordForUser(authenticationResult.user, password)
+                    withContext(dispatcherProvider.main) { onSuccess() }
+                }
                 is AuthenticationResult.Failure -> _uiState.value =
                     getUiStateForFailureType(authenticationResult.failureType)
             }

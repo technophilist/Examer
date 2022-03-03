@@ -26,6 +26,7 @@ class AppContainer(application: Application) {
     val logInViewModelFactory = LogInViewModelFactory(authenticationService, passwordManager)
     val signUpViewModelFactory = SignUpViewModelFactory(
         authenticationService,
+        ExamerPasswordManager(application),
         ExamerCredentialsValidationUseCase()
     )
     val profileScreenViewModelFactory = ProfileScreenViewModelFactory(
