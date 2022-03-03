@@ -70,6 +70,7 @@ private sealed class DefaultExamerProfileScreenDestinations(val route: String) {
 fun DefaultExamerProfileScreen(
     currentlyLoggedInUser: ExamerUser,
     isLoadingOverlayVisible: Boolean,
+    onNavigateToEditScreen: (() -> Unit)? = null,
     updateProfilePicture: (image: ImageBitmap) -> Unit,
     updateName: (newName: String) -> Unit,
     updateEmail: (newEmail: String) -> Unit,
@@ -92,42 +93,30 @@ fun DefaultExamerProfileScreen(
         onResult = { bitmap -> bitmap?.let { updateProfilePicture(it.asImageBitmap()) } }
     )
     val resources = LocalContext.current.resources
+    val onProfileScreeUserAttributeClick = { nameOfValueToBeEdited: String, previousValue: String ->
+        onNavigateToEditScreen?.invoke()
+        navController.navigate(
+            DefaultExamerProfileScreenDestinations.EditScreen.buildRoute(
+                nameOfValueToBeEdited,
+                previousValue
+            )
+        )
+    }
     val profileScreenUserAttributes = listOf(
         UserAttribute(
             label = resources.getString(R.string.label_name),
             value = currentlyLoggedInUser.name,
-            onClick = {
-                navController.navigate(
-                    DefaultExamerProfileScreenDestinations.EditScreen.buildRoute(
-                        "name",
-                        currentlyLoggedInUser.name
-                    )
-                )
-            }
+            onClick = { onProfileScreeUserAttributeClick("name", currentlyLoggedInUser.name) }
         ),
         UserAttribute(
             label = resources.getString(R.string.label_email_address),
             value = currentlyLoggedInUser.email,
-            onClick = {
-                navController.navigate(
-                    DefaultExamerProfileScreenDestinations.EditScreen.buildRoute(
-                        "email",
-                        currentlyLoggedInUser.email
-                    )
-                )
-            }
+            onClick = { onProfileScreeUserAttributeClick("email", currentlyLoggedInUser.email) }
         ),
         UserAttribute(
             label = resources.getString(R.string.label_password),
             value = "**********",
-            onClick = {
-                navController.navigate(
-                    DefaultExamerProfileScreenDestinations.EditScreen.buildRoute(
-                        "password",
-                        "********"
-                    )
-                )
-            }
+            onClick = { onProfileScreeUserAttributeClick("password", "********") }
         )
     )
     CircularLoadingProgressOverlay(isOverlayVisible = isLoadingOverlayVisible) {
