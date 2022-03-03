@@ -111,6 +111,10 @@ class FirebaseAuthenticationService(
      */
     override fun signOut() {
         firebaseAuth.signOut()
+        // manually set the current user to null
+        // else, the user will only be null
+        // after a cold start.
+        _currentUser.value = null
     }
 
     override suspend fun updateAttributeForUser(
