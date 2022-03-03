@@ -113,12 +113,18 @@ fun LoggedInScreen(
         coroutineScope.launch { scaffoldState.drawerState.close() }
     }
     ExamerNavigationScaffold(
-        scaffoldState = scaffoldState,
-        imagePainter = imagePainter,
         currentlyLoggedInUser = currentlyLoggedInUser,
+        imagePainter = imagePainter,
+        scaffoldState = scaffoldState,
         navigationIconImageVector = navigationIconImageVector,
-        navigationDrawerDestinations = navigationDrawerDestinations,
-        onSignOutButtonClick = { isAlertDialogVisible = true },
+        isDrawerGesturesEnabled = !isUpButtonVisible,
+        onNavigationIconClick = {
+            // if the up button is visible, then execute the callback that
+            // the system back button would use. This will help
+            // to pop the back stack of the nested nav graphs.
+            if (isUpButtonVisible) currentOnBackPressedDispatcher?.onBackPressed()
+            else coroutineScope.launch { scaffoldState.drawerState.open() }
+        },
         isNavigationDrawerDestinationSelected = {
             // highlight the navigation destination if and only if,
             // the current destination's route exists as a key in
@@ -126,98 +132,98 @@ fun LoggedInScreen(
             // the NavigationDrawerDestination's name.
             navigationDrawerDestinationRouteAndNameMap[currentBackStackEntry?.destination?.route] == it.name
         },
-        onNavigationIconClick = {
-            // if the up button is visible, then execute the callback that
-            // the system back button would use. This will help
-            // to pop the back stack of the nested nav graphs.
-            if (isUpButtonVisible) currentOnBackPressedDispatcher?.onBackPressed()
-            else coroutineScope.launch { scaffoldState.drawerState.open() }
-        }
-    ) { paddingValues ->
-        if (isAlertDialogVisible) {
-            LaunchedEffect(Unit) { scaffoldState.drawerState.close() }
-            AlertDialog(
-                title = { Text(text = stringResource(R.string.alert_dialog_label_header)) },
-                text = { Text(text = stringResource(R.string.alert_dialog_label_sign_out_description)) },
-                confirmButton = {
-                    TextButton(
-                        onClick = onSignOut,
-                        content = { Text(text = stringResource(R.string.alert_dialog_button_label_sign_out).uppercase()) }
-                    )
-                },
-                dismissButton = {
-                    TextButton(
-                        onClick = { isAlertDialogVisible = false },
-                        content = { Text(text = stringResource(R.string.alert_dialog_button_label_cancel).uppercase()) }
-                    )
-                },
-                onDismissRequest = { isAlertDialogVisible = false }
-            )
-        }
-        NavHost(
-            modifier = Modifier.padding(paddingValues),
-            navController = loggedInNavController,
-            startDestination = ExamerDestinations.ScheduledTestsScreen.route
-        ) {
-            composable(route = ExamerDestinations.ScheduledTestsScreen.route) {
-                val scheduledTestsViewModelFactory = appContainer.scheduledTestsViewModelFactory
-                val testsViewModel = viewModel<ExamerTestsViewModel>(
-                    factory = scheduledTestsViewModelFactory,
-                    viewModelStoreOwner = it
-                )
-                val swipeRefreshState = rememberSwipeRefreshState(
-                    isRefreshing = testsViewModel.testsViewModelUiState.value == TestsViewModelUiState.LOADING
-                )
-                ScheduledTestsScreen(
-                    tests = testsViewModel.testDetailsList.value,
-                    swipeRefreshState = swipeRefreshState,
-                    onRefresh = testsViewModel::refreshTestDetailsList,
-                    onTakeTestButtonClick = {}
+        navigationDrawerDestinations = navigationDrawerDestinations,
+        onSignOutButtonClick = { isAlertDialogVisible = true },
+        content = { paddingValues ->
+            if (isAlertDialogVisible) {
+                LaunchedEffect(Unit) { scaffoldState.drawerState.close() }
+                AlertDialog(
+                    title = { Text(text = stringResource(R.string.alert_dialog_label_header)) },
+                    text = { Text(text = stringResource(R.string.alert_dialog_label_sign_out_description)) },
+                    confirmButton = {
+                        TextButton(
+                            onClick = onSignOut,
+                            content = { Text(text = stringResource(R.string.alert_dialog_button_label_sign_out).uppercase()) }
+                        )
+                    },
+                    dismissButton = {
+                        TextButton(
+                            onClick = { isAlertDialogVisible = false },
+                            content = { Text(text = stringResource(R.string.alert_dialog_button_label_cancel).uppercase()) }
+                        )
+                    },
+                    onDismissRequest = { isAlertDialogVisible = false }
                 )
             }
-            composable(route = ExamerDestinations.TestHistoryScreen.route) {
-                val previousTestsViewModelFactory = appContainer.previousTestsViewModelFactory
-                val testsViewModel = viewModel<ExamerTestsViewModel>(
-                    factory = previousTestsViewModelFactory,
-                    viewModelStoreOwner = it
-                )
-                val swipeRefreshState = rememberSwipeRefreshState(
-                    isRefreshing = testsViewModel.testsViewModelUiState.value == TestsViewModelUiState.LOADING
-                )
-                TestHistoryScreen(
-                    swipeRefreshState = swipeRefreshState,
-                    onRefresh = testsViewModel::refreshTestDetailsList,
-                    tests = testsViewModel.testDetailsList.value,
-                    onReviewButtonClick = {}
-                )
-            }
-            composable(route = ExamerDestinations.ProfileScreen.route) { navBackStackEntry ->
-                val profileScreenViewModel = viewModel<ExamerProfileScreenViewModel>(
-                    factory = appContainer.profileScreenViewModelFactory,
-                    viewModelStoreOwner = navBackStackEntry
-                )
-                val profileScreenUiState by profileScreenViewModel.uiState
-                DefaultExamerProfileScreen(
-                    currentlyLoggedInUser = currentlyLoggedInUser,
-                    onNavigateToEditScreen = { navigationIconImageVector = Icons.Filled.ArrowBack },
-                    onNavigateFromEditScreen = { navigationIconImageVector = Icons.Filled.Menu },
-                    isLoadingOverlayVisible = profileScreenUiState == ProfileScreenViewModel.UiState.LOADING,
-                    updateProfilePicture = profileScreenViewModel::updateProfilePicture,
-                    updateName = profileScreenViewModel::updateName,
-                    updateEmail = profileScreenViewModel::updateEmail,
-                    updatePassword = profileScreenViewModel::updatePassword,
-                    isValidEmail = profileScreenViewModel::isValidEmail,
-                    isValidPassword = profileScreenViewModel::isValidPassword
-                )
-                LaunchedEffect(profileScreenUiState) {
-                    scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
-                    if (profileScreenUiState == ProfileScreenViewModel.UiState.UPDATE_SUCCESS) {
-                        scaffoldState.snackbarHostState.showSnackbar(resources.getString(R.string.snackbar_updated_successfully))
-                    } else if (profileScreenUiState == ProfileScreenViewModel.UiState.UPDATE_FAILURE) {
-                        scaffoldState.snackbarHostState.showSnackbar(resources.getString(R.string.snackbar_update_failure))
+            NavHost(
+                modifier = Modifier.padding(paddingValues),
+                navController = loggedInNavController,
+                startDestination = ExamerDestinations.ScheduledTestsScreen.route
+            ) {
+                composable(route = ExamerDestinations.ScheduledTestsScreen.route) {
+                    val scheduledTestsViewModelFactory = appContainer.scheduledTestsViewModelFactory
+                    val testsViewModel = viewModel<ExamerTestsViewModel>(
+                        factory = scheduledTestsViewModelFactory,
+                        viewModelStoreOwner = it
+                    )
+                    val swipeRefreshState = rememberSwipeRefreshState(
+                        isRefreshing = testsViewModel.testsViewModelUiState.value == TestsViewModelUiState.LOADING
+                    )
+                    ScheduledTestsScreen(
+                        tests = testsViewModel.testDetailsList.value,
+                        swipeRefreshState = swipeRefreshState,
+                        onRefresh = testsViewModel::refreshTestDetailsList,
+                        onTakeTestButtonClick = {}
+                    )
+                }
+                composable(route = ExamerDestinations.TestHistoryScreen.route) {
+                    val previousTestsViewModelFactory = appContainer.previousTestsViewModelFactory
+                    val testsViewModel = viewModel<ExamerTestsViewModel>(
+                        factory = previousTestsViewModelFactory,
+                        viewModelStoreOwner = it
+                    )
+                    val swipeRefreshState = rememberSwipeRefreshState(
+                        isRefreshing = testsViewModel.testsViewModelUiState.value == TestsViewModelUiState.LOADING
+                    )
+                    TestHistoryScreen(
+                        swipeRefreshState = swipeRefreshState,
+                        onRefresh = testsViewModel::refreshTestDetailsList,
+                        tests = testsViewModel.testDetailsList.value,
+                        onReviewButtonClick = {}
+                    )
+                }
+                composable(route = ExamerDestinations.ProfileScreen.route) { navBackStackEntry ->
+                    val profileScreenViewModel = viewModel<ExamerProfileScreenViewModel>(
+                        factory = appContainer.profileScreenViewModelFactory,
+                        viewModelStoreOwner = navBackStackEntry
+                    )
+                    val profileScreenUiState by profileScreenViewModel.uiState
+                    DefaultExamerProfileScreen(
+                        currentlyLoggedInUser = currentlyLoggedInUser,
+                        onNavigateToEditScreen = {
+                            navigationIconImageVector = Icons.Filled.ArrowBack
+                        },
+                        onNavigateFromEditScreen = {
+                            navigationIconImageVector = Icons.Filled.Menu
+                        },
+                        isLoadingOverlayVisible = profileScreenUiState == ProfileScreenViewModel.UiState.LOADING,
+                        updateProfilePicture = profileScreenViewModel::updateProfilePicture,
+                        updateName = profileScreenViewModel::updateName,
+                        updateEmail = profileScreenViewModel::updateEmail,
+                        updatePassword = profileScreenViewModel::updatePassword,
+                        isValidEmail = profileScreenViewModel::isValidEmail,
+                        isValidPassword = profileScreenViewModel::isValidPassword
+                    )
+                    LaunchedEffect(profileScreenUiState) {
+                        scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
+                        if (profileScreenUiState == ProfileScreenViewModel.UiState.UPDATE_SUCCESS) {
+                            scaffoldState.snackbarHostState.showSnackbar(resources.getString(R.string.snackbar_updated_successfully))
+                        } else if (profileScreenUiState == ProfileScreenViewModel.UiState.UPDATE_FAILURE) {
+                            scaffoldState.snackbarHostState.showSnackbar(resources.getString(R.string.snackbar_update_failure))
+                        }
                     }
                 }
             }
-        }
-    }
+        },
+    )
 }
