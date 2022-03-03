@@ -59,11 +59,16 @@ fun LoggedInScreen(
     }
     val onNavigationDrawerDestinationClick = remember {
         { destinationRoute: String ->
-            if (currentBackStackEntry?.destination?.route != destinationRoute) {
+            // pop the backstack if and only if the current route
+            // is not ScheduledTestsScreen. This ensures that
+            // the app always returns to the scheduled tests screen
+            // when the back button is pressed from a different
+            // destination.
+            if (currentBackStackEntry?.destination?.route != ExamerDestinations.ScheduledTestsScreen.route) {
                 loggedInNavController.popBackStack()
-                loggedInNavController.navigate(destinationRoute)
-                coroutineScope.launch { scaffoldState.drawerState.close() }
             }
+            loggedInNavController.navigate(destinationRoute) { launchSingleTop = true }
+            coroutineScope.launch { scaffoldState.drawerState.close() }
         }
     }
     val navigationDrawerDestinations = remember {
