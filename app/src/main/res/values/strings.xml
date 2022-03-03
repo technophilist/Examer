@@ -67,4 +67,6 @@
     <string name="label_enter_value_to_be_edited">Enter the new %1$s</string>
     <string name="snackbar_updated_successfully">Updated Successfully</string>
     <string name="snackbar_update_failure">Unable to update.A network error occurred.</string>
+    <!-- Edit Screen-->
+    <string name="toast_same_new_value_error">"The new %1$s is same as the old %1$s"</string>
 </resources>

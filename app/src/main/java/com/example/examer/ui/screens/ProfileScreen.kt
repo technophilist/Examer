@@ -41,7 +41,6 @@ import com.example.examer.ui.components.ExamerSingleLineTextField
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.material.shimmer
-import timber.log.Timber
 import java.lang.IllegalArgumentException
 
 data class UserAttribute(
@@ -202,15 +201,19 @@ fun DefaultExamerProfileScreen(
                         }
                     }
                     val context = LocalContext.current
+                    val onDoneKeyboardAction by rememberUpdatedState(newValue = {
+                        if (isSaveButtonEnabled) onSaveButtonClick()
+                        else Toast.makeText(
+                            context,
+                            resources.getString(
+                                R.string.toast_same_new_value_error,
+                                nameOfValueToBeEdited
+                            ),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    })
                     val keyboardActions = remember {
-                        KeyboardActions(onDone = {
-                            if (isSaveButtonEnabled) onSaveButtonClick()
-                            else Toast.makeText(
-                                context,
-                                "The new $nameOfValueToBeEdited is same as the old $nameOfValueToBeEdited",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        })
+                        KeyboardActions(onDone = { onDoneKeyboardAction() })
                     }
                     EditScreen(
                         nameOfValueToBeEdited = nameOfValueToBeEdited,
