@@ -155,6 +155,7 @@ fun DefaultExamerProfileScreen(
             ) { backstackEntry ->
                 backstackEntry.arguments?.let { arguments ->
                     val nameOfValueToBeEdited = arguments["nameOfValueToEdit"].toString()
+                    val previousValue by remember { mutableStateOf(arguments["previousValue"].toString()) }
                     val isTextFieldPlaceHolderVisible by remember(nameOfValueToBeEdited) {
                         mutableStateOf(nameOfValueToBeEdited == "password")
                     }
@@ -162,12 +163,12 @@ fun DefaultExamerProfileScreen(
                         // initialise the value of the text field with the previous value
                         // if the isTextFieldPlaceHolderVisible is not set to true
                         mutableStateOf(
-                            if (!isTextFieldPlaceHolderVisible) arguments["previousValue"].toString()
+                            if (!isTextFieldPlaceHolderVisible) previousValue
                             else ""
                         )
                     }
                     val isSaveButtonEnabled by remember(textFieldValue) {
-                        mutableStateOf(textFieldValue.isNotBlank())
+                        mutableStateOf(textFieldValue.isNotBlank() && textFieldValue != previousValue)
                     }
                     var isErrorMessageVisible by remember { mutableStateOf(false) }
                     val currentErrorMessage by remember(isErrorMessageVisible) {
@@ -199,7 +200,7 @@ fun DefaultExamerProfileScreen(
                     }
                     EditScreen(
                         nameOfValueToBeEdited = nameOfValueToBeEdited,
-                        textFieldPlaceHolder = if (isTextFieldPlaceHolderVisible) arguments["previousValue"].toString()
+                        textFieldPlaceHolder = if (isTextFieldPlaceHolderVisible) previousValue
                         else null,
                         textFieldValue = textFieldValue,
                         onTextFieldValueChange = { textFieldValue = it },
