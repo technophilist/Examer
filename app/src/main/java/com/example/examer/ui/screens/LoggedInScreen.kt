@@ -1,6 +1,7 @@
 package com.example.examer.ui.screens
 
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
@@ -100,6 +101,11 @@ fun LoggedInScreen(
     var navigationIconImageVector by remember {
         mutableStateOf(Icons.Filled.Menu)
     }
+    val isUpButtonVisible by remember(navigationIconImageVector) {
+        mutableStateOf(navigationIconImageVector == Icons.Filled.ArrowBack)
+    }
+    val currentOnBackPressedDispatcher =
+        LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
 
     // if the drawer is open, close the drawer instead of
     // quitting the app.
@@ -120,7 +126,13 @@ fun LoggedInScreen(
             // the NavigationDrawerDestination's name.
             navigationDrawerDestinationRouteAndNameMap[currentBackStackEntry?.destination?.route] == it.name
         },
-        onNavigationIconClick = { coroutineScope.launch { scaffoldState.drawerState.open() } }
+        onNavigationIconClick = {
+            // if the up button is visible, then execute the callback that
+            // the system back button would use. This will help
+            // to pop the back stack of the nested nav graphs.
+            if (isUpButtonVisible) currentOnBackPressedDispatcher?.onBackPressed()
+            else coroutineScope.launch { scaffoldState.drawerState.open() }
+        }
     ) { paddingValues ->
         if (isAlertDialogVisible) {
             LaunchedEffect(Unit) { scaffoldState.drawerState.close() }
