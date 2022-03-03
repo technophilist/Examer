@@ -5,10 +5,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.History
-import androidx.compose.material.icons.filled.List
-import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -100,7 +97,7 @@ fun LoggedInScreen(
             crossfade(true)
         }
     )
-    val navigationIconImageVector by remember {
+    var navigationIconImageVector by remember {
         mutableStateOf(Icons.Filled.Menu)
     }
 
@@ -190,6 +187,8 @@ fun LoggedInScreen(
                 val profileScreenUiState by profileScreenViewModel.uiState
                 DefaultExamerProfileScreen(
                     currentlyLoggedInUser = currentlyLoggedInUser,
+                    onNavigateToEditScreen = { navigationIconImageVector = Icons.Filled.ArrowBack },
+                    onNavigateFromEditScreen = { navigationIconImageVector = Icons.Filled.Menu },
                     isLoadingOverlayVisible = profileScreenUiState == ProfileScreenViewModel.UiState.LOADING,
                     updateProfilePicture = profileScreenViewModel::updateProfilePicture,
                     updateName = profileScreenViewModel::updateName,
