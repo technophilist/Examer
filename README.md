@@ -13,7 +13,9 @@ To try out this app you need to use the latest version of [Android Studio Arctic
 - [Timber](https://github.com/JakeWharton/timber) for logging.
 - [Firebase Authentication](https://firebase.google.com/docs/auth) for user account creation and authentication.
 - [Firebase Cloud Firestore](https://firebase.google.com/products/firestore?gclid=EAIaIQobChMIqcK24rDD9QIVCJhmAh12WAxqEAAYASAAEgLMnPD_BwE&gclsrc=aw.ds) for storing data.
-- [Accompanist library](https://google.github.io/accompanist/) for window insets and pager.
+- [Firebase Storage](https://firebase.google.com/products/storage) for storing audio files and images.
+- [Coil (Compose)](https://coil-kt.github.io/coil/compose/) for image loading and caching.
+- [Accompanist library](https://google.github.io/accompanist/) for window insets and pager,pager-indicators,swiperefresh,placeholder.
 
 ## Source code and architecture
 - [Architecture components](https://developer.android.com/topic/libraries/architecture/) such as
