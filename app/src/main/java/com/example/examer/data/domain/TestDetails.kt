@@ -1,5 +1,6 @@
 package com.example.examer.data.domain
 
+import timber.log.Timber
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -58,10 +59,11 @@ data class TestDetails(
  * string.
  */
 fun TestDetails.getDateStringAndTimeString(is24hourFormat: Boolean = false): Pair<String, String> {
-    val format = DateTimeFormatter.ofPattern(if (is24hourFormat) "hh:mm" else "h:mm a")
+    val format = DateTimeFormatter.ofPattern(if (is24hourFormat) "HH:mm" else "h:mm a")
     val dateString = localDateTime.toLocalDate().toString()
     val timeString = localDateTime
         .toLocalTime()
         .format(format)
+    Timber.d("Date String:${dateString} TimeString:${timeString}")
     return Pair(dateString, timeString)
 }
