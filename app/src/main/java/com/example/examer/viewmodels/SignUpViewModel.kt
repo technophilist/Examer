@@ -101,12 +101,13 @@ class ExamerSignUpViewModel(
         @MainThread onSuccess: () -> Unit,
         profilePhotoUri: Uri?,
     ) {
-        if (!isValidEmail(email) || !isValidPassword(password)) _uiState.value =
+        val trimmedEmail = email.trim()
+        if (!isValidEmail(trimmedEmail) || !isValidPassword(password)) _uiState.value =
             SignUpUiState.Failed(SignUpUiFailureType.INVALID_CREDENTIALS)
         else viewModelScope.launch(dispatcherProvider.io) {
             _uiState.value = SignUpUiState.Loading
             val authenticationResult =
-                authenticationService.createAccount(name, email.trim(), password, profilePhotoUri)
+                authenticationService.createAccount(name, trimmedEmail, password, profilePhotoUri)
             when (authenticationResult) {
                 is AuthenticationResult.Success -> {
                     passwordManager.savePasswordForUser(authenticationResult.user, password)
