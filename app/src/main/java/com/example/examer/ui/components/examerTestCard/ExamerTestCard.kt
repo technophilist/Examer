@@ -1,7 +1,6 @@
 package com.example.examer.ui.components.examerTestCard
 
 import androidx.compose.animation.*
-import androidx.compose.animation.core.AnimationConstants
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -89,7 +88,7 @@ fun ExamerExpandableTestCard(
             ExamerCardMetadataRow(
                 dateString = dateString,
                 timeString = timeString,
-                timeGivenPerQuestionString = "${test.minutesPerQuestion} minutes"
+                testDurationInMinutes = "${test.testDurationInMinutes} minutes"
             )
             AnimatedVisibility(
                 visible = isExpanded,
@@ -163,7 +162,7 @@ private fun ExamerCardHeader(
 private fun ExamerCardMetadataRow(
     dateString: String,
     timeString: String,
-    timeGivenPerQuestionString: String,
+    testDurationInMinutes: String,
 ) {
     Row(
         modifier = Modifier
@@ -172,7 +171,7 @@ private fun ExamerCardMetadataRow(
         verticalAlignment = Alignment.CenterVertically
     ) {
         val icons = listOf(Icons.Filled.Event, Icons.Filled.Schedule, Icons.Filled.HourglassTop)
-        val text = listOf(dateString, timeString, "$timeGivenPerQuestionString per question")
+        val text = listOf(dateString, timeString, testDurationInMinutes)
         icons.zip(text).forEach {
             // apply offset to compensate for the inherent padding of the vector art
             Icon(

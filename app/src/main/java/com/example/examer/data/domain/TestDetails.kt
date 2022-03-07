@@ -25,7 +25,7 @@ enum class Status { OPEN, SCHEDULED, MISSED, COMPLETED }
  * timestamp in milliseconds.
  * @param totalNumberOfQuestions indicates the total number of
  * questions in this test.
- * @param minutesPerQuestion indicates the number of minutes allotted
+ * @param testDurationInMinutes indicates the number of minutes allotted
  * for each question.
  */
 data class TestDetails(
@@ -35,7 +35,7 @@ data class TestDetails(
     val language: String,
     val localDateTime: LocalDateTime,
     val totalNumberOfQuestions: Int,
-    val minutesPerQuestion: Int,
+    val testDurationInMinutes: Int,
     val testStatus: Status
 ) {
     companion object {
@@ -64,6 +64,5 @@ fun TestDetails.getDateStringAndTimeString(is24hourFormat: Boolean = false): Pai
     val timeString = localDateTime
         .toLocalTime()
         .format(format)
-    Timber.d("Date String:${dateString} TimeString:${timeString}")
     return Pair(dateString, timeString)
 }
