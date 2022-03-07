@@ -9,8 +9,6 @@ import com.example.examer.di.DispatcherProvider
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.StorageException
-import com.google.firebase.storage.UploadTask
 import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.tasks.await
@@ -73,7 +71,7 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
         language = get("language").toString(),
         localDateTime = getLocalDateTimeForTimeStamp(get("timestamp").toString().toLong()),
         totalNumberOfQuestions = get("totalNumberOfQuestions").toString().toInt(),
-        minutesPerQuestion = get("minutesPerQuestion").toString().toInt(),
+        testDurationInMinutes = get("testDurationInMinutes").toString().toInt(),
         testStatus = Status.valueOf((get("testStatus").toString().uppercase()))
     )
 
