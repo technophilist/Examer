@@ -19,7 +19,7 @@ To try out this app you need to use the latest version of [Android Studio Arctic
 
 ## Source code and architecture
 - [Architecture components](https://developer.android.com/topic/libraries/architecture/) such as
-  Room,Lifecycle and ViewModels are used.
+  Lifecycle and ViewModels are used.
 - [MVVM](https://developer.android.com/jetpack/guide?gclid=EAIaIQobChMI-_GIsejG8QIVzNaWCh0NXQANEAAYASAAEgKZ2fD_BwE&gclsrc=aw.ds)
   architecture is used.
 - Source code conforms to the [Kotlin coding conventions](https://kotlinlang.org/docs/coding-conventions.html).
