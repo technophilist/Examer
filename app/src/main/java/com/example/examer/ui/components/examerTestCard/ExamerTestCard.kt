@@ -1,7 +1,6 @@
 package com.example.examer.ui.components.examerTestCard
 
 import androidx.compose.animation.*
-import androidx.compose.animation.core.AnimationConstants
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -14,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.font.FontWeight
@@ -23,6 +23,7 @@ import com.example.examer.R
 import com.example.examer.data.domain.Status
 import com.example.examer.data.domain.TestDetails
 import com.example.examer.data.domain.getDateStringAndTimeString
+import kotlin.time.Duration.Companion.minutes
 
 /**
  * This is a default implementation of [ExamerExpandableTestCard]
@@ -72,6 +73,7 @@ fun ExamerExpandableTestCard(
     expandedContent: @Composable () -> Unit
 ) {
     val (dateString, timeString) = test.getDateStringAndTimeString(is24hourFormat = is24HourTimeFormat)
+    val resources = LocalContext.current.resources
     Card(
         modifier = modifier.animateContentSize(),
         onClick = onClick
@@ -89,7 +91,7 @@ fun ExamerExpandableTestCard(
             ExamerCardMetadataRow(
                 dateString = dateString,
                 timeString = timeString,
-                timeGivenPerQuestionString = "${test.minutesPerQuestion} minutes"
+                testDurationInMinutes = "${test.testDurationInMinutes} ${resources.getString(R.string.label_minutes)}"
             )
             AnimatedVisibility(
                 visible = isExpanded,
@@ -163,7 +165,7 @@ private fun ExamerCardHeader(
 private fun ExamerCardMetadataRow(
     dateString: String,
     timeString: String,
-    timeGivenPerQuestionString: String,
+    testDurationInMinutes: String,
 ) {
     Row(
         modifier = Modifier
@@ -172,7 +174,7 @@ private fun ExamerCardMetadataRow(
         verticalAlignment = Alignment.CenterVertically
     ) {
         val icons = listOf(Icons.Filled.Event, Icons.Filled.Schedule, Icons.Filled.HourglassTop)
-        val text = listOf(dateString, timeString, "$timeGivenPerQuestionString per question")
+        val text = listOf(dateString, timeString, testDurationInMinutes)
         icons.zip(text).forEach {
             // apply offset to compensate for the inherent padding of the vector art
             Icon(
