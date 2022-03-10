@@ -14,8 +14,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import com.example.examer.R
 import com.example.examer.ui.components.NonClickableTestInfoChip
 import com.google.accompanist.insets.systemBarsPadding
 
@@ -27,7 +29,6 @@ fun ListenToAudioScreen(
     audioPlayBackState: AudioPlayBackState,
     onNavigateToWorkBook: () -> Unit
 ) {
-    // TODO String res
     // TODO on max playback time reached
     val quizChipTextStyle = MaterialTheme.typography.body2
     Box(
@@ -49,7 +50,7 @@ fun ListenToAudioScreen(
                 textStyle = quizChipTextStyle
             )
             Text(
-                text = "Listen to the audio file and answer the questions in the workbook.",
+                text = stringResource(R.string.label_listen_and_answer),
                 style = MaterialTheme.typography.h5
             )
             Column(
@@ -71,7 +72,10 @@ fun ListenToAudioScreen(
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
-                    text = "No of repeats left: ${audioPlayBackState.numberOfRepeatsLeft.value}",
+                    text = stringResource(
+                        R.string.label_no_of_repeats_left,
+                        audioPlayBackState.numberOfRepeatsLeft.value
+                    ),
                     style = MaterialTheme.typography.caption
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -86,7 +90,10 @@ fun ListenToAudioScreen(
             shape = RoundedCornerShape(50),
             onClick = onNavigateToWorkBook
         ) {
-            Text(modifier = Modifier.padding(8.dp), text = "Go to work book")
+            Text(
+                modifier = Modifier.padding(8.dp),
+                text = stringResource(R.string.button_label_go_to_workbook)
+            )
             Icon(imageVector = Icons.Filled.NavigateNext, contentDescription = null)
         }
     }
@@ -146,7 +153,11 @@ private fun WorkbookNumberIndicator(
 ) {
     NonClickableTestInfoChip(
         modifier = modifier,
-        text = "Workbook $currentWorkBookNumber/$totalNumberOfWorkBooks",
+        text = stringResource(
+            R.string.label_workbook,
+            currentWorkBookNumber,
+            totalNumberOfWorkBooks
+        ),
         textStyle = textStyle,
         icon = Icons.Filled.Description,
         contentDescription = null
