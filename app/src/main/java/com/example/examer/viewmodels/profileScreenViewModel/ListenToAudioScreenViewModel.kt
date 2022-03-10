@@ -1,5 +1,6 @@
 package com.example.examer.viewmodels.profileScreenViewModel
 
+import androidx.annotation.FloatRange
 import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -17,6 +18,7 @@ interface ListenToAudioScreenViewModel {
     val minutesRemaining: State<String>
     val secondsRemaining: State<String>
     val numberOfRepeatsLeftForAudioFile: State<Int>
+    val playbackProgress: State<Float>
     fun playAudio()
 //    fun getWorkBook()
 }
@@ -47,6 +49,11 @@ class ExamerListenToAudioScreenViewModel : ViewModel(), ListenToAudioScreenViewM
     private val maximumNumberOfRepeatsAllowed: Int = 3 // TODO hardcoded
     private val _numberOfRepeatsLeftForAudioFile = mutableStateOf(maximumNumberOfRepeatsAllowed)
     override val numberOfRepeatsLeftForAudioFile = _numberOfRepeatsLeftForAudioFile as State<Int>
+
+    // playback progress states
+    @FloatRange(from = 0.0, to = 1.0)
+    private val _playbackProgress = mutableStateOf(0.0f)
+    override val playbackProgress = _playbackProgress as State<Float>
 
     init {
         countDownTimer.start()
