@@ -69,4 +69,9 @@
     <string name="snackbar_update_failure">Unable to update.A network error occurred.</string>
     <!-- Edit Screen-->
     <string name="toast_same_new_value_error">"The new %1$s is same as the old %1$s"</string>
+    <!-- Listen To Audio Screen -->
+    <string name="label_listen_and_answer">Listen to the audio file and answer the questions in the workbook.</string>
+    <string name="label_no_of_repeats_left">No of repeats left: %1$s</string>
+    <string name="button_label_go_to_workbook">Go to work book</string>
+    <string name="label_workbook">Workbook %1$s/%2$s</string>
 </resources>
