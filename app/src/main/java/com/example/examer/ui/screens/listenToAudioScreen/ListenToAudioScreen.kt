@@ -26,7 +26,7 @@ import com.google.accompanist.insets.systemBarsPadding
 fun ListenToAudioScreen(
     timeInfo: TimerState,
     workBookState: WorkBookState,
-    audioPlayBackState: AudioPlayBackState,
+    audioPlayBackState: AudioPlaybackState,
     onNavigateToWorkBook: () -> Unit
 ) {
     // TODO on max playback time reached
