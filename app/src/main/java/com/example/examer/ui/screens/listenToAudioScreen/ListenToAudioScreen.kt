@@ -1,0 +1,154 @@
+package com.example.examer.ui.screens.listenToAudioScreen
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Description
+import androidx.compose.material.icons.filled.NavigateNext
+import androidx.compose.material.icons.filled.Timer
+import androidx.compose.material.icons.filled.VolumeUp
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.dp
+import com.example.examer.ui.components.NonClickableTestInfoChip
+import com.google.accompanist.insets.systemBarsPadding
+
+
+@Composable
+fun ListenToAudioScreen(
+    timeInfo: TimerState,
+    workBookState: WorkBookState,
+    audioPlayBackState: AudioPlayBackState,
+    onNavigateToWorkBook: () -> Unit
+) {
+    // TODO String res
+    // TODO on max playback time reached
+    val quizChipTextStyle = MaterialTheme.typography.body2
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .systemBarsPadding()
+            .padding(16.dp)
+    ) {
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            TestInfoChipRow(
+                modifier = Modifier
+                    .align(Alignment.Start)
+                    .fillMaxWidth(),
+                currentWorkBookNumber = workBookState.currentWorkBookNumber.value,
+                totalNumberOfWorkBooks = workBookState.totalNumberOfWorkBooks,
+                hoursRemaining = timeInfo.hoursRemaining.value,
+                minutesRemaining = timeInfo.minutesRemaining.value,
+                secondsRemaining = timeInfo.secondsRemaining.value,
+                textStyle = quizChipTextStyle
+            )
+            Text(
+                text = "Listen to the audio file and answer the questions in the workbook.",
+                style = MaterialTheme.typography.h5
+            )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.80f),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Icon(
+                    modifier = Modifier
+                        .size(112.dp)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colors.primary)
+                        .padding(16.dp),
+                    imageVector = Icons.Filled.VolumeUp,
+                    contentDescription = null,
+                    tint = contentColorFor(backgroundColor = MaterialTheme.colors.primary)
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    text = "No of repeats left: ${audioPlayBackState.numberOfRepeatsLeft.value}",
+                    style = MaterialTheme.typography.caption
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                LinearProgressIndicator(
+                    modifier = Modifier.clip(RoundedCornerShape(50)),
+                    progress = audioPlayBackState.progress.value
+                )
+            }
+        }
+        Button(
+            modifier = Modifier.align(Alignment.BottomEnd),
+            shape = RoundedCornerShape(50),
+            onClick = onNavigateToWorkBook
+        ) {
+            Text(modifier = Modifier.padding(8.dp), text = "Go to work book")
+            Icon(imageVector = Icons.Filled.NavigateNext, contentDescription = null)
+        }
+    }
+}
+
+@Composable
+private fun TestInfoChipRow(
+    currentWorkBookNumber: Int,
+    totalNumberOfWorkBooks: Int,
+    hoursRemaining: String,
+    minutesRemaining: String,
+    secondsRemaining: String,
+    modifier: Modifier = Modifier,
+    textStyle: TextStyle = TextStyle.Default
+) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        WorkbookNumberIndicator(
+            currentWorkBookNumber = currentWorkBookNumber,
+            totalNumberOfWorkBooks = totalNumberOfWorkBooks,
+            textStyle = textStyle
+        )
+        CountDownTimer(
+            hoursRemaining = hoursRemaining,
+            minutesRemaining = minutesRemaining,
+            secondsRemaining = secondsRemaining,
+            textStyle = textStyle
+        )
+    }
+}
+
+@Composable
+private fun CountDownTimer(
+    hoursRemaining: String,
+    minutesRemaining: String,
+    secondsRemaining: String,
+    modifier: Modifier = Modifier,
+    textStyle: TextStyle = TextStyle.Default,
+) {
+    NonClickableTestInfoChip(
+        modifier = modifier,
+        text = "$hoursRemaining : $minutesRemaining : $secondsRemaining",
+        textStyle = textStyle,
+        icon = Icons.Filled.Timer,
+        contentDescription = null
+    )
+}
+
+@Composable
+private fun WorkbookNumberIndicator(
+    currentWorkBookNumber: Int,
+    totalNumberOfWorkBooks: Int,
+    modifier: Modifier = Modifier,
+    textStyle: TextStyle = TextStyle.Default
+) {
+    NonClickableTestInfoChip(
+        modifier = modifier,
+        text = "Workbook $currentWorkBookNumber/$totalNumberOfWorkBooks",
+        textStyle = textStyle,
+        icon = Icons.Filled.Description,
+        contentDescription = null
+    )
+}
