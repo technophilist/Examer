@@ -10,7 +10,31 @@ data class MultiChoiceQuestionDTO(
     val options: Array<String>,
     val indexOfCorrectOption: Int,
     val markForQuestion: Int,
-)
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as MultiChoiceQuestionDTO
+
+        if (questionNumber != other.questionNumber) return false
+        if (question != other.question) return false
+        if (!options.contentEquals(other.options)) return false
+        if (indexOfCorrectOption != other.indexOfCorrectOption) return false
+        if (markForQuestion != other.markForQuestion) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = questionNumber
+        result = 31 * result + question.hashCode()
+        result = 31 * result + options.contentHashCode()
+        result = 31 * result + indexOfCorrectOption
+        result = 31 * result + markForQuestion
+        return result
+    }
+}
 
 fun MultiChoiceQuestionDTO.toMultiChoiceQuestion() = MultiChoiceQuestion(
     id = "id", // TODO
