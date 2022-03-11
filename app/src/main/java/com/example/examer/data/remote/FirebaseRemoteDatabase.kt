@@ -24,7 +24,7 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
 
     override suspend fun fetchScheduledTestListForUser(user: ExamerUser): List<TestDetails> =
         withContext(dispatcherProvider.io) {
-            val scheduledTestsCollection = fetchCollection("users/${user.id}/scheduledTests")
+            val scheduledTestsCollection = fetchCollection(getCollectionPathForScheduledTests(user))
             // if no collection exists for the user, which likely indicates
             // that the user is a newly registered user, an empty list will
             // be returned.
@@ -33,7 +33,7 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
 
     override suspend fun fetchPreviousTestListForUser(user: ExamerUser): List<TestDetails> =
         withContext(dispatcherProvider.io) {
-            val previousTestsCollection = fetchCollection("users/${user.id}/previousTests")
+            val previousTestsCollection = fetchCollection(getCollectionPathForPreviousTests(user))
             // if no collection exists for the user, which likely indicates
             // that the user is a newly registered user, an empty list will
             // be returned.
@@ -52,11 +52,11 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
             val data = byteArrayOutputStream.toByteArray()
             Firebase.storage
                 .reference
-                .child("profile_pics/$fileName.jpg")
+                .child("$PROFILE_PICTURES_FOLDER_NAME/$fileName.jpg")
                 .putBytes(data)
                 .await()
             val uri = Firebase.storage.reference
-                .child("profile_pics/$fileName.jpg")
+                .child("$PROFILE_PICTURES_FOLDER_NAME/$fileName.jpg")
                 .downloadUrl
                 .await()
             Result.success(uri)
@@ -88,5 +88,13 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
         .get()
         .await()
 
+    companion object {
+        private const val PROFILE_PICTURES_FOLDER_NAME = "profile_pics"
+        private fun getCollectionPathForScheduledTests(user: ExamerUser) =
+            "users/${user.id}/scheduledTests"
+
+        private fun getCollectionPathForPreviousTests(user: ExamerUser) =
+            "users/${user.id}/previousTests"
+    }
 
 }
