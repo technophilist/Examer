@@ -2,9 +2,10 @@ package com.example.examer.data.remote
 
 import android.graphics.Bitmap
 import android.net.Uri
-import com.example.examer.data.domain.ExamerUser
-import com.example.examer.data.domain.Status
-import com.example.examer.data.domain.TestDetails
+import com.example.examer.data.domain.*
+import com.example.examer.data.dto.MultiChoiceQuestionDTO
+import com.example.examer.data.dto.MultiChoiceQuestionListDTO
+import com.example.examer.data.dto.toMultiChoiceQuestion
 import com.example.examer.di.DispatcherProvider
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
@@ -15,7 +16,14 @@ import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.DeserializationStrategy
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.json.Json
+import timber.log.Timber
 import java.io.ByteArrayOutputStream
+import java.io.ObjectInput
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -66,6 +74,41 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
         }
     }
 
+    override suspend fun fetchWorkBookList(
+        user: ExamerUser,
+        testDetails: TestDetails
+    ): Result<List<WorkBook>> = withContext(dispatcherProvider.io) {
+        try {
+            val workbooksCollectionPath = getCollectionPathForWorkBooks(user, testDetails)
+            val workbooksCollection = fetchCollection(workbooksCollectionPath)
+                .documents
+                .map { it.toWorkBook() }
+            Result.success(workbooksCollection)
+        } catch (exception: Exception) {
+            if (exception is CancellationException) throw exception
+            Result.failure(exception)
+        }
+    }
+
+    private fun DocumentSnapshot.toWorkBook(): WorkBook {
+        val examerAudioFile = ExamerAudioFile(
+            audioFileUri = Uri.parse(get("audioFileDownloadUrl").toString()),
+            numberOfRepeatsAllowedForAudioFile = get("numberOfRepeatsAllowedForAudioFile").toString()
+                .toInt()
+        )
+        val questionsJsonString = get("questionsJsonList").toString()
+        val multiChoiceQuestionDtoList =
+            Json.decodeFromString<MultiChoiceQuestionListDTO>(questionsJsonString)
+        val multiChoiceQuestionList = multiChoiceQuestionDtoList.questions.map {
+            it.toMultiChoiceQuestion()
+        }
+        return WorkBook(
+            id = id,
+            audioFile = examerAudioFile,
+            questions = multiChoiceQuestionList
+        )
+    }
+
     private fun DocumentSnapshot.toTestDetails() = TestDetails(
         id = id,
         title = get("title").toString(),
@@ -95,6 +138,9 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
 
         private fun getCollectionPathForPreviousTests(user: ExamerUser) =
             "users/${user.id}/previousTests"
+
+        private fun getCollectionPathForWorkBooks(user: ExamerUser, testDetails: TestDetails) =
+            "${getCollectionPathForScheduledTests(user)}/${testDetails.id}/workbooks"
     }
 
 }
