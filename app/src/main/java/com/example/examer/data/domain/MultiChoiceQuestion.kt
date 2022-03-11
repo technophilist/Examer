@@ -4,7 +4,7 @@ package com.example.examer.data.domain
  * Class that models a single question in a [WorkBook]
  */
 data class MultiChoiceQuestion(
-    val id: Int,
+    val id: String,
     val question: String,
     val options: Array<String>,
     val indexOfCorrectOption: Int,
@@ -26,7 +26,7 @@ data class MultiChoiceQuestion(
     }
 
     override fun hashCode(): Int {
-        var result = id
+        var result = id.hashCode()
         result = 31 * result + question.hashCode()
         result = 31 * result + options.contentHashCode()
         result = 31 * result + indexOfCorrectOption
