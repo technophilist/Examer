@@ -37,7 +37,7 @@ data class MultiChoiceQuestionDTO(
 }
 
 fun MultiChoiceQuestionDTO.toMultiChoiceQuestion() = MultiChoiceQuestion(
-    id = "id", // TODO
+    id = questionNumber.toString(),
     question = question,
     options = options,
     indexOfCorrectOption = indexOfCorrectOption,
