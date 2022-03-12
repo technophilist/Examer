@@ -3,27 +3,19 @@ package com.example.examer.data.remote
 import android.graphics.Bitmap
 import android.net.Uri
 import com.example.examer.data.domain.*
-import com.example.examer.data.dto.MultiChoiceQuestionDTO
 import com.example.examer.data.dto.MultiChoiceQuestionListDTO
 import com.example.examer.data.dto.toMultiChoiceQuestion
 import com.example.examer.di.DispatcherProvider
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.StorageException
-import com.google.firebase.storage.UploadTask
 import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.json.Json
-import timber.log.Timber
 import java.io.ByteArrayOutputStream
-import java.io.ObjectInput
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -92,7 +84,7 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
 
     private fun DocumentSnapshot.toWorkBook(): WorkBook {
         val examerAudioFile = ExamerAudioFile(
-            audioFileUri = Uri.parse(get("audioFileDownloadUrl").toString()),
+            localAudioFileUri = Uri.parse(get("audioFileDownloadUrl").toString()),
             numberOfRepeatsAllowedForAudioFile = get("numberOfRepeatsAllowedForAudioFile").toString()
                 .toInt()
         )
