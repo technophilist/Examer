@@ -3,7 +3,9 @@ package com.example.examer.data.remote
 import android.graphics.Bitmap
 import android.net.Uri
 import com.example.examer.data.domain.*
+import com.example.examer.data.dto.AudioFileDTO
 import com.example.examer.data.dto.MultiChoiceQuestionListDTO
+import com.example.examer.data.dto.WorkBookDTO
 import com.example.examer.data.dto.toMultiChoiceQuestion
 import com.example.examer.di.DispatcherProvider
 import com.google.firebase.firestore.DocumentSnapshot
@@ -16,6 +18,7 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import java.io.ByteArrayOutputStream
+import java.net.URL
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -69,12 +72,12 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
     override suspend fun fetchWorkBookList(
         user: ExamerUser,
         testDetails: TestDetails
-    ): Result<List<WorkBook>> = withContext(dispatcherProvider.io) {
+    ): Result<List<WorkBookDTO>> = withContext(dispatcherProvider.io) {
         try {
             val workbooksCollectionPath = getCollectionPathForWorkBooks(user, testDetails)
             val workbooksCollection = fetchCollection(workbooksCollectionPath)
                 .documents
-                .map { it.toWorkBook() }
+                .map { it.toWorkBookDTO() }
             Result.success(workbooksCollection)
         } catch (exception: Exception) {
             if (exception is CancellationException) throw exception
@@ -82,19 +85,17 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
         }
     }
 
-    private fun DocumentSnapshot.toWorkBook(): WorkBook {
-        val examerAudioFile = ExamerAudioFile(
-            localAudioFileUri = Uri.parse(get("audioFileDownloadUrl").toString()),
+    private fun DocumentSnapshot.toWorkBookDTO(): WorkBookDTO {
+        val examerAudioFile = AudioFileDTO(
+            audioFileUrl = URL(get("audioFileDownloadUrl").toString()),
             numberOfRepeatsAllowedForAudioFile = get("numberOfRepeatsAllowedForAudioFile").toString()
                 .toInt()
         )
         val questionsJsonString = get("questionsJsonList").toString()
         val multiChoiceQuestionDtoList =
             Json.decodeFromString<MultiChoiceQuestionListDTO>(questionsJsonString)
-        val multiChoiceQuestionList = multiChoiceQuestionDtoList.questions.map {
-            it.toMultiChoiceQuestion()
-        }
-        return WorkBook(
+        val multiChoiceQuestionList = multiChoiceQuestionDtoList.questions
+        return WorkBookDTO(
             id = id,
             audioFile = examerAudioFile,
             questions = multiChoiceQuestionList
