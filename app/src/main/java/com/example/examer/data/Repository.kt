@@ -1,5 +1,6 @@
 package com.example.examer.data
 
+import android.content.Context
 import android.graphics.Bitmap
 import com.example.examer.data.domain.ExamerUser
 import com.example.examer.data.domain.TestDetails
@@ -19,6 +20,7 @@ interface Repository {
 }
 
 class ExamerRepository(
+    private val context: Context,
     private val remoteDatabase: RemoteDatabase,
     private val updateProfilePhotoUriUseCase: UpdateProfilePhotoUriUseCase
 ) : Repository {
