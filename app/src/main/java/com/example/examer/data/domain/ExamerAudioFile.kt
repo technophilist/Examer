@@ -6,6 +6,6 @@ import android.net.Uri
  * Models an audio file.
  */
 data class ExamerAudioFile(
-    val audioFileUri: Uri,
+    val localAudioFileUri: Uri,
     val numberOfRepeatsAllowedForAudioFile: Int,
 )
