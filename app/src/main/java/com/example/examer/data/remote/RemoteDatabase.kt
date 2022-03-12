@@ -5,6 +5,7 @@ import android.net.Uri
 import com.example.examer.data.domain.ExamerUser
 import com.example.examer.data.domain.TestDetails
 import com.example.examer.data.domain.WorkBook
+import com.example.examer.data.dto.WorkBookDTO
 
 interface RemoteDatabase {
     suspend fun fetchScheduledTestListForUser(user: ExamerUser): List<TestDetails>
@@ -12,7 +13,7 @@ interface RemoteDatabase {
     suspend fun fetchWorkBookList(
         user: ExamerUser,
         testDetails: TestDetails
-    ): Result<List<WorkBook>>
+    ): Result<List<WorkBookDTO>>
 
     suspend fun saveBitmap(bitmap: Bitmap, fileName: String): Result<Uri>
 }
