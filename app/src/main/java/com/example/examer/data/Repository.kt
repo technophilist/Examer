@@ -8,6 +8,9 @@ import com.example.examer.data.domain.ExamerAudioFile
 import com.example.examer.data.domain.ExamerUser
 import com.example.examer.data.domain.TestDetails
 import com.example.examer.data.domain.WorkBook
+import com.example.examer.data.dto.AudioFileDTO
+import com.example.examer.data.dto.WorkBookDTO
+import com.example.examer.data.dto.toMultiChoiceQuestion
 import com.example.examer.data.remote.RemoteDatabase
 import com.example.examer.usecases.UpdateProfilePhotoUriUseCase
 import kotlinx.coroutines.CancellationException
@@ -56,23 +59,15 @@ class ExamerRepository(
     ): Result<List<WorkBook>> = try {
         val result = remoteDatabase.fetchWorkBookList(user, testDetails)
             .getOrThrow()
-            .map { workBook ->
+            .map { workBookDto ->
                 // save the audio file associated with each workbook to
                 // internal storage
-                val audioFileUri = saveAudioFileToInternalStorage(
-                    url = URL(workBook.audioFile.localAudioFileUri.toString()),
-                    fileName = "${testDetails.id}_workbook${workBook.id}.wav"
+                val localAudioFileUri = saveAudioFileToInternalStorage(
+                    url = workBookDto.audioFile.audioFileUrl,
+                    fileName = "${testDetails.id}_workbook${workBookDto.id}.wav"
                 )
-                // add the uri of the locally stored audio file to a new
-                // instance of ExamerAudioFile class
-                val audioFile = ExamerAudioFile(
-                    localAudioFileUri = audioFileUri,
-                    numberOfRepeatsAllowedForAudioFile = workBook.audioFile.numberOfRepeatsAllowedForAudioFile
-                )
-                // swap out the existing audio file class with
-                // the new audio file class containing the uri
-                // of the locally saved audio file.
-                workBook.copy(audioFile = audioFile)
+                val examerAudioFile = workBookDto.audioFile.toExamerAudioFile(localAudioFileUri)
+                workBookDto.toWorkBook(examerAudioFile)
             }
         Result.success(result)
     } catch (exception: Exception) {
@@ -80,6 +75,16 @@ class ExamerRepository(
         Result.failure(exception)
     }
 
+    private fun AudioFileDTO.toExamerAudioFile(localAudioFileUri: Uri) = ExamerAudioFile(
+        localAudioFileUri = localAudioFileUri,
+        numberOfRepeatsAllowedForAudioFile = numberOfRepeatsAllowedForAudioFile
+    )
+
+    private fun WorkBookDTO.toWorkBook(audioFile: ExamerAudioFile) = WorkBook(
+        id = id,
+        audioFile = audioFile,
+        questions = questions.map { it.toMultiChoiceQuestion() }
+    )
 
     @Suppress("BlockingMethodInNonBlockingContext")
     private suspend fun saveAudioFileToInternalStorage(
