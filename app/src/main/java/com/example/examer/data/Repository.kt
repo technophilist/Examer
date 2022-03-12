@@ -60,13 +60,13 @@ class ExamerRepository(
                 // save the audio file associated with each workbook to
                 // internal storage
                 val audioFileUri = saveAudioFileToInternalStorage(
-                    url = URL(workBook.audioFile.audioFileUri.toString()),
+                    url = URL(workBook.audioFile.localAudioFileUri.toString()),
                     fileName = "${testDetails.id}_workbook${workBook.id}.wav"
                 )
                 // add the uri of the locally stored audio file to a new
                 // instance of ExamerAudioFile class
                 val audioFile = ExamerAudioFile(
-                    audioFileUri = audioFileUri,
+                    localAudioFileUri = audioFileUri,
                     numberOfRepeatsAllowedForAudioFile = workBook.audioFile.numberOfRepeatsAllowedForAudioFile
                 )
                 // swap out the existing audio file class with
