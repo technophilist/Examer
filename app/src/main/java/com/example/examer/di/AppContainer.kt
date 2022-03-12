@@ -17,6 +17,7 @@ class AppContainer(application: Application) {
     private val passwordManager = ExamerPasswordManager(application) as PasswordManager
     val authenticationService = FirebaseAuthenticationService()
     private val repository = ExamerRepository(
+        context = application,
         remoteDatabase = remoteDatabase,
         updateProfilePhotoUriUseCase = UpdateProfilePhotoUriUseCaseImpl(
             authenticationService,
