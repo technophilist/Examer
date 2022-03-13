@@ -3,6 +3,9 @@ package com.example.examer.data.dto
 import com.example.examer.data.domain.MultiChoiceQuestion
 import kotlinx.serialization.Serializable
 
+/**
+ * A DTO object equivalent of [MultiChoiceQuestion]
+ */
 @Serializable
 data class MultiChoiceQuestionDTO(
     val questionNumber: Int,
@@ -36,6 +39,10 @@ data class MultiChoiceQuestionDTO(
     }
 }
 
+/**
+ * Extension function used to convert an instance of [MultiChoiceQuestionDTO]
+ * to an instance of [MultiChoiceQuestion].
+ */
 fun MultiChoiceQuestionDTO.toMultiChoiceQuestion() = MultiChoiceQuestion(
     id = questionNumber.toString(),
     question = question,
