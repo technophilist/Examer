@@ -1,10 +1,8 @@
 package com.example.examer.data.domain
 
-import android.net.Uri
-
 /**
- * A class that models a work book, which is basically
- * a list of [MultiChoiceQuestion]s.
+ * A class that models a work book with the associated [id],
+ * [audioFile] and [questions] list.
  */
 data class WorkBook(
     val id: String,
