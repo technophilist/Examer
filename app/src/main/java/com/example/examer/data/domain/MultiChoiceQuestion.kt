@@ -1,14 +1,23 @@
 package com.example.examer.data.domain
 
 /**
- * Class that models a single question in a [WorkBook]
+ * Class that models a single question in a [WorkBook].
+ *
+ * @param id the id of the Multi-Choice question.
+ * @param question a string that contains the question.
+ * @param options an array of strings representing the options for the
+ * multi-choice question.
+ * @param indexOfCorrectOption integer indicating the index of correct
+ * option.
+ * @param mark represents the maximum weightage (mark) for this
+ * question.
  */
 data class MultiChoiceQuestion(
     val id: String,
     val question: String,
     val options: Array<String>,
     val indexOfCorrectOption: Int,
-    val mark:Int,
+    val mark: Int,
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
