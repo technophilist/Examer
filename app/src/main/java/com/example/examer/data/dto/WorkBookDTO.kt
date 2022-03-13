@@ -11,5 +11,3 @@ data class WorkBookDTO(
     val audioFile: AudioFileDTO,
     val questions: List<MultiChoiceQuestionDTO>
 )
-// STOPSHIP: TODO make FirebaseRemoteDatabase return DTO list instead of domain objects
-// TODO rename ExamerAudioFile data class attrib to localAudioFileUri:Uri instead of audioFileUri
