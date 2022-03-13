@@ -64,6 +64,15 @@ class SignUpViewModelFactory(
         ) as T
 }
 
+/**
+ * A [ViewModelProvider.Factory] that is used for creating an
+ * instance of [ExamerTestsViewModel].
+ * @param authenticationService the authentication service that
+ * is used in the viewModel.
+ * @param repository a concrete implementation of [Repository].
+ * @param testDetailsListType represents what type of tests the
+ * instance of the viewModel is dealing with.
+ */
 class TestsViewModelFactory(
     private val authenticationService: AuthenticationService,
     private val repository: Repository,
@@ -74,6 +83,19 @@ class TestsViewModelFactory(
         ExamerTestsViewModel(authenticationService, repository, testDetailsListType) as T
 }
 
+/**
+ * A [ViewModelProvider.Factory] that is used for creating an
+ * instance of [ExamerProfileScreenViewModel].
+ * @param application an instance of the application class.
+ * @param repository a concrete implementation of [Repository].
+ * @param authenticationService the authentication service that
+ * is used in the viewModel.
+ * @param passwordManager a concrete implementation of [passwordManager]
+ * that will be used in the viewModel to retrieve the password.
+ * @param credentialsValidationUseCase an instance of
+ * [credentialsValidationUseCase] that is used to validate the
+ * credentials.
+ */
 class ProfileScreenViewModelFactory(
     private val application: Application,
     private val repository: Repository,
