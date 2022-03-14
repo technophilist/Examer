@@ -6,6 +6,9 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.examer.auth.AuthenticationService
+import com.example.examer.data.Repository
+import com.example.examer.data.domain.TestDetails
 import com.example.examer.utils.createCountDownTimer
 import com.example.examer.utils.toString
 import kotlinx.coroutines.delay
@@ -23,7 +26,10 @@ interface ListenToAudioScreenViewModel {
 //    fun getWorkBook()
 }
 
-class ExamerListenToAudioScreenViewModel : ViewModel(), ListenToAudioScreenViewModel {
+class ExamerListenToAudioScreenViewModel(
+    private val repository: Repository,
+    private val authenticationService: AuthenticationService
+) : ViewModel(), ListenToAudioScreenViewModel {
     // state for workbook
     private val _currentWorkBook = mutableStateOf(1)
     override val currentWorkBookNumber = _currentWorkBook as State<Int>
