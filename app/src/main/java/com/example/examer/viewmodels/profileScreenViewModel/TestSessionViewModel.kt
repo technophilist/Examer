@@ -5,17 +5,22 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.examer.auth.AuthenticationService
 import com.example.examer.data.Repository
-import com.example.examer.data.domain.TestDetails
 import com.example.examer.utils.createCountDownTimer
 import com.example.examer.utils.toString
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
+import com.example.examer.data.domain.TestDetails
 
-interface ListenToAudioScreenViewModel {
+/**
+ * An interface that contains the methods and properties that are
+ * required for a concrete implementation of [TestSessionViewModel].
+ *
+ * This type of viewModel is used to encapsulate logic that is required
+ * to manage a single test session. In other words, it contains the logic
+ * that is used to manage a single test ([TestDetails]).
+ */
+interface TestSessionViewModel {
     val currentWorkBookNumber: State<Int>
     val hoursRemaining: State<String>
     val minutesRemaining: State<String>
@@ -26,10 +31,10 @@ interface ListenToAudioScreenViewModel {
 //    fun getWorkBook()
 }
 
-class ExamerListenToAudioScreenViewModel(
+class ExamerTestSessionViewModel(
     private val repository: Repository,
     private val authenticationService: AuthenticationService
-) : ViewModel(), ListenToAudioScreenViewModel {
+) : ViewModel(), TestSessionViewModel {
     // state for workbook
     private val _currentWorkBook = mutableStateOf(1)
     override val currentWorkBookNumber = _currentWorkBook as State<Int>
