@@ -1,5 +1,6 @@
 package com.example.examer.viewmodels.profileScreenViewModel
 
+import android.media.MediaPlayer
 import androidx.annotation.FloatRange
 import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
@@ -37,7 +38,8 @@ interface TestSessionViewModel {
 class ExamerTestSessionViewModel(
     private val repository: Repository,
     private val authenticationService: AuthenticationService,
-    private val testDetails: TestDetails
+    private val mediaPlayer: MediaPlayer,
+    private val testDetails: TestDetails,
 ) : ViewModel(), TestSessionViewModel {
     // variables for workBook
     private lateinit var workBookList: List<WorkBook>
