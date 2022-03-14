@@ -37,8 +37,8 @@ class ExamerTestSessionViewModel(
     private val testDetails: TestDetails
 ) : ViewModel(), TestSessionViewModel {
     // state for workbook
-    private val _currentWorkBook = mutableStateOf(1)
-    override val currentWorkBookNumber = _currentWorkBook as State<Int>
+    private val _currentWorkBookNumber = mutableStateOf(1)
+    override val currentWorkBookNumber = _currentWorkBookNumber as State<Int>
 
     // states for timer
     private val timeRemainingForTest = mutableStateOf(createTimeString(0, 0, 0))
