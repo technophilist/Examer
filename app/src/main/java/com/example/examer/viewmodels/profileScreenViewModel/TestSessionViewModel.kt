@@ -39,7 +39,8 @@ class ExamerTestSessionViewModel(
     private val authenticationService: AuthenticationService,
     private val testDetails: TestDetails
 ) : ViewModel(), TestSessionViewModel {
-    // state for workbook
+    // variables for workBook
+    private lateinit var workBookList: List<WorkBook>
     private val _currentWorkBookNumber = mutableStateOf(0)
     override val currentWorkBookNumber = derivedStateOf { _currentWorkBookNumber.value + 1 }
 
@@ -72,11 +73,12 @@ class ExamerTestSessionViewModel(
 
     init {
         countDownTimer.start()
+        viewModelScope.launch { fetchAndAssignWorkBookListFromRepository() }
     }
 
     override fun playAudio() {
         if (_numberOfRepeatsLeftForAudioFile.value - 1 < 0) {
-            stopPlayingAudio()
+//            stopPlayingAudio()
             return
         }
         _numberOfRepeatsLeftForAudioFile.value = numberOfRepeatsLeftForAudioFile.value - 1
@@ -88,8 +90,11 @@ class ExamerTestSessionViewModel(
         _currentWorkBookNumber.value++
     }
 
-    private fun stopPlayingAudio() {
-//        TODO()
+    private suspend fun fetchAndAssignWorkBookListFromRepository() {
+        workBookList = repository.fetchWorkBookList(
+            user = authenticationService.currentUser.value!!,
+            testDetails = testDetails
+        ).getOrDefault(emptyList())
     }
 
     private fun createTimeString(
