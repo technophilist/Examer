@@ -48,7 +48,7 @@ class ExamerTestSessionViewModel(
     override val secondsRemaining = derivedStateOf { splitTextList.value[2] }
 
     private val countDownTimer = createCountDownTimer(
-        millisInFuture = 39_60_000, // 66 minutes // 1 hour and 6 minutes TODO hardcoded
+        millisInFuture = testDetails.minutesPerQuestion.toLong(), // TODO remove 'minutes per quest'in test details class
         onTimerTick = { millis ->
             val hours = (TimeUnit.MILLISECONDS.toHours(millis) % 60).toInt()
             val minutes = (TimeUnit.MILLISECONDS.toMinutes(millis) % 60).toInt()
