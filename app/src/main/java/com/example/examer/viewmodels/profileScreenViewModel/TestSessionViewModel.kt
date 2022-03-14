@@ -15,6 +15,8 @@ import com.example.examer.utils.toString
 import java.util.concurrent.TimeUnit
 import com.example.examer.data.domain.TestDetails
 import com.example.examer.data.domain.WorkBook
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
 
 /**
@@ -80,8 +82,7 @@ class ExamerTestSessionViewModel(
     }
 
     override fun playAudioForCurrentWorkBook() {
-        // if there are not repeats left or the media player is already playing
-        // then return
+        // return if there are not repeats left or the media player is already playing
         if (_numberOfRepeatsLeftForAudioFile.value - 1 < 0 || mediaPlayer.isPlaying) return
         // get current work book
         val currentWorkBook = workBookList[_currentWorkBookIndex.value]
@@ -92,6 +93,18 @@ class ExamerTestSessionViewModel(
             setDataSource(currentWorkBook.audioFile.localAudioFileUri.toString())
             prepare()
             start()
+            setProgressBasedOnMediaPlayerState(this)
+        }
+    }
+
+    private fun setProgressBasedOnMediaPlayerState(player: MediaPlayer) {
+        viewModelScope.launch {
+            while (player.isPlaying) {
+                ensureActive()
+                _playbackProgress.value = player.currentPosition / player.duration.toFloat()
+                delay(1_000)
+            }
+            _playbackProgress.value = 1.0f
         }
     }
 
