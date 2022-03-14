@@ -5,12 +5,15 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.examer.auth.AuthenticationService
 import com.example.examer.data.Repository
 import com.example.examer.utils.createCountDownTimer
 import com.example.examer.utils.toString
 import java.util.concurrent.TimeUnit
 import com.example.examer.data.domain.TestDetails
+import com.example.examer.data.domain.WorkBook
+import kotlinx.coroutines.launch
 
 /**
  * An interface that contains the methods and properties that are
@@ -28,7 +31,7 @@ interface TestSessionViewModel {
     val numberOfRepeatsLeftForAudioFile: State<Int>
     val playbackProgress: State<Float>
     fun playAudio()
-//    fun getWorkBook()
+    fun moveToNextWorkBook()
 }
 
 class ExamerTestSessionViewModel(
@@ -37,8 +40,8 @@ class ExamerTestSessionViewModel(
     private val testDetails: TestDetails
 ) : ViewModel(), TestSessionViewModel {
     // state for workbook
-    private val _currentWorkBookNumber = mutableStateOf(1)
-    override val currentWorkBookNumber = _currentWorkBookNumber as State<Int>
+    private val _currentWorkBookNumber = mutableStateOf(0)
+    override val currentWorkBookNumber = derivedStateOf { _currentWorkBookNumber.value + 1 }
 
     // states for timer
     private val timeRemainingForTest = mutableStateOf(createTimeString(0, 0, 0))
@@ -78,6 +81,11 @@ class ExamerTestSessionViewModel(
         }
         _numberOfRepeatsLeftForAudioFile.value = numberOfRepeatsLeftForAudioFile.value - 1
         // start playingg....
+    }
+
+    override fun moveToNextWorkBook() {
+        //TODO
+        _currentWorkBookNumber.value++
     }
 
     private fun stopPlayingAudio() {
