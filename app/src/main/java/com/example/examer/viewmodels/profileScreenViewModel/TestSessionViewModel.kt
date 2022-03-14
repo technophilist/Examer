@@ -33,7 +33,8 @@ interface TestSessionViewModel {
 
 class ExamerTestSessionViewModel(
     private val repository: Repository,
-    private val authenticationService: AuthenticationService
+    private val authenticationService: AuthenticationService,
+    private val testDetails: TestDetails
 ) : ViewModel(), TestSessionViewModel {
     // state for workbook
     private val _currentWorkBook = mutableStateOf(1)
