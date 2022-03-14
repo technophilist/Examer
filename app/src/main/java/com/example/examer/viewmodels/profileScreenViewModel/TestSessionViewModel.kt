@@ -80,7 +80,9 @@ class ExamerTestSessionViewModel(
     }
 
     override fun playAudioForCurrentWorkBook() {
-        if (_numberOfRepeatsLeftForAudioFile.value - 1 < 0) return
+        // if there are not repeats left or the media player is already playing
+        // then return
+        if (_numberOfRepeatsLeftForAudioFile.value - 1 < 0 || mediaPlayer.isPlaying) return
         // get current work book
         val currentWorkBook = workBookList[_currentWorkBookIndex.value]
         // decrement the value of umberOfRepeatsLeftForAudioFile variable by 1
