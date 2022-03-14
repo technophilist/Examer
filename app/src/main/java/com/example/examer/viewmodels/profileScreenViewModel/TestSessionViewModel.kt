@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.examer.auth.AuthenticationService
 import com.example.examer.data.Repository
+import com.example.examer.data.domain.ExamerUser
 import com.example.examer.utils.createCountDownTimer
 import com.example.examer.utils.toString
 import java.util.concurrent.TimeUnit
@@ -31,7 +32,7 @@ interface TestSessionViewModel {
     val secondsRemaining: State<String>
     val numberOfRepeatsLeftForAudioFile: State<Int>
     val playbackProgress: State<Float>
-    fun playAudio()
+    fun playAudioForCurrentWorkBook()
     fun moveToNextWorkBook()
 }
 
@@ -43,8 +44,8 @@ class ExamerTestSessionViewModel(
 ) : ViewModel(), TestSessionViewModel {
     // variables for workBook
     private lateinit var workBookList: List<WorkBook>
-    private val _currentWorkBookNumber = mutableStateOf(0)
-    override val currentWorkBookNumber = derivedStateOf { _currentWorkBookNumber.value + 1 }
+    private val _currentWorkBookIndex = mutableStateOf(0)
+    override val currentWorkBookNumber = derivedStateOf { _currentWorkBookIndex.value + 1 }
 
     // states for timer
     private val timeRemainingForTest = mutableStateOf(createTimeString(0, 0, 0))
@@ -78,18 +79,23 @@ class ExamerTestSessionViewModel(
         viewModelScope.launch { fetchAndAssignWorkBookListFromRepository() }
     }
 
-    override fun playAudio() {
-        if (_numberOfRepeatsLeftForAudioFile.value - 1 < 0) {
-//            stopPlayingAudio()
-            return
+    override fun playAudioForCurrentWorkBook() {
+        if (_numberOfRepeatsLeftForAudioFile.value - 1 < 0) return
+        // get current work book
+        val currentWorkBook = workBookList[_currentWorkBookIndex.value]
+        // decrement the value of umberOfRepeatsLeftForAudioFile variable by 1
+        _numberOfRepeatsLeftForAudioFile.value -= 1
+        // use media player to start audio playback
+        mediaPlayer.run {
+            setDataSource(currentWorkBook.audioFile.localAudioFileUri.toString())
+            prepare()
+            start()
         }
-        _numberOfRepeatsLeftForAudioFile.value = numberOfRepeatsLeftForAudioFile.value - 1
-        // start playingg....
     }
 
     override fun moveToNextWorkBook() {
         //TODO
-        _currentWorkBookNumber.value++
+        _currentWorkBookIndex.value++
     }
 
     private suspend fun fetchAndAssignWorkBookListFromRepository() {
