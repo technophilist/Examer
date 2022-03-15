@@ -1,4 +1,4 @@
-package com.example.examer.viewmodels.profileScreenViewModel
+package com.example.examer.viewmodels
 
 import android.media.MediaPlayer
 import androidx.annotation.FloatRange
