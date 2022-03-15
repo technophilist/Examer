@@ -4,6 +4,7 @@ import android.media.MediaPlayer
 import androidx.annotation.FloatRange
 import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -31,6 +32,7 @@ interface TestSessionViewModel {
     enum class UiState { IDLE, LOADING, WORKBOOK_LIST_FETCH_ERROR }
 
     val uiState: State<UiState>
+    val currentWorkBook: State<WorkBook?>
     val currentWorkBookNumber: State<Int>
     val hoursRemaining: State<String>
     val minutesRemaining: State<String>
@@ -54,6 +56,8 @@ class ExamerTestSessionViewModel(
     private var workBookList: List<WorkBook>? = null
     private val _currentWorkBookIndex = mutableStateOf(0)
     override val currentWorkBookNumber = derivedStateOf { _currentWorkBookIndex.value + 1 }
+    private val _currentWorkBook = mutableStateOf<WorkBook?>(null)
+    override val currentWorkBook by derivedStateOf { _currentWorkBook }
 
     // states for timer
     private val timeRemainingForTest = mutableStateOf(createTimeString(0, 0, 0))
@@ -84,7 +88,10 @@ class ExamerTestSessionViewModel(
 
     init {
         countDownTimer.start()
-        viewModelScope.launch { fetchAndAssignWorkBookListFromRepository() }
+        viewModelScope.launch {
+            fetchAndAssignWorkBookListFromRepository()
+            _currentWorkBook.value = workBookList?.get(_currentWorkBookIndex.value)
+        }
     }
 
     override fun playAudioForCurrentWorkBook() {
