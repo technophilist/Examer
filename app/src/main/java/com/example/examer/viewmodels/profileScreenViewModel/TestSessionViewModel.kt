@@ -28,6 +28,9 @@ import kotlinx.coroutines.launch
  * that is used to manage a single test ([TestDetails]).
  */
 interface TestSessionViewModel {
+    enum class UiState { IDLE, LOADING, WORKBOOK_LIST_FETCH_ERROR }
+
+    val uiState: State<UiState>
     val currentWorkBookNumber: State<Int>
     val hoursRemaining: State<String>
     val minutesRemaining: State<String>
@@ -44,6 +47,9 @@ class ExamerTestSessionViewModel(
     private val mediaPlayer: MediaPlayer,
     private val testDetails: TestDetails,
 ) : ViewModel(), TestSessionViewModel {
+    private val _uiState = mutableStateOf(TestSessionViewModel.UiState.IDLE)
+    override val uiState = _uiState as State<TestSessionViewModel.UiState>
+
     // variables for workBook
     private lateinit var workBookList: List<WorkBook>
     private val _currentWorkBookIndex = mutableStateOf(0)
