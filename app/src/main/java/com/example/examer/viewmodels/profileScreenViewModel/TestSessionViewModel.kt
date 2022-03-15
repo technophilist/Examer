@@ -150,7 +150,10 @@ class ExamerTestSessionViewModel(
         // if the fetch operation was successful, set ui state to IDLE.
         // if it was un-successful, then set ui state to error state
         when {
-            result.isSuccess -> _uiState.value = TestSessionViewModel.UiState.IDLE
+            result.isSuccess -> {
+                workBookList = result.getOrNull()
+                _uiState.value = TestSessionViewModel.UiState.IDLE
+            }
             result.isFailure -> _uiState.value =
                 TestSessionViewModel.UiState.WORKBOOK_LIST_FETCH_ERROR
         }
