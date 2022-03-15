@@ -51,7 +51,7 @@ class ExamerTestSessionViewModel(
     override val uiState = _uiState as State<TestSessionViewModel.UiState>
 
     // variables for workBook
-    private lateinit var workBookList: List<WorkBook>
+    private var workBookList: List<WorkBook>? = null
     private val _currentWorkBookIndex = mutableStateOf(0)
     override val currentWorkBookNumber = derivedStateOf { _currentWorkBookIndex.value + 1 }
 
@@ -88,10 +88,16 @@ class ExamerTestSessionViewModel(
     }
 
     override fun playAudioForCurrentWorkBook() {
+        // if the workbook list is null, set ui state to error
+        // and return
+        if (workBookList == null) {
+            _uiState.value = TestSessionViewModel.UiState.WORKBOOK_LIST_FETCH_ERROR
+            return
+        }
         // return if there are not repeats left or the media player is already playing
         if (_numberOfRepeatsLeftForAudioFile.value - 1 < 0 || mediaPlayer.isPlaying) return
         // get current work book
-        val currentWorkBook = workBookList[_currentWorkBookIndex.value]
+        val currentWorkBook = workBookList!![_currentWorkBookIndex.value]
         // decrement the value of umberOfRepeatsLeftForAudioFile variable by 1
         _numberOfRepeatsLeftForAudioFile.value -= 1
         // use media player to start audio playback
