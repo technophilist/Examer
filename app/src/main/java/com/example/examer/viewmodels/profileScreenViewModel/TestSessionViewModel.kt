@@ -120,10 +120,20 @@ class ExamerTestSessionViewModel(
     }
 
     private suspend fun fetchAndAssignWorkBookListFromRepository() {
-        workBookList = repository.fetchWorkBookList(
+        // set the ui state to loading
+        _uiState.value = TestSessionViewModel.UiState.LOADING
+        // fetch the word list using repository
+        val result = repository.fetchWorkBookList(
             user = authenticationService.currentUser.value!!,
             testDetails = testDetails
-        ).getOrDefault(emptyList())
+        )
+        // if the fetch operation was successful, set ui state to IDLE.
+        // if it was un-successful, then set ui state to error state
+        when {
+            result.isSuccess -> _uiState.value = TestSessionViewModel.UiState.IDLE
+            result.isFailure -> _uiState.value =
+                TestSessionViewModel.UiState.WORKBOOK_LIST_FETCH_ERROR
+        }
     }
 
     private fun createTimeString(
