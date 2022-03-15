@@ -128,8 +128,15 @@ class ExamerTestSessionViewModel(
     }
 
     override fun moveToNextWorkBook() {
-        //TODO
+        // if work book is null, return
+        if (workBookList == null) return
+        // if incrementing the index value makes the index value >=
+        // the size of the workbook, return
+        if (_currentWorkBookIndex.value + 1 >= workBookList!!.size) return
+        // increment the index value
         _currentWorkBookIndex.value++
+        // assign the workbook at the incremented index
+        _currentWorkBook.value = workBookList!![_currentWorkBookIndex.value]
     }
 
     private suspend fun fetchAndAssignWorkBookListFromRepository() {
