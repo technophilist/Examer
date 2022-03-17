@@ -1,5 +1,6 @@
 package com.example.examer.viewmodels
 
+import androidx.annotation.MainThread
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -9,6 +10,7 @@ import com.example.examer.auth.AuthenticationService
 import com.example.examer.data.Repository
 import com.example.examer.data.domain.ExamerUser
 import com.example.examer.data.domain.TestDetails
+import com.example.examer.data.domain.WorkBook
 import kotlinx.coroutines.launch
 
 /**
@@ -31,6 +33,11 @@ interface TestsViewModel {
     val testDetailsList: State<List<TestDetails>>
     val testsViewModelUiState: State<TestsViewModelUiState>
     fun refreshTestDetailsList()
+    fun fetchWorkBookListForTestDetails(
+        testDetails: TestDetails,
+        @MainThread onSuccess: (List<WorkBook>) -> Unit,
+        @MainThread onFailure: ((Throwable) -> Unit)? = null
+    )
 }
 
 /**
@@ -62,6 +69,18 @@ class ExamerTestsViewModel(
 
     override fun refreshTestDetailsList() {
         fetchAndAssignTestDetailsList()
+    }
+
+    override fun fetchWorkBookListForTestDetails(
+        testDetails: TestDetails,
+        onSuccess: (List<WorkBook>) -> Unit,
+        onFailure: ((Throwable) -> Unit)?
+    ) {
+        val currentUser = authenticationService.currentUser.value ?: return
+        viewModelScope.launch {
+            repository.fetchWorkBookList(currentUser, testDetails)
+                .fold(onSuccess = onSuccess, onFailure = { onFailure?.invoke(it) })
+        }
     }
 
     /**
