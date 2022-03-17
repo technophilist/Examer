@@ -44,8 +44,6 @@ interface TestSessionViewModel {
 }
 
 class ExamerTestSessionViewModel(
-    private val repository: Repository,
-    private val authenticationService: AuthenticationService,
     private val mediaPlayer: MediaPlayer,
     private val testDetails: TestDetails,
     private val workBookList: List<WorkBook>
