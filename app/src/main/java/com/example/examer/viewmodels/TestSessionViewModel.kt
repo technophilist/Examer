@@ -56,7 +56,7 @@ class ExamerTestSessionViewModel(
     // variables for workBook
     private val _currentWorkBookIndex = mutableStateOf(0)
     override val currentWorkBookNumber = derivedStateOf { _currentWorkBookIndex.value + 1 }
-    private val _currentWorkBook = mutableStateOf<WorkBook?>(null)
+    private val _currentWorkBook = mutableStateOf(workBookList.first())
     override val currentWorkBook by derivedStateOf { _currentWorkBook }
 
     // states for timer
@@ -77,8 +77,8 @@ class ExamerTestSessionViewModel(
     )
 
     // Audio Playback
-    private val maximumNumberOfRepeatsAllowed: Int = 3 // TODO hardcoded
-    private val _numberOfRepeatsLeftForAudioFile = mutableStateOf(maximumNumberOfRepeatsAllowed)
+    private val _numberOfRepeatsLeftForAudioFile =
+        mutableStateOf(_currentWorkBook.value.audioFile.numberOfRepeatsAllowedForAudioFile)
     override val numberOfRepeatsLeftForAudioFile = _numberOfRepeatsLeftForAudioFile as State<Int>
 
     // playback progress states
@@ -88,19 +88,16 @@ class ExamerTestSessionViewModel(
 
     init {
         countDownTimer.start()
-        _currentWorkBook.value = workBookList[_currentWorkBookIndex.value]
     }
 
     override fun playAudioForCurrentWorkBook() {
         // return if there are not repeats left or the media player is already playing
         if (_numberOfRepeatsLeftForAudioFile.value - 1 < 0 || mediaPlayer.isPlaying) return
-        // get current work book
-        val currentWorkBook = workBookList[_currentWorkBookIndex.value]
         // decrement the value of umberOfRepeatsLeftForAudioFile variable by 1
         _numberOfRepeatsLeftForAudioFile.value -= 1
         // use media player to start audio playback
         mediaPlayer.run {
-            setDataSource(currentWorkBook.audioFile.localAudioFileUri.toString())
+            setDataSource(_currentWorkBook.value.audioFile.localAudioFileUri.toString())
             prepare()
             start()
             setProgressBasedOnMediaPlayerState(this)
@@ -124,8 +121,12 @@ class ExamerTestSessionViewModel(
         if (_currentWorkBookIndex.value + 1 >= workBookList.size) return
         // increment the index value
         _currentWorkBookIndex.value++
-        // assign the workbook at the incremented index
+        // assign the workbook at the incremented index to the current workbook variable
         _currentWorkBook.value = workBookList[_currentWorkBookIndex.value]
+        // set the number of repeats allowed for the audio file associated
+        // with the new workbook
+        _numberOfRepeatsLeftForAudioFile.value =
+            _currentWorkBook.value.audioFile.numberOfRepeatsAllowedForAudioFile
     }
 
     private fun createTimeString(
