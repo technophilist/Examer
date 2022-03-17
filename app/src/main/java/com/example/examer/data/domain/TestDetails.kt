@@ -36,7 +36,7 @@ data class TestDetails(
     val title: String,
     val description: String,
     val language: String,
-    val localDateTime: @Contextual LocalDateTime,
+    val localDateTime: @Serializable(with = LocalDateTimeSerializer::class) LocalDateTime,
     val totalNumberOfQuestions: Int,
     val testDurationInMinutes: Int,
     val testStatus: Status
