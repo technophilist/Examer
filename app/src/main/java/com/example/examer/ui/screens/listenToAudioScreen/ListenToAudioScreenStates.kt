@@ -19,8 +19,6 @@ data class WorkBookState(
 data class AudioPlaybackState(
     val isEnabled: State<Boolean>,
     @FloatRange(from = 0.0, to = 1.0) val progress: State<Float>,
-    val numberOfRepeatsLeft: State<Int>,
-    val maximumNumberOfRepeatsAllowed: Int,
-    val onMaximumNumberOfRepeatsReached: () -> Unit,
+    val numberOfRepeatsLeft: State<Int>
 )
 
