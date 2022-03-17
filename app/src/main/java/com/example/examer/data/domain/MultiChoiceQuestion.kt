@@ -1,5 +1,7 @@
 package com.example.examer.data.domain
 
+import kotlinx.serialization.Serializable
+
 /**
  * Class that models a single question in a [WorkBook].
  *
@@ -12,13 +14,14 @@ package com.example.examer.data.domain
  * @param mark represents the maximum weightage (mark) for this
  * question.
  */
+@Serializable
 data class MultiChoiceQuestion(
     val id: String,
     val question: String,
     val options: Array<String>,
     val indexOfCorrectOption: Int,
     val mark: Int,
-) {
+) : java.io.Serializable {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
