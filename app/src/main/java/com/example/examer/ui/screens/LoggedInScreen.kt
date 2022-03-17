@@ -223,6 +223,10 @@ fun LoggedInScreen(
                         }
                     }
                 }
+                takeTestScreenNavigation(
+                    route = ExamerDestinations.TakeTestScreen.route,
+                    appContainer = appContainer
+                )
             }
         },
     )
