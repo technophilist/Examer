@@ -1,9 +1,12 @@
 package com.example.examer.di
 
 import android.app.Application
+import android.media.MediaPlayer
 import com.example.examer.auth.FirebaseAuthenticationService
 import com.example.examer.data.ExamerRepository
 import com.example.examer.data.Repository
+import com.example.examer.data.domain.TestDetails
+import com.example.examer.data.domain.WorkBook
 import com.example.examer.data.remote.FirebaseRemoteDatabase
 import com.example.examer.data.remote.RemoteDatabase
 import com.example.examer.usecases.ExamerCredentialsValidationUseCase
@@ -46,6 +49,15 @@ class AppContainer(application: Application) {
         authenticationService = authenticationService,
         repository = repository,
         testDetailsListType = TestDetailsListType.PREVIOUS_TESTS
+    )
+
+    fun getTestSessionViewModelFactory(
+        testDetails: TestDetails,
+        workBookList: List<WorkBook>
+    ) = TestSessionViewModelFactory(
+        mediaPlayer = MediaPlayer(),
+        testDetails = testDetails,
+        workBookList = workBookList
     )
 }
 
