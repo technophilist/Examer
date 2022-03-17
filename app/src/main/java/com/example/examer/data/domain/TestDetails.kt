@@ -1,5 +1,7 @@
 package com.example.examer.data.domain
 
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Serializable
 import timber.log.Timber
 import java.time.Instant
 import java.time.LocalDateTime
@@ -28,16 +30,17 @@ enum class Status { OPEN, SCHEDULED, MISSED, COMPLETED }
  * @param minutesPerQuestion indicates the number of minutes allotted
  * for each question.
  */
+@Serializable
 data class TestDetails(
     val id: String,
     val title: String,
     val description: String,
     val language: String,
-    val localDateTime: LocalDateTime,
+    val localDateTime: @Contextual LocalDateTime,
     val totalNumberOfQuestions: Int,
     val minutesPerQuestion: Int,
     val testStatus: Status
-) {
+) : java.io.Serializable {
     companion object {
         /**
          * Used to get an instance of [LocalDateTime] for the provided
