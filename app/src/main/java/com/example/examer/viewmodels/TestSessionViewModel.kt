@@ -48,12 +48,12 @@ class ExamerTestSessionViewModel(
     private val authenticationService: AuthenticationService,
     private val mediaPlayer: MediaPlayer,
     private val testDetails: TestDetails,
+    private val workBookList: List<WorkBook>
 ) : ViewModel(), TestSessionViewModel {
     private val _uiState = mutableStateOf(TestSessionViewModel.UiState.IDLE)
     override val uiState = _uiState as State<TestSessionViewModel.UiState>
 
     // variables for workBook
-    private var workBookList: List<WorkBook>? = null
     private val _currentWorkBookIndex = mutableStateOf(0)
     override val currentWorkBookNumber = derivedStateOf { _currentWorkBookIndex.value + 1 }
     private val _currentWorkBook = mutableStateOf<WorkBook?>(null)
@@ -88,23 +88,14 @@ class ExamerTestSessionViewModel(
 
     init {
         countDownTimer.start()
-        viewModelScope.launch {
-            fetchAndAssignWorkBookListFromRepository()
-            _currentWorkBook.value = workBookList?.get(_currentWorkBookIndex.value)
-        }
+        _currentWorkBook.value = workBookList[_currentWorkBookIndex.value]
     }
 
     override fun playAudioForCurrentWorkBook() {
-        // if the workbook list is null, set ui state to error
-        // and return
-        if (workBookList == null) {
-            _uiState.value = TestSessionViewModel.UiState.WORKBOOK_LIST_FETCH_ERROR
-            return
-        }
         // return if there are not repeats left or the media player is already playing
         if (_numberOfRepeatsLeftForAudioFile.value - 1 < 0 || mediaPlayer.isPlaying) return
         // get current work book
-        val currentWorkBook = workBookList!![_currentWorkBookIndex.value]
+        val currentWorkBook = workBookList[_currentWorkBookIndex.value]
         // decrement the value of umberOfRepeatsLeftForAudioFile variable by 1
         _numberOfRepeatsLeftForAudioFile.value -= 1
         // use media player to start audio playback
@@ -128,35 +119,13 @@ class ExamerTestSessionViewModel(
     }
 
     override fun moveToNextWorkBook() {
-        // if work book is null, return
-        if (workBookList == null) return
         // if incrementing the index value makes the index value >=
         // the size of the workbook, return
-        if (_currentWorkBookIndex.value + 1 >= workBookList!!.size) return
+        if (_currentWorkBookIndex.value + 1 >= workBookList.size) return
         // increment the index value
         _currentWorkBookIndex.value++
         // assign the workbook at the incremented index
-        _currentWorkBook.value = workBookList!![_currentWorkBookIndex.value]
-    }
-
-    private suspend fun fetchAndAssignWorkBookListFromRepository() {
-        // set the ui state to loading
-        _uiState.value = TestSessionViewModel.UiState.LOADING
-        // fetch the word list using repository
-        val result = repository.fetchWorkBookList(
-            user = authenticationService.currentUser.value!!,
-            testDetails = testDetails
-        )
-        // if the fetch operation was successful, set ui state to IDLE.
-        // if it was un-successful, then set ui state to error state
-        when {
-            result.isSuccess -> {
-                workBookList = result.getOrNull()
-                _uiState.value = TestSessionViewModel.UiState.IDLE
-            }
-            result.isFailure -> _uiState.value =
-                TestSessionViewModel.UiState.WORKBOOK_LIST_FETCH_ERROR
-        }
+        _currentWorkBook.value = workBookList[_currentWorkBookIndex.value]
     }
 
     private fun createTimeString(
