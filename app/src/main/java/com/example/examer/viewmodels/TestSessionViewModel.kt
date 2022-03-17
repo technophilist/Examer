@@ -57,7 +57,7 @@ class ExamerTestSessionViewModel(
     private val _currentWorkBookIndex = mutableStateOf(0)
     override val currentWorkBookNumber = derivedStateOf { _currentWorkBookIndex.value + 1 }
     private val _currentWorkBook = mutableStateOf(workBookList.first())
-    override val currentWorkBook by derivedStateOf { _currentWorkBook }
+    override val currentWorkBook = _currentWorkBook as State<WorkBook>
 
     // states for timer
     private val timeRemainingForTest = mutableStateOf(createTimeString(0, 0, 0))
