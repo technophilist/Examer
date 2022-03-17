@@ -1,10 +1,13 @@
 package com.example.examer.utils
 
 import android.app.Application
+import android.media.MediaPlayer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.examer.auth.AuthenticationService
 import com.example.examer.data.Repository
+import com.example.examer.data.domain.TestDetails
+import com.example.examer.data.domain.WorkBook
 import com.example.examer.di.DispatcherProvider
 import com.example.examer.di.StandardDispatchersProvider
 import com.example.examer.usecases.CredentialsValidationUseCase
@@ -110,5 +113,19 @@ class ProfileScreenViewModelFactory(
         authenticationService = authenticationService,
         passwordManager = passwordManager,
         credentialsValidationUseCase = credentialsValidationUseCase
+    ) as T
+
+}
+
+class TestSessionViewModelFactory(
+    private val mediaPlayer: MediaPlayer,
+    private val testDetails: TestDetails,
+    private val workBookList: List<WorkBook>,
+) : ViewModelProvider.Factory {
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel?> create(modelClass: Class<T>) = ExamerTestSessionViewModel(
+        mediaPlayer = mediaPlayer,
+        testDetails = testDetails,
+        workBookList = workBookList
     ) as T
 }
