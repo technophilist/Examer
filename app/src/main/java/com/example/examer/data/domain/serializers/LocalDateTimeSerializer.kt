@@ -1,4 +1,4 @@
-package com.example.examer.data.domain
+package com.example.examer.data.domain.serializers
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializer
@@ -17,7 +17,7 @@ class LocalDateTimeSerializer : KSerializer<LocalDateTime> {
         // get an instance of Instant using the epoch millis
         val instant = Instant.ofEpochMilli(epochMillis)
         // create an instance of LocalDateTime using the derived
-        // Iginstant object
+        // Instant object
         return LocalDateTime.ofInstant(instant, ZoneId.systemDefault())
     }
 
