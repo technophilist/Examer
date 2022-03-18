@@ -1,4 +1,4 @@
-package com.example.examer.data.domain
+package com.example.examer.data.domain.serializers
 
 import android.net.Uri
 import kotlinx.serialization.KSerializer
