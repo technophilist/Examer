@@ -1,7 +1,7 @@
 package com.example.examer.data.domain
 
 import android.net.Uri
-import kotlinx.serialization.Contextual
+import com.example.examer.data.domain.serializers.UriSerializer
 import kotlinx.serialization.Serializable
 
 /**
@@ -12,6 +12,6 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class ExamerAudioFile(
-    val localAudioFileUri: @Contextual Uri,
+    val localAudioFileUri: @Serializable(with = UriSerializer::class) Uri,
     val numberOfRepeatsAllowedForAudioFile: Int,
 ) : java.io.Serializable
