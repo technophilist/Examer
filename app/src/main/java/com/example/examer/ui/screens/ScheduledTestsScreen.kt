@@ -34,7 +34,7 @@ fun ScheduledTestsScreen(
     tests: List<TestDetails>,
     swipeRefreshState: SwipeRefreshState,
     onRefresh: () -> Unit,
-    onTakeTestButtonClick: () -> Unit
+    onTakeTestButtonClick: (TestDetails) -> Unit
 ) {
     val listHeader = stringResource(id = R.string.label_upcoming_tests)
     TestListScreen(
@@ -49,7 +49,7 @@ fun ScheduledTestsScreen(
             onExpandButtonClick = onExpandButtonClick,
             onClick = onClick,
             is24HourTimeFormat = is24hourFormat,
-            onTakeTestButtonClick = onTakeTestButtonClick
+            onTakeTestButtonClick = { onTakeTestButtonClick(testDetailsItem) }
         )
     }
 }
