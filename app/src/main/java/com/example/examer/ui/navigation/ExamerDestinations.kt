@@ -17,8 +17,14 @@ sealed class ExamerDestinations(val route: String) {
     object LoggedInScreen : ExamerDestinations("ExamerDestinations.LoggedInRoute")
     object TestHistoryScreen : ExamerDestinations("ExamerDestinations.TestHistoryScreen")
     object ProfileScreen : ExamerDestinations("ExamerDestinations.ProfileScreen")
+
+    /**
+     * Note: The trailing '/' is required even though the docs don't
+     * mention it. Removing it will cause part of the second argument
+     * to be cut off.
+     */
     object TakeTestScreen :
-        ExamerDestinations("ExamerDestinations.TakeTestScreen/{testDetails}/{workBookList}") {
+        ExamerDestinations("ExamerDestinations.TakeTestScreen/{testDetails}/{workBookList}/") {
         fun buildRoute(
             testDetails: TestDetails,
             workBookList: List<WorkBook>
@@ -45,7 +51,7 @@ sealed class ExamerDestinations(val route: String) {
                 it.copy(audioFile = audioFileWithEncodedUrl)
             }
             val workBookListJsonString = Json.encodeToString(encodedUrlWorkBookList)
-            return "ExamerDestinations.TakeTestScreen/$testDetailsJsonString/$workBookListJsonString"
+            return "ExamerDestinations.TakeTestScreen/$testDetailsJsonString/$workBookListJsonString/"
         }
     }
 }
