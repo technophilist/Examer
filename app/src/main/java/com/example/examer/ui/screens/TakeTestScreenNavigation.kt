@@ -18,11 +18,8 @@ import com.example.examer.ui.screens.listenToAudioScreen.ListenToAudioScreen
 import com.example.examer.ui.screens.listenToAudioScreen.TimerState
 import com.example.examer.ui.screens.listenToAudioScreen.WorkBookState
 import com.example.examer.viewmodels.ExamerTestSessionViewModel
-
-private const val TEST_DETAILS_ARGUMENT =
-    "com.example.examer.ui.screens.TEST_DETAILS_ARGUMENT"
-private const val WORKBOOK_LIST_ARGUMENT =
-    "com.example.examer.ui.screens.WORKBOOK_LIST_ARGUMENT"
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 
 fun NavGraphBuilder.takeTestScreenNavigation(
     appContainer: AppContainer,
@@ -32,24 +29,16 @@ fun NavGraphBuilder.takeTestScreenNavigation(
         route = route,
         startDestination = TakeTestScreenDestinations.ListenToAudioScreen.route,
     ) {
-        composable(
-            route = TakeTestScreenDestinations.ListenToAudioScreen.route,
-            arguments = listOf(
-                navArgument(TEST_DETAILS_ARGUMENT) {
-                    type = NavType.SerializableType(TestDetails::class.java)
-                    nullable = false
-                },
-                navArgument(WORKBOOK_LIST_ARGUMENT) {
-                    type = NavType.SerializableArrayType(WorkBook::class.java)
-                    nullable = false
-                }
-            )
-        ) {
+        composable(route = TakeTestScreenDestinations.ListenToAudioScreen.route) {
             it.arguments?.let { bundle ->
+                val testDetails =
+                    Json.decodeFromString<TestDetails>(bundle.getString("testDetails")!!)
+                val workBookList =
+                    Json.decodeFromString<List<WorkBook>>(bundle.getString("workBookList")!!)
                 val testSessionViewModel = viewModel<ExamerTestSessionViewModel>(
                     factory = appContainer.getTestSessionViewModelFactory(
-                        testDetails = bundle[TEST_DETAILS_ARGUMENT] as TestDetails,
-                        workBookList = (bundle[WORKBOOK_LIST_ARGUMENT] as Array<WorkBook>).toList()
+                        testDetails = testDetails,
+                        workBookList = workBookList
                     ),
                     viewModelStoreOwner = it
                 )
