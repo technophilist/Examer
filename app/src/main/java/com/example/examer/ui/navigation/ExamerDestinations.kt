@@ -6,7 +6,6 @@ import com.example.examer.data.domain.TestDetails
 import com.example.examer.data.domain.WorkBook
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import timber.log.Timber
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
@@ -25,6 +24,8 @@ sealed class ExamerDestinations(val route: String) {
      */
     object TakeTestScreen :
         ExamerDestinations("ExamerDestinations.TakeTestScreen/{testDetails}/{workBookList}/") {
+        const val TEST_DETAILS_ARG = "testDetails"
+        const val WORKBOOK_LIST_ARG = "workBookList"
         fun buildRoute(
             testDetails: TestDetails,
             workBookList: List<WorkBook>
