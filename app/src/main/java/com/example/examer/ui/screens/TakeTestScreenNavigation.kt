@@ -32,9 +32,9 @@ fun NavGraphBuilder.takeTestScreenNavigation(
         composable(route = TakeTestScreenDestinations.ListenToAudioScreen.route) {
             it.arguments?.let { bundle ->
                 val testDetails =
-                    Json.decodeFromString<TestDetails>(bundle.getString("testDetails")!!)
+                    Json.decodeFromString<TestDetails>(bundle.getString(ExamerDestinations.TakeTestScreen.TEST_DETAILS_ARG)!!)
                 val workBookList =
-                    Json.decodeFromString<List<WorkBook>>(bundle.getString("workBookList")!!)
+                    Json.decodeFromString<List<WorkBook>>(bundle.getString(ExamerDestinations.TakeTestScreen.WORKBOOK_LIST_ARG)!!)
                 val testSessionViewModel = viewModel<ExamerTestSessionViewModel>(
                     factory = appContainer.getTestSessionViewModelFactory(
                         testDetails = testDetails,
