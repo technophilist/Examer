@@ -169,11 +169,25 @@ fun LoggedInScreen(
                     val swipeRefreshState = rememberSwipeRefreshState(
                         isRefreshing = testsViewModel.testsViewModelUiState.value == TestsViewModelUiState.LOADING
                     )
+                    val testList by testsViewModel.testDetailsList
                     ScheduledTestsScreen(
-                        tests = testsViewModel.testDetailsList.value,
+                        tests = testList,
                         swipeRefreshState = swipeRefreshState,
                         onRefresh = testsViewModel::refreshTestDetailsList,
-                        onTakeTestButtonClick = {}
+                        onTakeTestButtonClick = { selectedTestDetails ->
+                            testsViewModel.fetchWorkBookListForTestDetails(
+                                selectedTestDetails,
+                                onSuccess = { workBookList ->
+                                    val takeTestScreenRoute =
+                                        ExamerDestinations.TakeTestScreen.buildRoute(
+                                            testDetails = selectedTestDetails,
+                                            workBookList = workBookList
+                                        )
+                                    loggedInNavController.navigate(takeTestScreenRoute)
+                                },
+                                onFailure = { /* TODO */ }
+                            )
+                        }
                     )
                 }
                 composable(route = ExamerDestinations.TestHistoryScreen.route) {
@@ -223,6 +237,10 @@ fun LoggedInScreen(
                         }
                     }
                 }
+                takeTestScreenNavigation(
+                    route = ExamerDestinations.TakeTestScreen.route,
+                    appContainer = appContainer
+                )
             }
         },
     )
