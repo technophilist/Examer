@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'com.google.gms.google-services'
+    id 'org.jetbrains.kotlin.plugin.serialization' version "1.6.10"
 }
 
 android {
@@ -92,4 +93,7 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.1.1'
     // Encrypted shared preferences
     implementation "androidx.security:security-crypto:1.0.0"
+    // serialization
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.0"
+
 }

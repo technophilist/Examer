@@ -2,9 +2,11 @@ package com.example.examer.data.remote
 
 import android.graphics.Bitmap
 import android.net.Uri
-import com.example.examer.data.domain.ExamerUser
-import com.example.examer.data.domain.Status
-import com.example.examer.data.domain.TestDetails
+import com.example.examer.data.domain.*
+import com.example.examer.data.dto.AudioFileDTO
+import com.example.examer.data.dto.MultiChoiceQuestionListDTO
+import com.example.examer.data.dto.WorkBookDTO
+import com.example.examer.data.dto.toMultiChoiceQuestion
 import com.example.examer.di.DispatcherProvider
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
@@ -13,7 +15,10 @@ import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import java.io.ByteArrayOutputStream
+import java.net.URL
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -22,7 +27,7 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
 
     override suspend fun fetchScheduledTestListForUser(user: ExamerUser): List<TestDetails> =
         withContext(dispatcherProvider.io) {
-            val scheduledTestsCollection = fetchCollection("users/${user.id}/scheduledTests")
+            val scheduledTestsCollection = fetchCollection(getCollectionPathForScheduledTests(user))
             // if no collection exists for the user, which likely indicates
             // that the user is a newly registered user, an empty list will
             // be returned.
@@ -31,7 +36,7 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
 
     override suspend fun fetchPreviousTestListForUser(user: ExamerUser): List<TestDetails> =
         withContext(dispatcherProvider.io) {
-            val previousTestsCollection = fetchCollection("users/${user.id}/previousTests")
+            val previousTestsCollection = fetchCollection(getCollectionPathForPreviousTests(user))
             // if no collection exists for the user, which likely indicates
             // that the user is a newly registered user, an empty list will
             // be returned.
@@ -50,11 +55,11 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
             val data = byteArrayOutputStream.toByteArray()
             Firebase.storage
                 .reference
-                .child("profile_pics/$fileName.jpg")
+                .child("$PROFILE_PICTURES_FOLDER_NAME/$fileName.jpg")
                 .putBytes(data)
                 .await()
             val uri = Firebase.storage.reference
-                .child("profile_pics/$fileName.jpg")
+                .child("$PROFILE_PICTURES_FOLDER_NAME/$fileName.jpg")
                 .downloadUrl
                 .await()
             Result.success(uri)
@@ -62,6 +67,39 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
             if (exception is CancellationException) throw exception
             Result.failure(exception)
         }
+    }
+
+    override suspend fun fetchWorkBookList(
+        user: ExamerUser,
+        testDetails: TestDetails
+    ): Result<List<WorkBookDTO>> = withContext(dispatcherProvider.io) {
+        try {
+            val workbooksCollectionPath = getCollectionPathForWorkBooks(user, testDetails)
+            val workbooksCollection = fetchCollection(workbooksCollectionPath)
+                .documents
+                .map { it.toWorkBookDTO() }
+            Result.success(workbooksCollection)
+        } catch (exception: Exception) {
+            if (exception is CancellationException) throw exception
+            Result.failure(exception)
+        }
+    }
+
+    private fun DocumentSnapshot.toWorkBookDTO(): WorkBookDTO {
+        val examerAudioFile = AudioFileDTO(
+            audioFileUrl = URL(get("audioFileDownloadUrl").toString()),
+            numberOfRepeatsAllowedForAudioFile = get("numberOfRepeatsAllowedForAudioFile").toString()
+                .toInt()
+        )
+        val questionsJsonString = get("questionsJsonList").toString()
+        val multiChoiceQuestionDtoList =
+            Json.decodeFromString<MultiChoiceQuestionListDTO>(questionsJsonString)
+        val multiChoiceQuestionList = multiChoiceQuestionDtoList.questions
+        return WorkBookDTO(
+            id = id,
+            audioFile = examerAudioFile,
+            questions = multiChoiceQuestionList
+        )
     }
 
     private fun DocumentSnapshot.toTestDetails() = TestDetails(
@@ -86,5 +124,16 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
         .get()
         .await()
 
+    companion object {
+        private const val PROFILE_PICTURES_FOLDER_NAME = "profile_pics"
+        private fun getCollectionPathForScheduledTests(user: ExamerUser) =
+            "users/${user.id}/scheduledTests"
+
+        private fun getCollectionPathForPreviousTests(user: ExamerUser) =
+            "users/${user.id}/previousTests"
+
+        private fun getCollectionPathForWorkBooks(user: ExamerUser, testDetails: TestDetails) =
+            "${getCollectionPathForScheduledTests(user)}/${testDetails.id}/workbooks"
+    }
 
 }
