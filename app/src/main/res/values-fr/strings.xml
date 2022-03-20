@@ -47,4 +47,8 @@
     <string name="snackbar_update_failure">Impossible de mettre à jour. Une erreur réseau s\'est produite.</string>
     <string name="toast_same_new_value_error">Le nouveau %1$s est identique à l\'ancien %1$s</string>
     <string name="label_minutes">minutes</string>
+    <string name="label_listen_and_answer">Écoutez le fichier audio et répondez aux questions du cahier.</string>
+    <string name="label_no_of_repeats_left">" Nombre de répétitions restantes:  %1$s"</string>
+    <string name="button_label_go_to_workbook">Aller au classeur</string>
+    <string name="label_workbook">Classeur</string>
 </resources>
