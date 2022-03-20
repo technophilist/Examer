@@ -80,7 +80,7 @@ class ExamerTestSessionViewModel(
     override val numberOfRepeatsLeftForAudioFile = _numberOfRepeatsLeftForAudioFile as State<Int>
 
     // playback progress states
-    @FloatRange(from = 0.0, to = 1.0)
+    /*@FloatRange(from = 0.0, to = 1.0)*/
     private val _playbackProgress = mutableStateOf(0.0f)
     override val playbackProgress = _playbackProgress as State<Float>
 
