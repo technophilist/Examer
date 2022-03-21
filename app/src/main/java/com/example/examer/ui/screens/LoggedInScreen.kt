@@ -12,6 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -21,6 +23,7 @@ import coil.compose.rememberImagePainter
 import coil.request.CachePolicy
 import com.example.examer.R
 import com.example.examer.data.domain.ExamerUser
+import com.example.examer.data.domain.TestDetails
 import com.example.examer.di.AppContainer
 import com.example.examer.ui.components.ExamerNavigationScaffold
 import com.example.examer.ui.components.NavigationDrawerDestination
@@ -160,83 +163,26 @@ fun LoggedInScreen(
                 navController = loggedInNavController,
                 startDestination = ExamerDestinations.ScheduledTestsScreen.route
             ) {
-                composable(route = ExamerDestinations.ScheduledTestsScreen.route) {
-                    val scheduledTestsViewModelFactory = appContainer.scheduledTestsViewModelFactory
-                    val testsViewModel = viewModel<ExamerTestsViewModel>(
-                        factory = scheduledTestsViewModelFactory,
-                        viewModelStoreOwner = it
-                    )
-                    val swipeRefreshState = rememberSwipeRefreshState(
-                        isRefreshing = testsViewModel.testsViewModelUiState.value == TestsViewModelUiState.LOADING
-                    )
-                    val testList by testsViewModel.testDetailsList
-                    ScheduledTestsScreen(
-                        tests = testList,
-                        swipeRefreshState = swipeRefreshState,
-                        onRefresh = testsViewModel::refreshTestDetailsList,
-                        onTakeTestButtonClick = { selectedTestDetails ->
-                            testsViewModel.fetchWorkBookListForTestDetails(
-                                selectedTestDetails,
-                                onSuccess = { workBookList ->
-                                    val takeTestScreenRoute =
-                                        ExamerDestinations.TakeTestScreen.buildRoute(
-                                            testDetails = selectedTestDetails,
-                                            workBookList = workBookList
-                                        )
-                                    loggedInNavController.navigate(takeTestScreenRoute)
-                                },
-                                onFailure = { /* TODO */ }
-                            )
-                        }
-                    )
-                }
-                composable(route = ExamerDestinations.TestHistoryScreen.route) {
-                    val previousTestsViewModelFactory = appContainer.previousTestsViewModelFactory
-                    val testsViewModel = viewModel<ExamerTestsViewModel>(
-                        factory = previousTestsViewModelFactory,
-                        viewModelStoreOwner = it
-                    )
-                    val swipeRefreshState = rememberSwipeRefreshState(
-                        isRefreshing = testsViewModel.testsViewModelUiState.value == TestsViewModelUiState.LOADING
-                    )
-                    TestHistoryScreen(
-                        swipeRefreshState = swipeRefreshState,
-                        onRefresh = testsViewModel::refreshTestDetailsList,
-                        tests = testsViewModel.testDetailsList.value,
-                        onReviewButtonClick = {}
-                    )
-                }
-                composable(route = ExamerDestinations.ProfileScreen.route) { navBackStackEntry ->
-                    val profileScreenViewModel = viewModel<ExamerProfileScreenViewModel>(
-                        factory = appContainer.profileScreenViewModelFactory,
-                        viewModelStoreOwner = navBackStackEntry
-                    )
-                    val profileScreenUiState by profileScreenViewModel.uiState
-                    DefaultExamerProfileScreen(
-                        currentlyLoggedInUser = currentlyLoggedInUser,
-                        onNavigateToEditScreen = {
-                            navigationIconImageVector = Icons.Filled.ArrowBack
-                        },
-                        onNavigateFromEditScreen = {
-                            navigationIconImageVector = Icons.Filled.Menu
-                        },
-                        isLoadingOverlayVisible = profileScreenUiState == ProfileScreenViewModel.UiState.LOADING,
-                        updateProfilePicture = profileScreenViewModel::updateProfilePicture,
-                        updateName = profileScreenViewModel::updateName,
-                        updateEmail = profileScreenViewModel::updateEmail,
-                        updatePassword = profileScreenViewModel::updatePassword,
-                        isValidEmail = profileScreenViewModel::isValidEmail,
-                        isValidPassword = profileScreenViewModel::isValidPassword
-                    )
-                    LaunchedEffect(profileScreenUiState) {
-                        scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
-                        if (profileScreenUiState == ProfileScreenViewModel.UiState.UPDATE_SUCCESS) {
-                            scaffoldState.snackbarHostState.showSnackbar(resources.getString(R.string.snackbar_updated_successfully))
-                        } else if (profileScreenUiState == ProfileScreenViewModel.UiState.UPDATE_FAILURE) {
-                            scaffoldState.snackbarHostState.showSnackbar(resources.getString(R.string.snackbar_update_failure))
-                        }
-                    }
-                }
+                scheduledTestComposable(
+                    route = ExamerDestinations.ScheduledTestsScreen.route,
+                    appContainer = appContainer,
+                    loggedInNavController = loggedInNavController
+                )
+
+                testHistoryScreenComposable(
+                    route = ExamerDestinations.TestHistoryScreen.route,
+                    appContainer = appContainer
+                )
+
+                profileScreenComposable(
+                    route = ExamerDestinations.ProfileScreen.route,
+                    appContainer = appContainer,
+                    currentlyLoggedInUser = currentlyLoggedInUser,
+                    onNavigateToEditScreen = { navigationIconImageVector = Icons.Filled.ArrowBack },
+                    onNavigateFromEditScreen = { navigationIconImageVector = Icons.Filled.Menu },
+                    snackbarHostState = scaffoldState.snackbarHostState
+                )
+
                 takeTestScreenNavigation(
                     route = ExamerDestinations.TakeTestScreen.route,
                     appContainer = appContainer
@@ -244,4 +190,106 @@ fun LoggedInScreen(
             }
         },
     )
+}
+
+@ExperimentalCoilApi
+private fun NavGraphBuilder.profileScreenComposable(
+    route: String,
+    appContainer: AppContainer,
+    currentlyLoggedInUser: ExamerUser,
+    onNavigateToEditScreen: () -> Unit,
+    onNavigateFromEditScreen: () -> Unit,
+    snackbarHostState: SnackbarHostState
+) {
+    composable(route = route) { navBackStackEntry ->
+        val resources = LocalContext.current.resources
+        val profileScreenViewModel = viewModel<ExamerProfileScreenViewModel>(
+            factory = appContainer.profileScreenViewModelFactory,
+            viewModelStoreOwner = navBackStackEntry
+        )
+        val profileScreenUiState by profileScreenViewModel.uiState
+        DefaultExamerProfileScreen(
+            currentlyLoggedInUser = currentlyLoggedInUser,
+            onNavigateToEditScreen = onNavigateToEditScreen,
+            onNavigateFromEditScreen = onNavigateFromEditScreen,
+            isLoadingOverlayVisible = profileScreenUiState == ProfileScreenViewModel.UiState.LOADING,
+            updateProfilePicture = profileScreenViewModel::updateProfilePicture,
+            updateName = profileScreenViewModel::updateName,
+            updateEmail = profileScreenViewModel::updateEmail,
+            updatePassword = profileScreenViewModel::updatePassword,
+            isValidEmail = profileScreenViewModel::isValidEmail,
+            isValidPassword = profileScreenViewModel::isValidPassword
+        )
+        LaunchedEffect(profileScreenUiState) {
+            snackbarHostState.currentSnackbarData?.dismiss()
+            if (profileScreenUiState == ProfileScreenViewModel.UiState.UPDATE_SUCCESS) {
+                snackbarHostState.showSnackbar(resources.getString(R.string.snackbar_updated_successfully))
+            } else if (profileScreenUiState == ProfileScreenViewModel.UiState.UPDATE_FAILURE) {
+                snackbarHostState.showSnackbar(resources.getString(R.string.snackbar_update_failure))
+            }
+        }
+    }
+}
+
+@ExperimentalAnimationApi
+@ExperimentalMaterialApi
+private fun NavGraphBuilder.testHistoryScreenComposable(
+    route: String,
+    appContainer: AppContainer
+) {
+    composable(route = route) {
+        val previousTestsViewModelFactory = appContainer.previousTestsViewModelFactory
+        val testsViewModel = viewModel<ExamerTestsViewModel>(
+            factory = previousTestsViewModelFactory,
+            viewModelStoreOwner = it
+        )
+        val swipeRefreshState = rememberSwipeRefreshState(
+            isRefreshing = testsViewModel.testsViewModelUiState.value == TestsViewModelUiState.LOADING
+        )
+        TestHistoryScreen(
+            swipeRefreshState = swipeRefreshState,
+            onRefresh = testsViewModel::refreshTestDetailsList,
+            tests = testsViewModel.testDetailsList.value,
+            onReviewButtonClick = {}
+        )
+    }
+}
+
+@ExperimentalAnimationApi
+@ExperimentalMaterialApi
+private fun NavGraphBuilder.scheduledTestComposable(
+    route: String,
+    appContainer: AppContainer,
+    loggedInNavController: NavHostController
+) {
+    composable(route = route) {
+        val scheduledTestsViewModelFactory = appContainer.scheduledTestsViewModelFactory
+        val testsViewModel = viewModel<ExamerTestsViewModel>(
+            factory = scheduledTestsViewModelFactory,
+            viewModelStoreOwner = it
+        )
+        val swipeRefreshState = rememberSwipeRefreshState(
+            isRefreshing = testsViewModel.testsViewModelUiState.value == TestsViewModelUiState.LOADING
+        )
+        val testList by testsViewModel.testDetailsList
+        val onTakeTestButtonClick = { selectedTestDetails: TestDetails ->
+            testsViewModel.fetchWorkBookListForTestDetails(
+                selectedTestDetails,
+                onSuccess = { workBookList ->
+                    val takeTestScreenRoute = ExamerDestinations.TakeTestScreen.buildRoute(
+                        testDetails = selectedTestDetails,
+                        workBookList = workBookList
+                    )
+                    loggedInNavController.navigate(takeTestScreenRoute)
+                },
+                onFailure = { /* TODO */ }
+            )
+        }
+        ScheduledTestsScreen(
+            tests = testList,
+            swipeRefreshState = swipeRefreshState,
+            onRefresh = testsViewModel::refreshTestDetailsList,
+            onTakeTestButtonClick = onTakeTestButtonClick
+        )
+    }
 }
