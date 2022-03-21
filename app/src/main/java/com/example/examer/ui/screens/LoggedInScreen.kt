@@ -25,6 +25,7 @@ import com.example.examer.R
 import com.example.examer.data.domain.ExamerUser
 import com.example.examer.data.domain.TestDetails
 import com.example.examer.di.AppContainer
+import com.example.examer.ui.components.CircularLoadingProgressOverlay
 import com.example.examer.ui.components.ExamerNavigationScaffold
 import com.example.examer.ui.components.NavigationDrawerDestination
 import com.example.examer.ui.navigation.ExamerDestinations
@@ -32,6 +33,7 @@ import com.example.examer.viewmodels.ExamerTestsViewModel
 import com.example.examer.viewmodels.TestsViewModelUiState
 import com.example.examer.viewmodels.profileScreenViewModel.*
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @ExperimentalCoilApi
@@ -166,10 +168,12 @@ fun LoggedInScreen(
                 navController = loggedInNavController,
                 startDestination = ExamerDestinations.ScheduledTestsScreen.route
             ) {
-                scheduledTestComposable(
+                scheduledTestsComposable(
                     route = ExamerDestinations.ScheduledTestsScreen.route,
                     appContainer = appContainer,
-                    loggedInNavController = loggedInNavController
+                    loggedInNavController = loggedInNavController,
+                    snackbarHostState = scaffoldState.snackbarHostState,
+                    coroutineScope = coroutineScope
                 )
 
                 testHistoryScreenComposable(
@@ -260,12 +264,15 @@ private fun NavGraphBuilder.testHistoryScreenComposable(
 
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
-private fun NavGraphBuilder.scheduledTestComposable(
+private fun NavGraphBuilder.scheduledTestsComposable(
     route: String,
     appContainer: AppContainer,
-    loggedInNavController: NavHostController
+    loggedInNavController: NavHostController,
+    snackbarHostState: SnackbarHostState,
+    coroutineScope: CoroutineScope
 ) {
     composable(route = route) {
+        val resources = LocalContext.current.resources
         val scheduledTestsViewModelFactory = appContainer.scheduledTestsViewModelFactory
         val testsViewModel = viewModel<ExamerTestsViewModel>(
             factory = scheduledTestsViewModelFactory,
@@ -275,7 +282,9 @@ private fun NavGraphBuilder.scheduledTestComposable(
             isRefreshing = testsViewModel.testsViewModelUiState.value == TestsViewModelUiState.LOADING
         )
         val testList by testsViewModel.testDetailsList
+        var isTestLoading by remember { mutableStateOf(false) }
         val onTakeTestButtonClick = { selectedTestDetails: TestDetails ->
+            isTestLoading = true
             testsViewModel.fetchWorkBookListForTestDetails(
                 selectedTestDetails,
                 onSuccess = { workBookList ->
@@ -285,15 +294,24 @@ private fun NavGraphBuilder.scheduledTestComposable(
                     )
                     loggedInNavController.navigate(takeTestScreenRoute)
                 },
-                onFailure = { /* TODO */ }
+                onFailure = {
+                    isTestLoading = false
+                    // TODO String res
+                    coroutineScope.launch {
+                        snackbarHostState.currentSnackbarData?.dismiss()
+                        snackbarHostState.showSnackbar(resources.getString(R.string.label_network_error_message))
+                    }
+                }
             )
 
         }
-        ScheduledTestsScreen(
-            tests = testList,
-            swipeRefreshState = swipeRefreshState,
-            onRefresh = testsViewModel::refreshTestDetailsList,
-            onTakeTestButtonClick = onTakeTestButtonClick
-        )
+        CircularLoadingProgressOverlay(isOverlayVisible = isTestLoading) {
+            ScheduledTestsScreen(
+                tests = testList,
+                swipeRefreshState = swipeRefreshState,
+                onRefresh = testsViewModel::refreshTestDetailsList,
+                onTakeTestButtonClick = onTakeTestButtonClick
+            )
+        }
     }
 }
