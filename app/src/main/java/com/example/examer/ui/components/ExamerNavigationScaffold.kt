@@ -79,6 +79,7 @@ fun ExamerNavigationScaffold(
     imagePainter: ImagePainter,
     modifier: Modifier = Modifier,
     scaffoldState: ScaffoldState = rememberScaffoldState(),
+    isTopAppBarVisible: Boolean = true,
     navigationIconImageVector: ImageVector = Icons.Filled.Menu,
     onNavigationIconClick: (() -> Unit)? = null,
     isDrawerGesturesEnabled: Boolean = true,
@@ -109,13 +110,15 @@ fun ExamerNavigationScaffold(
             )
         },
         topBar = {
-            TopAppBar(
-                modifier = Modifier
-                    .background(MaterialTheme.colors.primarySurface)
-                    .statusBarsPadding(),
-                title = { Text(stringResource(id = R.string.app_name)) },
-                navigationIcon = navigationIcon,
-            )
+            if(isTopAppBarVisible){
+                TopAppBar(
+                    modifier = Modifier
+                        .background(MaterialTheme.colors.primarySurface)
+                        .statusBarsPadding(),
+                    title = { Text(stringResource(id = R.string.app_name)) },
+                    navigationIcon = navigationIcon,
+                )
+            }
         },
         drawerContent = {
             Column(
