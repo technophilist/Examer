@@ -109,7 +109,9 @@ fun LoggedInScreen(
     }
     val currentOnBackPressedDispatcher =
         LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
-
+    val isTopAppBarVisible by derivedStateOf {
+        currentBackStackEntry?.destination?.parent?.route != ExamerDestinations.TakeTestScreen.route
+    }
     // if the drawer is open, close the drawer instead of
     // quitting the app.
     BackHandler(enabled = scaffoldState.drawerState.isOpen) {
@@ -119,6 +121,7 @@ fun LoggedInScreen(
         currentlyLoggedInUser = currentlyLoggedInUser,
         imagePainter = imagePainter,
         scaffoldState = scaffoldState,
+        isTopAppBarVisible = isTopAppBarVisible,
         navigationIconImageVector = navigationIconImageVector,
         isDrawerGesturesEnabled = !isUpButtonVisible,
         onNavigationIconClick = {
@@ -284,6 +287,7 @@ private fun NavGraphBuilder.scheduledTestComposable(
                 },
                 onFailure = { /* TODO */ }
             )
+
         }
         ScheduledTestsScreen(
             tests = testList,
