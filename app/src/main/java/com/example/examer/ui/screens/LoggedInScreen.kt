@@ -103,17 +103,15 @@ fun LoggedInScreen(
             crossfade(true)
         }
     )
-    var navigationIconImageVector by remember {
-        mutableStateOf(Icons.Filled.Menu)
-    }
-    val isNavigationDrawerIconVisible by remember(navigationIconImageVector) {
-        mutableStateOf(navigationIconImageVector == Icons.Filled.Menu)
-    }
-    val currentOnBackPressedDispatcher =
-        LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
     val isTopAppBarVisible by derivedStateOf {
         currentBackStackEntry?.destination?.parent?.route != ExamerDestinations.TakeTestScreen.route
     }
+    var navigationIconImageVector by remember { mutableStateOf(Icons.Filled.Menu) }
+    val isNavigationDrawerIconVisible by derivedStateOf {
+        navigationIconImageVector == Icons.Filled.Menu && isTopAppBarVisible
+    }
+    val currentOnBackPressedDispatcher =
+        LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
     // if the drawer is open, close the drawer instead of
     // quitting the app.
     BackHandler(enabled = scaffoldState.drawerState.isOpen) {
