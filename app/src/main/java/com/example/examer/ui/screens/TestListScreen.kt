@@ -22,7 +22,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.examer.data.domain.TestDetails
+import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.navigationBarsPadding
+import com.google.accompanist.insets.rememberInsetsPaddingValues
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.SwipeRefreshState
 import kotlinx.coroutines.launch
@@ -80,6 +82,9 @@ fun TestListScreen(
         }
     }
     val coroutineScope = rememberCoroutineScope()
+    val insetPaddingValues = rememberInsetsPaddingValues(
+        insets = LocalWindowInsets.current.navigationBars
+    )
     SwipeRefresh(
         state = swipeRefreshState,
         onRefresh = onRefresh
@@ -93,7 +98,8 @@ fun TestListScreen(
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
                     state = lazyListState,
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    contentPadding = insetPaddingValues
                 ) {
                     item {
                         Text(
