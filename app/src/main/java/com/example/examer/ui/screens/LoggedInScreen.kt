@@ -106,8 +106,8 @@ fun LoggedInScreen(
     var navigationIconImageVector by remember {
         mutableStateOf(Icons.Filled.Menu)
     }
-    val isUpButtonVisible by remember(navigationIconImageVector) {
-        mutableStateOf(navigationIconImageVector == Icons.Filled.ArrowBack)
+    val isNavigationDrawerIconVisible by remember(navigationIconImageVector) {
+        mutableStateOf(navigationIconImageVector == Icons.Filled.Menu)
     }
     val currentOnBackPressedDispatcher =
         LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
@@ -125,13 +125,13 @@ fun LoggedInScreen(
         scaffoldState = scaffoldState,
         isTopAppBarVisible = isTopAppBarVisible,
         navigationIconImageVector = navigationIconImageVector,
-        isDrawerGesturesEnabled = !isUpButtonVisible,
+        isDrawerGesturesEnabled = isNavigationDrawerIconVisible,
         onNavigationIconClick = {
             // if the up button is visible, then execute the callback that
             // the system back button would use. This will help
             // to pop the back stack of the nested nav graphs.
-            if (isUpButtonVisible) currentOnBackPressedDispatcher?.onBackPressed()
-            else coroutineScope.launch { scaffoldState.drawerState.open() }
+            if (isNavigationDrawerIconVisible) coroutineScope.launch { scaffoldState.drawerState.open() }
+            else currentOnBackPressedDispatcher?.onBackPressed()
         },
         isNavigationDrawerDestinationSelected = {
             // highlight the navigation destination if and only if,
