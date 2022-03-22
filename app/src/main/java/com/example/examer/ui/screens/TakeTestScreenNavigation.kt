@@ -1,12 +1,9 @@
 package com.example.examer.ui.screens
 
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavType
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.example.examer.data.domain.TestDetails
 import com.example.examer.data.domain.WorkBook
@@ -56,19 +53,26 @@ fun NavGraphBuilder.takeTestScreenNavigation(
                     )
                 }
                 val isAudioPlaybackEnabled = remember { mutableStateOf(true) }
+                val numberOfRepeatsLeftForAudioFile =
+                    testSessionViewModel.numberOfRepeatsLeftForAudioFile
+                val isAudioFilePlaying by testSessionViewModel.isAudioFilePlaying
+                val isAudioIconClickEnabled by derivedStateOf {
+                    numberOfRepeatsLeftForAudioFile.value > 0 && !isAudioFilePlaying
+                }
                 val audioPlaybackState = remember {
                     AudioPlaybackState(
                         isEnabled = isAudioPlaybackEnabled,
                         progress = testSessionViewModel.playbackProgress,
-                        numberOfRepeatsLeft = testSessionViewModel.numberOfRepeatsLeftForAudioFile
+                        numberOfRepeatsLeft = numberOfRepeatsLeftForAudioFile
                     )
                 }
-                // TODO change timeInfo param name to timerState
                 ListenToAudioScreen(
                     timerState = timerState,
                     workBookState = workBookState,
                     audioPlayBackState = audioPlaybackState,
-                    onNavigateToWorkBook = { /*TODO*/ }
+                    onNavigateToWorkBook = { /*TODO*/ },
+                    isAudioIconClickEnabled = isAudioIconClickEnabled,
+                    onAudioIconClick = testSessionViewModel::playAudioForCurrentWorkBook
                 )
             }
         }
