@@ -15,6 +15,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.DefaultAlpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
@@ -33,7 +34,6 @@ fun ListenToAudioScreen(
     onAudioIconClick: () -> Unit = {},
     isAudioIconClickEnabled: Boolean = true
 ) {
-    // TODO on max playback time reached
     val quizChipTextStyle = MaterialTheme.typography.body2
     Box(
         modifier = Modifier
@@ -69,7 +69,7 @@ fun ListenToAudioScreen(
                         .size(112.dp)
                         .clip(CircleShape)
                         .conditional(isAudioIconClickEnabled) { clickable(onClick = onAudioIconClick) }
-                        .background(MaterialTheme.colors.primary)
+                        .background(MaterialTheme.colors.primary.copy(alpha = if (!isAudioIconClickEnabled) ContentAlpha.disabled else DefaultAlpha))
                         .padding(16.dp),
                     imageVector = Icons.Filled.VolumeUp,
                     contentDescription = null,
