@@ -1,6 +1,7 @@
 package com.example.examer.ui.screens.listenToAudioScreen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,6 +20,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.example.examer.R
 import com.example.examer.ui.components.NonClickableTestInfoChip
+import com.example.examer.utils.conditional
 import com.google.accompanist.insets.systemBarsPadding
 
 
@@ -27,7 +29,9 @@ fun ListenToAudioScreen(
     timerState: TimerState,
     workBookState: WorkBookState,
     audioPlayBackState: AudioPlaybackState,
-    onNavigateToWorkBook: () -> Unit
+    onNavigateToWorkBook: () -> Unit,
+    onAudioIconClick: () -> Unit = {},
+    isAudioIconClickEnabled: Boolean = true
 ) {
     // TODO on max playback time reached
     val quizChipTextStyle = MaterialTheme.typography.body2
@@ -64,6 +68,7 @@ fun ListenToAudioScreen(
                     modifier = Modifier
                         .size(112.dp)
                         .clip(CircleShape)
+                        .conditional(isAudioIconClickEnabled) { clickable(onClick = onAudioIconClick) }
                         .background(MaterialTheme.colors.primary)
                         .padding(16.dp),
                     imageVector = Icons.Filled.VolumeUp,
