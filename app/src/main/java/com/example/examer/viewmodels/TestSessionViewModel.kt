@@ -39,6 +39,7 @@ interface TestSessionViewModel {
     val secondsRemaining: State<String>
     val numberOfRepeatsLeftForAudioFile: State<Int>
     val playbackProgress: State<Float>
+    val isAudioFilePlaying: State<Boolean>
     fun playAudioForCurrentWorkBook()
     fun moveToNextWorkBook()
 }
@@ -78,6 +79,8 @@ class ExamerTestSessionViewModel(
     private val _numberOfRepeatsLeftForAudioFile =
         mutableStateOf(_currentWorkBook.value.audioFile.numberOfRepeatsAllowedForAudioFile)
     override val numberOfRepeatsLeftForAudioFile = _numberOfRepeatsLeftForAudioFile as State<Int>
+    private val _isAudioFilePlaying = mutableStateOf(false)
+    override val isAudioFilePlaying = _isAudioFilePlaying as State<Boolean>
 
     // playback progress states
     /*@FloatRange(from = 0.0, to = 1.0)*/
@@ -98,7 +101,9 @@ class ExamerTestSessionViewModel(
             setDataSource(_currentWorkBook.value.audioFile.localAudioFileUri.toString())
             prepare()
             start()
+            _isAudioFilePlaying.value = true
             setProgressBasedOnMediaPlayerState(this)
+            setOnCompletionListener { _isAudioFilePlaying.value = false }
         }
     }
 
