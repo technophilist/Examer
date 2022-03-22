@@ -65,7 +65,7 @@ fun NavGraphBuilder.takeTestScreenNavigation(
                 }
                 // TODO change timeInfo param name to timerState
                 ListenToAudioScreen(
-                    timeInfo = timerState,
+                    timerState = timerState,
                     workBookState = workBookState,
                     audioPlayBackState = audioPlaybackState,
                     onNavigateToWorkBook = { /*TODO*/ }

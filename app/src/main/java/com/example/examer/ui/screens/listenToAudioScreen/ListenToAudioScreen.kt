@@ -24,7 +24,7 @@ import com.google.accompanist.insets.systemBarsPadding
 
 @Composable
 fun ListenToAudioScreen(
-    timeInfo: TimerState,
+    timerState: TimerState,
     workBookState: WorkBookState,
     audioPlayBackState: AudioPlaybackState,
     onNavigateToWorkBook: () -> Unit
@@ -44,9 +44,9 @@ fun ListenToAudioScreen(
                     .fillMaxWidth(),
                 currentWorkBookNumber = workBookState.currentWorkBookNumber.value,
                 totalNumberOfWorkBooks = workBookState.totalNumberOfWorkBooks,
-                hoursRemaining = timeInfo.hoursRemaining.value,
-                minutesRemaining = timeInfo.minutesRemaining.value,
-                secondsRemaining = timeInfo.secondsRemaining.value,
+                hoursRemaining = timerState.hoursRemaining.value,
+                minutesRemaining = timerState.minutesRemaining.value,
+                secondsRemaining = timerState.secondsRemaining.value,
                 textStyle = quizChipTextStyle
             )
             Text(
