@@ -98,6 +98,7 @@ class ExamerTestSessionViewModel(
         _numberOfRepeatsLeftForAudioFile.value -= 1
         // use media player to start audio playback
         mediaPlayer.run {
+            reset()
             setDataSource(_currentWorkBook.value.audioFile.localAudioFileUri.toString())
             prepare()
             start()
