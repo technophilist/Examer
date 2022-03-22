@@ -66,7 +66,7 @@ class ExamerTestSessionViewModel(
     override val secondsRemaining = derivedStateOf { splitTextList.value[2] }
 
     private val countDownTimer = createCountDownTimer(
-        millisInFuture = testDetails.testDurationInMinutes.toLong(),
+        millisInFuture = convertMinuteToMillis(testDetails.testDurationInMinutes),
         onTimerTick = { millis ->
             val hours = (TimeUnit.MILLISECONDS.toHours(millis) % 60).toInt()
             val minutes = (TimeUnit.MILLISECONDS.toMinutes(millis) % 60).toInt()
@@ -143,4 +143,6 @@ class ExamerTestSessionViewModel(
         val secondString = second.toString(appendZeroIfSingleDigit = true)
         return "$hourString:$minuteString:$secondString"
     }
+
+    private fun convertMinuteToMillis(minute: Int): Long = minute * 60_000L
 }
