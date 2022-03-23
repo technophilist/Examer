@@ -51,4 +51,10 @@
     <string name="label_no_of_repeats_left">" Nombre de répétitions restantes:  %1$s"</string>
     <string name="button_label_go_to_workbook">Aller au classeur</string>
     <string name="label_workbook">Classeur</string>
+    <string name="label_start_test">Démarrer l\'essai</string>
+    <string name="label_start_test_message">Vous êtes sur le point de commencer le test.Veuillez vous assurer que:\n\n
+        * L\'appareil dispose d\'une batterie suffisante. \n
+        * Ne pas déranger est activé.\n
+        * Vous disposez d\'une connexion Internet stable.\n
+        * Toutes les alarmes programmées sont désactivées.</string>
 </resources>

@@ -75,4 +75,11 @@
     <string name="label_no_of_repeats_left">No of repeats left: %1$s</string>
     <string name="button_label_go_to_workbook">Go to work book</string>
     <string name="label_workbook">Workbook %1$s/%2$s</string>
+    <!-- Take test alert dialog-->
+    <string name="label_start_test">Start test</string>
+    <string name="label_start_test_message">You are about to start the test. Please ensure that : \n\n
+            * The device has sufficient battery.\n
+            * Do not disturb is turned on.\n
+            * You have a stable internet connection.\n
+            * Any scheduled alarms are turned off.</string>
 </resources>
