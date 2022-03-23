@@ -35,9 +35,8 @@ fun ScheduledTestsScreen(
     tests: List<TestDetails>,
     swipeRefreshState: SwipeRefreshState,
     onRefresh: () -> Unit,
-    onTakeTestButtonClick: (TestDetails) -> Unit
+    onStartTest: (TestDetails) -> Unit
 ) {
-    // TODO string res
     val listHeader = stringResource(id = R.string.label_upcoming_tests)
     var isAlertDialogVisible by remember {
         mutableStateOf(false)
@@ -46,7 +45,7 @@ fun ScheduledTestsScreen(
     var currentlySelectedTestDetails by remember { mutableStateOf<TestDetails?>(null) }
     val onConfirmButtonClick: () -> Unit = {
         isAlertDialogVisible = false
-        currentlySelectedTestDetails?.let(onTakeTestButtonClick)
+        currentlySelectedTestDetails?.let(onStartTest)
     }
     if (isAlertDialogVisible) {
         AlertDialog(
