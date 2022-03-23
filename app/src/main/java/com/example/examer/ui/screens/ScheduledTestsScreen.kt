@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.examer.R
@@ -36,7 +37,45 @@ fun ScheduledTestsScreen(
     onRefresh: () -> Unit,
     onTakeTestButtonClick: (TestDetails) -> Unit
 ) {
+    // TODO string res
     val listHeader = stringResource(id = R.string.label_upcoming_tests)
+    var isAlertDialogVisible by remember {
+        mutableStateOf(false)
+    }
+    val resources = LocalContext.current.resources
+    var currentlySelectedTestDetails by remember { mutableStateOf<TestDetails?>(null) }
+    val onConfirmButtonClick: () -> Unit = {
+        isAlertDialogVisible = false
+        currentlySelectedTestDetails?.let(onTakeTestButtonClick)
+    }
+    if (isAlertDialogVisible) {
+        AlertDialog(
+            title = {
+                Text(
+                    text = resources.getString(R.string.label_start_test),
+                    fontWeight = FontWeight.Bold
+                )
+            },
+            text = { Text(text = resources.getString(R.string.label_start_test_message)) },
+            confirmButton = {
+                TextButton(onClick = onConfirmButtonClick) {
+                    Text(text = resources.getString(R.string.button_label_start_test).uppercase())
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = { isAlertDialogVisible = false }
+                ) {
+                    Text(
+                        text = resources
+                            .getString(R.string.alert_dialog_button_label_cancel)
+                            .uppercase()
+                    )
+                }
+            },
+            onDismissRequest = { isAlertDialogVisible = false }
+        )
+    }
     TestListScreen(
         listHeader = listHeader,
         testList = tests,
@@ -49,7 +88,11 @@ fun ScheduledTestsScreen(
             onExpandButtonClick = onExpandButtonClick,
             onClick = onClick,
             is24HourTimeFormat = is24hourFormat,
-            onTakeTestButtonClick = { onTakeTestButtonClick(testDetailsItem) }
+            onTakeTestButtonClick = {
+                currentlySelectedTestDetails = testDetailsItem
+                isAlertDialogVisible = true
+            }
         )
     }
 }
+
