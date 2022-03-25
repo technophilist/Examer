@@ -57,4 +57,6 @@
         * Ne pas déranger est activé.\n
         * Vous disposez d\'une connexion Internet stable.\n
         * Toutes les alarmes programmées sont désactivées.</string>
+    <string name="label_question_number">Numéro de question: %1$s</string>
+    <string name="label_marks">Des marques: %1$s</string>
 </resources>
