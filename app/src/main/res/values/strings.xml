@@ -82,4 +82,7 @@
             * Do not disturb is turned on.\n
             * You have a stable internet connection.\n
             * Any scheduled alarms are turned off.</string>
+    <!-- WorkBook Screen -->
+    <string name="label_question_number">Question No: %1$s</string>
+    <string name="label_marks">Marks: %1$s</string>
 </resources>
