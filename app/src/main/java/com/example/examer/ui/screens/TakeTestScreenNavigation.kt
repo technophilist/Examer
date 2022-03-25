@@ -3,8 +3,10 @@ package com.example.examer.ui.screens
 import androidx.compose.runtime.*
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.example.examer.data.domain.MultiChoiceQuestion
 import com.example.examer.data.domain.TestDetails
 import com.example.examer.data.domain.WorkBook
 import com.example.examer.di.AppContainer
@@ -17,8 +19,10 @@ import com.example.examer.ui.screens.listenToAudioScreen.WorkBookState
 import com.example.examer.viewmodels.ExamerTestSessionViewModel
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import timber.log.Timber
 
 fun NavGraphBuilder.takeTestScreenNavigation(
+    navController: NavHostController,
     appContainer: AppContainer,
     route: String
 ) {
@@ -70,10 +74,22 @@ fun NavGraphBuilder.takeTestScreenNavigation(
                     timerState = timerState,
                     workBookState = workBookState,
                     audioPlayBackState = audioPlaybackState,
-                    onNavigateToWorkBook = { /*TODO*/ },
+                    onNavigateToWorkBook = {
+                        val routeString =
+                            TakeTestScreenDestinations.WorkBookScreen.buildRoute(workBookList[0].questions)
+                        navController.navigate(routeString)
+                    },
                     isAudioIconClickEnabled = isAudioIconClickEnabled,
                     onAudioIconClick = testSessionViewModel::playAudioForCurrentWorkBook
                 )
+            }
+        }
+        composable(route = TakeTestScreenDestinations.WorkBookScreen.route) {
+            it.arguments?.let { bundle ->
+                val multiChoiceQuestionList = Json.decodeFromString<List<MultiChoiceQuestion>>(
+                    bundle.getString(TakeTestScreenDestinations.WorkBookScreen.QUESTIONS_LIST_ARG)!!
+                )
+                WorkBookScreen(questionList = multiChoiceQuestionList)
             }
         }
     }
