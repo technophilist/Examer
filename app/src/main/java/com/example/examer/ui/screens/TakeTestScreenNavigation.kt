@@ -75,8 +75,10 @@ fun NavGraphBuilder.takeTestScreenNavigation(
                     workBookState = workBookState,
                     audioPlayBackState = audioPlaybackState,
                     onNavigateToWorkBook = {
+                        val currentWorkBookIndex = workBookState.currentWorkBookNumber.value - 1
+                        val workBook = workBookList[currentWorkBookIndex]
                         val routeString =
-                            TakeTestScreenDestinations.WorkBookScreen.buildRoute(workBookList[0].questions)
+                            TakeTestScreenDestinations.WorkBookScreen.buildRoute(workBook.questions)
                         navController.navigate(routeString)
                     },
                     isAudioIconClickEnabled = isAudioIconClickEnabled,
