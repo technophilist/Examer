@@ -86,4 +86,5 @@
     <string name="label_question_number">Question No: %1$s</string>
     <string name="label_marks">Marks: %1$s</string>
     <string name="button_label_next_workbook">Next workbook</string>
+    <string name="button_label_finish_test">Finish Test</string>
 </resources>

@@ -60,4 +60,5 @@
     <string name="label_question_number">Numéro de question: %1$s</string>
     <string name="label_marks">Des marques: %1$s</string>
     <string name="button_label_next_workbook">Classeur suivant</string>
+    <string name="button_label_finish_test">Terminer l\'essai</string>
 </resources>
