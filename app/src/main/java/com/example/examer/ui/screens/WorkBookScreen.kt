@@ -5,9 +5,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.NavigateNext
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -20,16 +23,26 @@ import com.google.accompanist.insets.navigationBarsHeight
 import com.google.accompanist.insets.statusBarsPadding
 
 @Composable
-fun WorkBookScreen(
-    questionList: List<MultiChoiceQuestion>,
-    listFooter: @Composable (() -> Unit)? = null
-) {
+fun WorkBookScreen(questionList: List<MultiChoiceQuestion>) {
     // a map that stores the currently selected item associated
     // with a MultiChoiceQuestion object. The key is the id of the
     // MultiChoiceQuestion and the value is the index of the
     // currently selected item of that particular question.
     val currentlySelectedIndexMap = remember {
         mutableStateMapOf<String, Int>()
+    }
+    val resources = LocalContext.current.resources
+    val footer = @Composable {
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Button(
+                modifier = Modifier.align(Alignment.End),
+                onClick = { /*TODO*/ },
+                content = {
+                    Text(text = resources.getString(R.string.button_label_next_workbook))
+                    Icon(imageVector = Icons.Filled.NavigateNext, contentDescription = null)
+                }
+            )
+        }
     }
     LazyColumn(
         modifier = Modifier
@@ -52,7 +65,7 @@ fun WorkBookScreen(
             Spacer(modifier = Modifier.size(8.dp))
         }
         item {
-            listFooter?.invoke()
+            footer()
             Spacer(
                 modifier = Modifier
                     .navigationBarsHeight()
