@@ -3,7 +3,10 @@ package com.example.examer.ui.screens
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Button
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.NavigateNext
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -114,7 +117,10 @@ private fun NavGraphBuilder.workBookScreenComposable(navController: NavHostContr
                 Button(
                     modifier = Modifier.align(Alignment.End),
                     onClick = { navController.popBackStack() },
-                    content = { Text(text = resources.getString(R.string.button_label_next_workbook)) }
+                    content = {
+                        Text(text = resources.getString(R.string.button_label_next_workbook))
+                        Icon(imageVector = Icons.Filled.NavigateNext, contentDescription = null)
+                    }
                 )
             }
         }
