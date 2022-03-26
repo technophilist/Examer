@@ -1,6 +1,12 @@
 package com.example.examer.ui.screens
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.Button
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -80,19 +86,44 @@ fun NavGraphBuilder.takeTestScreenNavigation(
                         val routeString =
                             TakeTestScreenDestinations.WorkBookScreen.buildRoute(workBook.questions)
                         navController.navigate(routeString)
+                        // the viewModel instance will not be destroyed until
+                        // it is popped off the back stack. Keep the viewModel
+                        // ready with the next workbook and navigate to the
+                        // workbook screen. When the user is navigating from
+                        // the workbook screen, pop the backstack instead of
+                        // navigating back to this screen to play the audio file
+                        // associated with the next question.
+                        testSessionViewModel.moveToNextWorkBook()
                     },
                     isAudioIconClickEnabled = isAudioIconClickEnabled,
                     onAudioIconClick = testSessionViewModel::playAudioForCurrentWorkBook
                 )
             }
         }
-        composable(route = TakeTestScreenDestinations.WorkBookScreen.route) {
-            it.arguments?.let { bundle ->
-                val multiChoiceQuestionList = Json.decodeFromString<List<MultiChoiceQuestion>>(
-                    bundle.getString(TakeTestScreenDestinations.WorkBookScreen.QUESTIONS_LIST_ARG)!!
+        workBookScreenComposable(navController)
+    }
+}
+
+private fun NavGraphBuilder.workBookScreenComposable(navController: NavHostController) {
+    composable(route = TakeTestScreenDestinations.WorkBookScreen.route) {
+        // TODO string res
+        val listFooter = @Composable {
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Button(
+                    modifier = Modifier.align(Alignment.End),
+                    onClick = { navController.popBackStack() },
+                    content = { Text(text = "Move to next workbook") }
                 )
-                WorkBookScreen(questionList = multiChoiceQuestionList)
             }
+        }
+        it.arguments?.let { bundle ->
+            val multiChoiceQuestionList = Json.decodeFromString<List<MultiChoiceQuestion>>(
+                bundle.getString(TakeTestScreenDestinations.WorkBookScreen.QUESTIONS_LIST_ARG)!!
+            )
+            WorkBookScreen(
+                questionList = multiChoiceQuestionList,
+                listFooter = listFooter
+            )
         }
     }
 }
