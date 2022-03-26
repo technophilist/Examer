@@ -22,8 +22,15 @@ import com.example.examer.data.domain.MultiChoiceQuestion
 import com.google.accompanist.insets.navigationBarsHeight
 import com.google.accompanist.insets.statusBarsPadding
 
+enum class ButtonTextValue {
+    NEXT_WORKBOOK, FINISH_TEST
+}
+
 @Composable
-fun WorkBookScreen(questionList: List<MultiChoiceQuestion>) {
+fun WorkBookScreen(
+    questionList: List<MultiChoiceQuestion>,
+    buttonTextValue: ButtonTextValue = ButtonTextValue.NEXT_WORKBOOK
+) {
     // a map that stores the currently selected item associated
     // with a MultiChoiceQuestion object. The key is the id of the
     // MultiChoiceQuestion and the value is the index of the
@@ -32,14 +39,30 @@ fun WorkBookScreen(questionList: List<MultiChoiceQuestion>) {
         mutableStateMapOf<String, Int>()
     }
     val resources = LocalContext.current.resources
+    val (footerButtonText, footerButtonIcon) = remember(buttonTextValue) {
+        when (buttonTextValue) {
+            ButtonTextValue.NEXT_WORKBOOK -> {
+                Pair(
+                    resources.getString(R.string.button_label_next_workbook),
+                    Icons.Filled.NavigateNext
+                )
+            }
+            ButtonTextValue.FINISH_TEST -> {
+                Pair(
+                    "Finish Test", // TODO string res
+                    Icons.Filled.NavigateNext
+                )
+            }
+        }
+    }
     val footer = @Composable {
         Column(modifier = Modifier.fillMaxWidth()) {
             Button(
                 modifier = Modifier.align(Alignment.End),
                 onClick = { /*TODO*/ },
                 content = {
-                    Text(text = resources.getString(R.string.button_label_next_workbook))
-                    Icon(imageVector = Icons.Filled.NavigateNext, contentDescription = null)
+                    Text(text = footerButtonText)
+                    Icon(imageVector = footerButtonIcon, contentDescription = null)
                 }
             )
         }
