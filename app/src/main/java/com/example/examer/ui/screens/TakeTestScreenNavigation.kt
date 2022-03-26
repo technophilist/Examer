@@ -1,5 +1,6 @@
 package com.example.examer.ui.screens
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Button
@@ -123,6 +124,9 @@ private fun NavGraphBuilder.workBookScreenComposable(navController: NavHostContr
                     }
                 )
             }
+        }
+        BackHandler {
+            /* TODO(Temporary): Used this composable to not allow the user to navigate back.*/
         }
         it.arguments?.let { bundle ->
             val multiChoiceQuestionList = Json.decodeFromString<List<MultiChoiceQuestion>>(
