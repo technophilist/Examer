@@ -112,19 +112,6 @@ fun NavGraphBuilder.takeTestScreenNavigation(
 
 private fun NavGraphBuilder.workBookScreenComposable(navController: NavHostController) {
     composable(route = TakeTestScreenDestinations.WorkBookScreen.route) {
-        val resources = LocalContext.current.resources
-        val listFooter = @Composable {
-            Column(modifier = Modifier.fillMaxWidth()) {
-                Button(
-                    modifier = Modifier.align(Alignment.End),
-                    onClick = { navController.popBackStack() },
-                    content = {
-                        Text(text = resources.getString(R.string.button_label_next_workbook))
-                        Icon(imageVector = Icons.Filled.NavigateNext, contentDescription = null)
-                    }
-                )
-            }
-        }
         BackHandler {
             /* TODO(Temporary): Used this composable to not allow the user to navigate back.*/
         }
@@ -132,10 +119,7 @@ private fun NavGraphBuilder.workBookScreenComposable(navController: NavHostContr
             val multiChoiceQuestionList = Json.decodeFromString<List<MultiChoiceQuestion>>(
                 bundle.getString(TakeTestScreenDestinations.WorkBookScreen.QUESTIONS_LIST_ARG)!!
             )
-            WorkBookScreen(
-                questionList = multiChoiceQuestionList,
-                listFooter = listFooter
-            )
+            WorkBookScreen(questionList = multiChoiceQuestionList)
         }
     }
 }
