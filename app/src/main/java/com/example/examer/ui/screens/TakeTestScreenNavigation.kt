@@ -7,11 +7,13 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.example.examer.R
 import com.example.examer.data.domain.MultiChoiceQuestion
 import com.example.examer.data.domain.TestDetails
 import com.example.examer.data.domain.WorkBook
@@ -106,13 +108,13 @@ fun NavGraphBuilder.takeTestScreenNavigation(
 
 private fun NavGraphBuilder.workBookScreenComposable(navController: NavHostController) {
     composable(route = TakeTestScreenDestinations.WorkBookScreen.route) {
-        // TODO string res
+        val resources = LocalContext.current.resources
         val listFooter = @Composable {
             Column(modifier = Modifier.fillMaxWidth()) {
                 Button(
                     modifier = Modifier.align(Alignment.End),
                     onClick = { navController.popBackStack() },
-                    content = { Text(text = "Move to next workbook") }
+                    content = { Text(text = resources.getString(R.string.button_label_next_workbook)) }
                 )
             }
         }
