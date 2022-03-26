@@ -49,7 +49,7 @@ fun WorkBookScreen(
             }
             ButtonTextValue.FINISH_TEST -> {
                 Pair(
-                    "Finish Test", // TODO string res
+                    resources.getString(R.string.button_label_finish_test), // TODO string res
                     Icons.Filled.NavigateNext
                 )
             }
