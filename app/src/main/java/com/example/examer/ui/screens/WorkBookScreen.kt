@@ -61,8 +61,15 @@ fun WorkBookScreen(
                 modifier = Modifier.align(Alignment.End),
                 onClick = { /*TODO*/ },
                 content = {
-                    Text(text = footerButtonText)
-                    Icon(imageVector = footerButtonIcon, contentDescription = null)
+                    Text(
+                        modifier = Modifier.align(Alignment.CenterVertically),
+                        text = footerButtonText
+                    )
+                    Icon(
+                        modifier = Modifier.align(Alignment.CenterVertically),
+                        imageVector = footerButtonIcon,
+                        contentDescription = null
+                    )
                 }
             )
         }
