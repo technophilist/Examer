@@ -113,7 +113,7 @@ fun NavGraphBuilder.takeTestScreenNavigation(
 private fun NavGraphBuilder.workBookScreenComposable(navController: NavHostController) {
     composable(route = TakeTestScreenDestinations.WorkBookScreen.route) {
         BackHandler {
-            /* TODO(Temporary): Used this composable to not allow the user to navigate back.*/
+            /* TODO: Temporarily use this composable to not allow the user to navigate back.*/
         }
         it.arguments?.let { bundle ->
             val multiChoiceQuestionList = Json.decodeFromString<List<MultiChoiceQuestion>>(
@@ -121,7 +121,17 @@ private fun NavGraphBuilder.workBookScreenComposable(navController: NavHostContr
             )
             WorkBookScreen(
                 questionList = multiChoiceQuestionList,
-                onFooterButtonClick = { answersMap -> Timber.d(answersMap.toString()) }
+                onFooterButtonClick = { answersMap ->
+                    // the viewModel instance of the ListenToAudioScreen
+                    // composable will not be destroyed until it is popped
+                    // off the back stack.The viewModel will be ready with
+                    // the next workbook on navigating to this screen. Pop
+                    // the backstack instead of navigating explicitly to
+                    // ListenToAudioScreen to allow the user to play the
+                    // audio file associated with the next question.
+                    Timber.d(answersMap.toString())
+                    navController.popBackStack()
+                }
             )
         }
     }
