@@ -32,11 +32,11 @@ fun WorkBookScreen(
     buttonTextValue: ButtonTextValue = ButtonTextValue.NEXT_WORKBOOK
 ) {
     // a map that stores the currently selected item associated
-    // with a MultiChoiceQuestion object. The key is the id of the
-    // MultiChoiceQuestion and the value is the index of the
+    // with a MultiChoiceQuestion object. The key is the
+    // MultiChoiceQuestion obj and the value is the index of the
     // currently selected item of that particular question.
     val currentlySelectedIndexMap = remember {
-        mutableStateMapOf<String, Int>()
+        mutableStateMapOf<MultiChoiceQuestion, Int>()
     }
     val resources = LocalContext.current.resources
     val (footerButtonText, footerButtonIcon) = remember(buttonTextValue) {
@@ -49,7 +49,7 @@ fun WorkBookScreen(
             }
             ButtonTextValue.FINISH_TEST -> {
                 Pair(
-                    resources.getString(R.string.button_label_finish_test), // TODO string res
+                    resources.getString(R.string.button_label_finish_test),
                     Icons.Filled.NavigateNext
                 )
             }
@@ -87,9 +87,9 @@ fun WorkBookScreen(
                 question = item.question,
                 options = item.options,
                 mark = 10,
-                currentlySelectedIndex = currentlySelectedIndexMap.getOrPut(item.id) { -1 },
+                currentlySelectedIndex = currentlySelectedIndexMap.getOrPut(item) { -1 },
                 onOptionClick = { indexOfOption, _, _ ->
-                    currentlySelectedIndexMap[item.id] = indexOfOption
+                    currentlySelectedIndexMap[item] = indexOfOption
                 }
             )
             Spacer(modifier = Modifier.size(8.dp))
