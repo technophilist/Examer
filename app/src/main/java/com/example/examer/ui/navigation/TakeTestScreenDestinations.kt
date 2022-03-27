@@ -11,11 +11,16 @@ sealed class TakeTestScreenDestinations(val route: String) {
         TakeTestScreenDestinations("com.example.examer.ui.navigation.WorkBookScreen")
 
     object WorkBookScreen :
-        TakeTestScreenDestinations("com.example.examer.ui.navigation.WorkBookScreen/{questionsList}/") {
+        TakeTestScreenDestinations("com.example.examer.ui.navigation.WorkBookScreen/{workBookId}/{questionsList}/") {
+        const val WORKBOOK_ID_ARG = "workBookId"
         const val QUESTIONS_LIST_ARG = "questionsList"
-        fun buildRoute(multiChoiceQuestionList: List<MultiChoiceQuestion>): String {
+
+        fun buildRoute(
+            workBookId: String,
+            multiChoiceQuestionList: List<MultiChoiceQuestion>
+        ): String {
             val jsonString = Json.encodeToString(multiChoiceQuestionList)
-            return "com.example.examer.ui.navigation.WorkBookScreen/$jsonString/"
+            return "com.example.examer.ui.navigation.WorkBookScreen/$workBookId/$jsonString/"
         }
     }
 }

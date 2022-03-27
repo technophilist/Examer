@@ -24,6 +24,7 @@ import com.example.examer.data.domain.WorkBook
 import com.example.examer.di.AppContainer
 import com.example.examer.ui.navigation.ExamerDestinations
 import com.example.examer.ui.navigation.TakeTestScreenDestinations
+import com.example.examer.ui.navigation.TakeTestScreenDestinations.WorkBookScreen.WORKBOOK_ID_ARG
 import com.example.examer.ui.screens.listenToAudioScreen.AudioPlaybackState
 import com.example.examer.ui.screens.listenToAudioScreen.ListenToAudioScreen
 import com.example.examer.ui.screens.listenToAudioScreen.TimerState
@@ -90,7 +91,10 @@ fun NavGraphBuilder.takeTestScreenNavigation(
                         val currentWorkBookIndex = workBookState.currentWorkBookNumber.value - 1
                         val workBook = workBookList[currentWorkBookIndex]
                         val routeString =
-                            TakeTestScreenDestinations.WorkBookScreen.buildRoute(workBook.questions)
+                            TakeTestScreenDestinations.WorkBookScreen.buildRoute(
+                                workBook.id,
+                                workBook.questions
+                            )
                         navController.navigate(routeString)
                         // the viewModel instance will not be destroyed until
                         // it is popped off the back stack. Keep the viewModel
@@ -119,6 +123,7 @@ private fun NavGraphBuilder.workBookScreenComposable(navController: NavHostContr
             val multiChoiceQuestionList = Json.decodeFromString<List<MultiChoiceQuestion>>(
                 bundle.getString(TakeTestScreenDestinations.WorkBookScreen.QUESTIONS_LIST_ARG)!!
             )
+            val workBookId = bundle.getString(WORKBOOK_ID_ARG)!!
             WorkBookScreen(
                 questionList = multiChoiceQuestionList,
                 onFooterButtonClick = { answersMap ->
@@ -129,6 +134,7 @@ private fun NavGraphBuilder.workBookScreenComposable(navController: NavHostContr
                     // the backstack instead of navigating explicitly to
                     // ListenToAudioScreen to allow the user to play the
                     // audio file associated with the next question.
+                    Timber.d(workBookId)
                     Timber.d(answersMap.toString())
                     navController.popBackStack()
                 }
