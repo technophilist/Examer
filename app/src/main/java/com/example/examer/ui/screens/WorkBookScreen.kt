@@ -29,6 +29,7 @@ enum class ButtonTextValue {
 @Composable
 fun WorkBookScreen(
     questionList: List<MultiChoiceQuestion>,
+    onFooterButtonClick: (Map<MultiChoiceQuestion, Int>) -> Unit,
     buttonTextValue: ButtonTextValue = ButtonTextValue.NEXT_WORKBOOK
 ) {
     // a map that stores the currently selected item associated
@@ -59,7 +60,10 @@ fun WorkBookScreen(
         Column(modifier = Modifier.fillMaxWidth()) {
             Button(
                 modifier = Modifier.align(Alignment.End),
-                onClick = { /*TODO*/ },
+                onClick = {
+                    // convert state map to normal map and pass it as arg
+                    onFooterButtonClick(currentlySelectedIndexMap.toMap())
+                },
                 content = {
                     Text(
                         modifier = Modifier.align(Alignment.CenterVertically),

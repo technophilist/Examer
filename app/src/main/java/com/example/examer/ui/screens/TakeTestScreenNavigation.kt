@@ -119,7 +119,10 @@ private fun NavGraphBuilder.workBookScreenComposable(navController: NavHostContr
             val multiChoiceQuestionList = Json.decodeFromString<List<MultiChoiceQuestion>>(
                 bundle.getString(TakeTestScreenDestinations.WorkBookScreen.QUESTIONS_LIST_ARG)!!
             )
-            WorkBookScreen(questionList = multiChoiceQuestionList)
+            WorkBookScreen(
+                questionList = multiChoiceQuestionList,
+                onFooterButtonClick = { answersMap -> Timber.d(answersMap.toString()) }
+            )
         }
     }
 }
