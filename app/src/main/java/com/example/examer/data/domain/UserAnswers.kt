@@ -3,7 +3,9 @@ package com.example.examer.data.domain
 import com.example.examer.data.dto.UserAnswersDTO
 
 @JvmInline
-value class IndexOfChosenOption(val index: Int)
+value class IndexOfChosenOption(val index: Int) {
+    override fun toString(): String = index.toString()
+}
 
 data class UserAnswers(
     val associatedWorkBookId: String,
