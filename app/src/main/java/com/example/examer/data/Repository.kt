@@ -11,6 +11,7 @@ import com.example.examer.data.domain.WorkBook
 import com.example.examer.data.dto.AudioFileDTO
 import com.example.examer.data.dto.WorkBookDTO
 import com.example.examer.data.dto.toMultiChoiceQuestion
+import com.example.examer.data.local.UserAnswersEntityDao
 import com.example.examer.data.remote.RemoteDatabase
 import com.example.examer.usecases.UpdateProfilePhotoUriUseCase
 import kotlinx.coroutines.CancellationException
@@ -32,6 +33,7 @@ interface Repository {
 class ExamerRepository(
     private val context: Context,
     private val remoteDatabase: RemoteDatabase,
+    private val userAnswersEntityDao: UserAnswersEntityDao,
     private val updateProfilePhotoUriUseCase: UpdateProfilePhotoUriUseCase
 ) : Repository {
     override suspend fun fetchScheduledTestListForUser(user: ExamerUser): List<TestDetails> =

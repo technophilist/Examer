@@ -31,6 +31,7 @@ class AppContainer(application: Application) {
     private val repository = ExamerRepository(
         context = application,
         remoteDatabase = remoteDatabase,
+        userAnswersEntityDao = userAnswersEntityDao,
         updateProfilePhotoUriUseCase = UpdateProfilePhotoUriUseCaseImpl(
             authenticationService,
             passwordManager
