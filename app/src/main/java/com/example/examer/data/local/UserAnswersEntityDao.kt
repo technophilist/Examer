@@ -8,7 +8,7 @@ import androidx.room.Query
 @Dao
 interface UserAnswersEntityDao {
     @Query("select * from UserAnswersEntity")
-    suspend fun getUserAnswersEntityList(): List<UserAnswersEntity>
+    suspend fun getAllUserAnswersEntities(): List<UserAnswersEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveUserAnswersEntityList(entityList: List<UserAnswersEntity>)
