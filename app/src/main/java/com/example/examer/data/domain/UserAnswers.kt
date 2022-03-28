@@ -16,7 +16,7 @@ fun UserAnswers.toUserAnswersDTO() = UserAnswersDTO(
     associatedWorkBookId = associatedWorkBookId,
     answersDetailsMap = answers.keys.map {
         mapOf(
-            "id" to it.id,
+            "multiChoiceQuestionId" to it.id,
             "indexOfCorrectOption" to it.indexOfCorrectOption.toString(),
             "indexOfChosenOption" to answers[it].toString()
         )
