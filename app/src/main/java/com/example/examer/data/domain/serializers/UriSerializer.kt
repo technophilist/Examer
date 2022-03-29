@@ -8,7 +8,7 @@ import kotlinx.serialization.encoding.Encoder
 
 
 @Serializer(forClass = Uri::class)
-class UriSerializer : KSerializer<Uri> {
+object UriSerializer : KSerializer<Uri> {
     override fun serialize(encoder: Encoder, value: Uri) {
         encoder.encodeString(value.toString())
     }
