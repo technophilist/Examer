@@ -11,5 +11,5 @@ data class UserAnswersEntity(
     val multiChoiceQuestionId: String,// this indicates which mcq in the workbook
     val indexOfCorrectOption: Int,
     val indexOfChosenOption: Int,
-    @PrimaryKey(autoGenerate = true) val id: String = "" // will be autogen by Room
+    @PrimaryKey(autoGenerate = true) val id: Int = -1 // will be autogen by Room
 )
