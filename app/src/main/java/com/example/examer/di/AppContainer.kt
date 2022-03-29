@@ -2,11 +2,14 @@ package com.example.examer.di
 
 import android.app.Application
 import android.media.MediaPlayer
+import androidx.room.Room
 import com.example.examer.auth.FirebaseAuthenticationService
 import com.example.examer.data.ExamerRepository
 import com.example.examer.data.Repository
 import com.example.examer.data.domain.TestDetails
 import com.example.examer.data.domain.WorkBook
+import com.example.examer.data.local.ExamerDatabase
+import com.example.examer.data.local.UserAnswersEntityDao
 import com.example.examer.data.remote.FirebaseRemoteDatabase
 import com.example.examer.data.remote.RemoteDatabase
 import com.example.examer.usecases.ExamerCredentialsValidationUseCase
@@ -19,9 +22,16 @@ class AppContainer(application: Application) {
         FirebaseRemoteDatabase(StandardDispatchersProvider()) as RemoteDatabase
     private val passwordManager = ExamerPasswordManager(application) as PasswordManager
     val authenticationService = FirebaseAuthenticationService()
+    private val examerDatabase = Room.databaseBuilder(
+        application,
+        ExamerDatabase::class.java,
+        DATABASE_NAME
+    ).build()
+    private val userAnswersEntityDao = examerDatabase.userAnswersEntityDao()
     private val repository = ExamerRepository(
         context = application,
         remoteDatabase = remoteDatabase,
+        userAnswersEntityDao = userAnswersEntityDao,
         updateProfilePhotoUriUseCase = UpdateProfilePhotoUriUseCaseImpl(
             authenticationService,
             passwordManager
@@ -59,5 +69,9 @@ class AppContainer(application: Application) {
         testDetails = testDetails,
         workBookList = workBookList
     )
+
+    companion object {
+        private const val DATABASE_NAME = "UserAnswersDb"
+    }
 }
 
