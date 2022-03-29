@@ -4,10 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import androidx.core.net.toUri
-import com.example.examer.data.domain.ExamerAudioFile
-import com.example.examer.data.domain.ExamerUser
-import com.example.examer.data.domain.TestDetails
-import com.example.examer.data.domain.WorkBook
+import com.example.examer.data.domain.*
 import com.example.examer.data.dto.AudioFileDTO
 import com.example.examer.data.dto.WorkBookDTO
 import com.example.examer.data.dto.toMultiChoiceQuestion
@@ -28,6 +25,12 @@ interface Repository {
         user: ExamerUser,
         testDetails: TestDetails
     ): Result<List<WorkBook>>
+
+    suspend fun saveUserAnswers(
+        user: ExamerUser,
+        testDetailsId: String,
+        userAnswers: UserAnswers
+    )
 }
 
 class ExamerRepository(
@@ -75,6 +78,17 @@ class ExamerRepository(
     } catch (exception: Exception) {
         if (exception is CancellationException) throw exception
         Result.failure(exception)
+    }
+
+    override suspend fun saveUserAnswers(
+        user: ExamerUser,
+        testDetailsId: String,
+        userAnswers: UserAnswers
+    ) {
+        val userAnswersEntityList = userAnswers.toUserAnswersEntityList(testDetailsId)
+        // room uses a non-ui dispatcher, therefore there is no need
+        // to call witContext(Dispatchers.IO)
+        userAnswersEntityDao.saveUserAnswersEntityList(userAnswersEntityList)
     }
 
     private fun AudioFileDTO.toExamerAudioFile(localAudioFileUri: Uri) = ExamerAudioFile(
