@@ -24,6 +24,12 @@ interface Repository {
         user: ExamerUser,
         testDetails: TestDetails
     ): Result<List<WorkBook>>
+
+    suspend fun saveUserAnswersForUser(
+        user: ExamerUser,
+        userAnswers: UserAnswers,
+        testDetailId: String
+    )
 }
 
 class ExamerRepository(
@@ -70,6 +76,15 @@ class ExamerRepository(
     } catch (exception: Exception) {
         if (exception is CancellationException) throw exception
         Result.failure(exception)
+    }
+
+    override suspend fun saveUserAnswersForUser(
+        user: ExamerUser,
+        userAnswers: UserAnswers,
+        testDetailId: String
+    ) {
+        // todo exception handling
+        remoteDatabase.saveUserAnswers(user, userAnswers, testDetailId)
     }
 
     private fun AudioFileDTO.toExamerAudioFile(localAudioFileUri: Uri) = ExamerAudioFile(
