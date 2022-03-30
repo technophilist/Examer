@@ -8,7 +8,6 @@ import com.example.examer.data.domain.*
 import com.example.examer.data.dto.AudioFileDTO
 import com.example.examer.data.dto.WorkBookDTO
 import com.example.examer.data.dto.toMultiChoiceQuestion
-import com.example.examer.data.local.UserAnswersEntityDao
 import com.example.examer.data.remote.RemoteDatabase
 import com.example.examer.usecases.UpdateProfilePhotoUriUseCase
 import kotlinx.coroutines.CancellationException
@@ -25,18 +24,11 @@ interface Repository {
         user: ExamerUser,
         testDetails: TestDetails
     ): Result<List<WorkBook>>
-
-    suspend fun saveUserAnswers(
-        user: ExamerUser,
-        testDetailsId: String,
-        userAnswers: UserAnswers
-    )
 }
 
 class ExamerRepository(
     private val context: Context,
     private val remoteDatabase: RemoteDatabase,
-    private val userAnswersEntityDao: UserAnswersEntityDao,
     private val updateProfilePhotoUriUseCase: UpdateProfilePhotoUriUseCase
 ) : Repository {
     override suspend fun fetchScheduledTestListForUser(user: ExamerUser): List<TestDetails> =
@@ -78,17 +70,6 @@ class ExamerRepository(
     } catch (exception: Exception) {
         if (exception is CancellationException) throw exception
         Result.failure(exception)
-    }
-
-    override suspend fun saveUserAnswers(
-        user: ExamerUser,
-        testDetailsId: String,
-        userAnswers: UserAnswers
-    ) {
-        val userAnswersEntityList = userAnswers.toUserAnswersEntityList(testDetailsId)
-        // room uses a non-ui dispatcher, therefore there is no need
-        // to call witContext(Dispatchers.IO)
-        userAnswersEntityDao.saveUserAnswersEntityList(userAnswersEntityList)
     }
 
     private fun AudioFileDTO.toExamerAudioFile(localAudioFileUri: Uri) = ExamerAudioFile(

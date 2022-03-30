@@ -10,7 +10,7 @@ import java.time.ZoneId
 import java.time.ZoneOffset
 
 @Serializer(forClass = LocalDateTime::class)
-object LocalDateTimeSerializer : KSerializer<LocalDateTime> {
+class LocalDateTimeSerializer : KSerializer<LocalDateTime> {
     override fun deserialize(decoder: Decoder): LocalDateTime {
         // decode the epoch millis
         val epochMillis = decoder.decodeLong()
