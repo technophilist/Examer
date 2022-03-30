@@ -53,7 +53,8 @@ class AppContainer(application: Application) {
 
     val workBookViewModelFactory = WorkBookViewModelFactory(
         authenticationService = authenticationService,
-        repository = repository
+        repository = repository,
+        application = application
     )
 
     fun getTestSessionViewModelFactory(
