@@ -24,6 +24,7 @@ import com.example.examer.data.domain.WorkBook
 import com.example.examer.di.AppContainer
 import com.example.examer.ui.navigation.ExamerDestinations
 import com.example.examer.ui.navigation.TakeTestScreenDestinations
+import com.example.examer.ui.navigation.TakeTestScreenDestinations.WorkBookScreen.TEST_DETAILS_ID_ARG
 import com.example.examer.ui.navigation.TakeTestScreenDestinations.WorkBookScreen.WORKBOOK_ID_ARG
 import com.example.examer.ui.screens.listenToAudioScreen.AudioPlaybackState
 import com.example.examer.ui.screens.listenToAudioScreen.ListenToAudioScreen
@@ -92,6 +93,7 @@ fun NavGraphBuilder.takeTestScreenNavigation(
                         val workBook = workBookList[currentWorkBookIndex]
                         val routeString =
                             TakeTestScreenDestinations.WorkBookScreen.buildRoute(
+                                testDetails.id,
                                 workBook.id,
                                 workBook.questions
                             )
@@ -124,6 +126,7 @@ private fun NavGraphBuilder.workBookScreenComposable(navController: NavHostContr
                 bundle.getString(TakeTestScreenDestinations.WorkBookScreen.QUESTIONS_LIST_ARG)!!
             )
             val workBookId = bundle.getString(WORKBOOK_ID_ARG)!!
+            val testDetailsId = bundle.getString(TEST_DETAILS_ID_ARG)!!
             WorkBookScreen(
                 questionList = multiChoiceQuestionList,
                 onFooterButtonClick = { answersMap ->
@@ -134,6 +137,7 @@ private fun NavGraphBuilder.workBookScreenComposable(navController: NavHostContr
                     // the backstack instead of navigating explicitly to
                     // ListenToAudioScreen to allow the user to play the
                     // audio file associated with the next question.
+                    Timber.d(testDetailsId)
                     Timber.d(workBookId)
                     Timber.d(answersMap.toString())
                     navController.popBackStack()
