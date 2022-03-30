@@ -5,6 +5,7 @@ import android.net.Uri
 import com.example.examer.data.domain.*
 import com.example.examer.data.dto.AudioFileDTO
 import com.example.examer.data.dto.MultiChoiceQuestionListDTO
+import com.example.examer.data.dto.UserAnswersDTO
 import com.example.examer.data.dto.WorkBookDTO
 import com.example.examer.di.DispatcherProvider
 import com.google.firebase.firestore.CollectionReference
@@ -93,6 +94,20 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
         }
     }
 
+    override suspend fun saveUserAnswers(
+        user: ExamerUser,
+        userAnswers: UserAnswers,
+        testDetailsId: String
+    ) {
+        withContext(dispatcherProvider.io) {
+            Firebase.firestore
+                .collection(getCollectionPathForUserAnswers(user, testDetailsId))
+                .document()
+                .set(userAnswers.toUserAnswersDTO())
+                .await() // throws exception
+        }
+    }
+
     private fun DocumentSnapshot.toWorkBookDTO(): WorkBookDTO {
         val examerAudioFile = AudioFileDTO(
             audioFileUrl = URL(get("audioFileDownloadUrl").toString()),
@@ -149,6 +164,9 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
         private fun getCollectionPathForTests(user: ExamerUser) = "users/${user.id}/tests"
         private fun getCollectionPathForWorkBooks(user: ExamerUser, testDetails: TestDetails) =
             "${getCollectionPathForTests(user)}/${testDetails.id}/workbooks"
+
+        private fun getCollectionPathForUserAnswers(user: ExamerUser, testDetailsId: String) =
+            "${getCollectionPathForTests(user)}/${testDetailsId}/answersForEachWorkBook"
     }
 
 }
