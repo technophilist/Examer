@@ -1,7 +1,6 @@
 package com.example.examer.data.domain
 
 import com.example.examer.data.dto.UserAnswersDTO
-import com.example.examer.data.local.UserAnswersEntity
 
 @JvmInline
 value class IndexOfChosenOption(val index: Int) {
@@ -23,15 +22,3 @@ fun UserAnswers.toUserAnswersDTO() = UserAnswersDTO(
         )
     }
 )
-
-//TODO add doc explaining why a single UserAnswersObject is converted to a list
-fun UserAnswers.toUserAnswersEntityList(testDetailsId: String): List<UserAnswersEntity> =
-    answers.keys.map { mcq ->
-        UserAnswersEntity(
-            testDetailsId = testDetailsId,
-            associatedWorkBookId = associatedWorkBookId,
-            multiChoiceQuestionId = mcq.id,
-            indexOfCorrectOption = mcq.indexOfCorrectOption,
-            indexOfChosenOption = answers[mcq]!!.index
-        )
-    }
