@@ -130,15 +130,9 @@ class TestSessionViewModelFactory(
     ) as T
 }
 
-class WorkBookViewModelFactory(
-    private val authenticationService: AuthenticationService,
-    private val repository: Repository,
-    private val application: Application
-) : ViewModelProvider.Factory {
+class WorkBookViewModelFactory(private val application: Application) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>) = ExamerWorkBookViewModel(
-        authenticationService = authenticationService,
-        repository = repository,
         application = application
     ) as T
 }

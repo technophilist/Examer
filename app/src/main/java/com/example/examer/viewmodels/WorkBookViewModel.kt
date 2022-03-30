@@ -18,8 +18,6 @@ interface WorkBookViewModel {
 }
 
 class ExamerWorkBookViewModel(
-    private val authenticationService: AuthenticationService,
-    private val repository: Repository,
     application: Application
 ) : AndroidViewModel(application), WorkBookViewModel {
     private val workManager = WorkManager.getInstance(application)

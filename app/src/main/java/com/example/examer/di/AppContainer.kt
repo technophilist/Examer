@@ -51,12 +51,7 @@ class AppContainer(application: Application) {
         testDetailsListType = TestDetailsListType.PREVIOUS_TESTS
     )
 
-    val workBookViewModelFactory = WorkBookViewModelFactory(
-        authenticationService = authenticationService,
-        repository = repository,
-        application = application
-    )
-
+    val workBookViewModelFactory = WorkBookViewModelFactory(application = application)
     fun getTestSessionViewModelFactory(
         testDetails: TestDetails,
         workBookList: List<WorkBook>
