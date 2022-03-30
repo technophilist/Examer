@@ -30,6 +30,7 @@ import com.example.examer.ui.screens.listenToAudioScreen.AudioPlaybackState
 import com.example.examer.ui.screens.listenToAudioScreen.ListenToAudioScreen
 import com.example.examer.ui.screens.listenToAudioScreen.TimerState
 import com.example.examer.ui.screens.listenToAudioScreen.WorkBookState
+import com.example.examer.utils.WorkBookViewModelFactory
 import com.example.examer.viewmodels.ExamerTestSessionViewModel
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
@@ -112,11 +113,14 @@ fun NavGraphBuilder.takeTestScreenNavigation(
                 )
             }
         }
-        workBookScreenComposable(navController)
+        workBookScreenComposable(navController, appContainer.workBookViewModelFactory)
     }
 }
 
-private fun NavGraphBuilder.workBookScreenComposable(navController: NavHostController) {
+private fun NavGraphBuilder.workBookScreenComposable(
+    navController: NavHostController,
+    workBookViewModelFactory: WorkBookViewModelFactory
+) {
     composable(route = TakeTestScreenDestinations.WorkBookScreen.route) {
         BackHandler {
             /* TODO: Temporarily use this composable to not allow the user to navigate back.*/
