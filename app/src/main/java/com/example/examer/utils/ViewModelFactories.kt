@@ -129,3 +129,14 @@ class TestSessionViewModelFactory(
         workBookList = workBookList
     ) as T
 }
+
+class WorkBookViewModelFactory(
+    private val authenticationService: AuthenticationService,
+    private val repository: Repository
+) : ViewModelProvider.Factory {
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel?> create(modelClass: Class<T>) = ExamerWorkBookViewModel(
+        authenticationService = authenticationService,
+        repository = repository
+    ) as T
+}
