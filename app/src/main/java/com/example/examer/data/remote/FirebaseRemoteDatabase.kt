@@ -29,7 +29,7 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
         withContext(dispatcherProvider.io) {
             val scheduledTestsCollection = Firebase.firestore
                 .collection(getCollectionPathForTests(user))
-                .whereEqualTo("testStatus","scheduled")
+                .whereEqualTo("testStatus", "scheduled")
                 .get()
                 .await()
             // if no collection exists for the user, which likely indicates
@@ -42,7 +42,7 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
         withContext(dispatcherProvider.io) {
             val previousTestsCollection = Firebase.firestore
                 .collection(getCollectionPathForTests(user))
-                .whereEqualTo("testStatus","completed") // FIXME(include completed and missed)
+                .whereIn("testStatus", listOf("completed", "missed"))
                 .get()
                 .await()
             // if no collection exists for the user, which likely indicates
@@ -135,7 +135,6 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
     companion object {
         private const val PROFILE_PICTURES_FOLDER_NAME = "profile_pics"
         private fun getCollectionPathForTests(user: ExamerUser) = "users/${user.id}/tests"
-        // FIXME
         private fun getCollectionPathForWorkBooks(user: ExamerUser, testDetails: TestDetails) =
             "${getCollectionPathForTests(user)}/${testDetails.id}/workbooks"
     }
