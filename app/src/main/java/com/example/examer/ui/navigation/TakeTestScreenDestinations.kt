@@ -14,7 +14,7 @@ sealed class TakeTestScreenDestinations(val route: String) {
         TakeTestScreenDestinations("com.example.examer.ui.navigation.WorkBookScreen/{testDetailsId}/{workBookId}/{questionsList}/") {
         const val WORKBOOK_ID_ARG = "workBookId"
         const val QUESTIONS_LIST_ARG = "questionsList"
-        const val TEST_DETAILS_ID_ARG = "questionsList"
+        const val TEST_DETAILS_ID_ARG = "testDetailsId"
         fun buildRoute(
             testDetailsId: String,
             workBookId: String,
