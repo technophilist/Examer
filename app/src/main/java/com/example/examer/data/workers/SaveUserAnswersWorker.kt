@@ -1,6 +1,6 @@
 package com.example.examer.data.workers
 
-import android.app.Application
+import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.examer.data.domain.UserAnswers
@@ -10,9 +10,9 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
 class SaveUserAnswersWorker(
-    private val application: Application,
+    private val appContext: Context,
     workerParameters: WorkerParameters
-) : CoroutineWorker(application, workerParameters) {
+) : CoroutineWorker(appContext, workerParameters) {
     override suspend fun doWork(): Result = try {
         // deserialize user answers object
         val userAnswersJsonString = inputData.getString(KEY_USER_ANSWERS_JSON_STRING_ARG)!!
@@ -20,7 +20,7 @@ class SaveUserAnswersWorker(
         // get testDetailsId
         val testDetailsId = inputData.getString(KEY_TEST_DETAILS_ID_ARG)!!
         // use the repository to save the UserAnswers object
-        val appContainer = ((application) as ExamerApplication).appContainer
+        val appContainer = ((appContext) as ExamerApplication).appContainer
         val currentlyLoggedInUser = appContainer.authenticationService.currentUser.value!!
         val repository = appContainer.repository
         repository.saveUserAnswersForUser(currentlyLoggedInUser, userAnswers, testDetailsId)
