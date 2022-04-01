@@ -107,6 +107,7 @@ fun WorkBookScreen(
             Spacer(modifier = Modifier.size(8.dp))
         }
         item {
+            Spacer(modifier = Modifier.size(8.dp))
             footer()
             Spacer(
                 modifier = Modifier
