@@ -18,6 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.examer.R
+import com.example.examer.data.domain.IndexOfChosenOption
 import com.example.examer.data.domain.MultiChoiceQuestion
 import com.google.accompanist.insets.navigationBarsHeight
 import com.google.accompanist.insets.statusBarsPadding
@@ -29,7 +30,7 @@ enum class ButtonTextValue {
 @Composable
 fun WorkBookScreen(
     questionList: List<MultiChoiceQuestion>,
-    onFooterButtonClick: (Map<MultiChoiceQuestion, Int>) -> Unit,
+    onFooterButtonClick: (Map<MultiChoiceQuestion, IndexOfChosenOption>) -> Unit,
     buttonTextValue: ButtonTextValue = ButtonTextValue.NEXT_WORKBOOK
 ) {
     // a map that stores the currently selected item associated
@@ -61,8 +62,7 @@ fun WorkBookScreen(
             Button(
                 modifier = Modifier.align(Alignment.End),
                 onClick = {
-                    // convert state map to normal map and pass it as arg
-                    onFooterButtonClick(currentlySelectedIndexMap.toMap())
+                    onFooterButtonClick(currentlySelectedIndexMap.mapValues { IndexOfChosenOption(it.value) })
                 },
                 content = {
                     Text(
