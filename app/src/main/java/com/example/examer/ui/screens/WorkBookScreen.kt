@@ -22,6 +22,7 @@ import com.example.examer.data.domain.IndexOfChosenOption
 import com.example.examer.data.domain.MultiChoiceQuestion
 import com.google.accompanist.insets.navigationBarsHeight
 import com.google.accompanist.insets.statusBarsPadding
+import timber.log.Timber
 
 enum class ButtonTextValue {
     NEXT_WORKBOOK, FINISH_TEST
@@ -40,6 +41,7 @@ fun WorkBookScreen(
     val currentlySelectedIndexMap = remember {
         mutableStateMapOf<MultiChoiceQuestion, Int>()
     }
+    var isFooterButtonEnabled by remember { mutableStateOf(false) }
     val resources = LocalContext.current.resources
     val (footerButtonText, footerButtonIcon) = remember(buttonTextValue) {
         when (buttonTextValue) {
@@ -61,6 +63,7 @@ fun WorkBookScreen(
         Column(modifier = Modifier.fillMaxWidth()) {
             Button(
                 modifier = Modifier.align(Alignment.End),
+                enabled = isFooterButtonEnabled,
                 onClick = {
                     onFooterButtonClick(currentlySelectedIndexMap.mapValues { IndexOfChosenOption(it.value) })
                 },
@@ -94,6 +97,11 @@ fun WorkBookScreen(
                 currentlySelectedIndex = currentlySelectedIndexMap.getOrPut(item) { -1 },
                 onOptionClick = { indexOfOption, _, _ ->
                     currentlySelectedIndexMap[item] = indexOfOption
+                    // enable the footer button only when the user has
+                    // chosen an answer for all the questions.
+                    if (currentlySelectedIndexMap.none { it.value == -1 }) {
+                        isFooterButtonEnabled = true
+                    }
                 }
             )
             Spacer(modifier = Modifier.size(8.dp))
