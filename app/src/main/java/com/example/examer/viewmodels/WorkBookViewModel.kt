@@ -29,7 +29,6 @@ class ExamerWorkBookViewModel(
         }
         val workRequest = OneTimeWorkRequest.Builder(SaveUserAnswersWorker::class.java)
             .setConstraints(workerConstraints)
-            .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
             .setInputData(inputData)
             .build()
         workManager.enqueue(workRequest)
