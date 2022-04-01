@@ -16,8 +16,7 @@ class SaveUserAnswersWorker(
     override suspend fun doWork(): Result = try {
         // deserialize user answers object
         val userAnswersJsonString = inputData.getString(KEY_USER_ANSWERS_JSON_STRING_ARG)!!
-        val jsonFormat = Json { allowStructuredMapKeys = true }
-        val userAnswers = jsonFormat.decodeFromString<UserAnswers>(userAnswersJsonString)
+        val userAnswers = Json.decodeFromString<UserAnswers>(userAnswersJsonString)
         // get testDetailsId
         val testDetailsId = inputData.getString(KEY_TEST_DETAILS_ID_ARG)!!
         // use the repository to save the UserAnswers object
