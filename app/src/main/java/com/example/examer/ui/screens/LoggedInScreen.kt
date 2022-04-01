@@ -190,6 +190,7 @@ fun LoggedInScreen(
 
                 takeTestScreenNavigation(
                     route = ExamerDestinations.TakeTestScreen.route,
+                    navController = loggedInNavController,
                     appContainer = appContainer
                 )
             }

@@ -4,10 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import androidx.core.net.toUri
-import com.example.examer.data.domain.ExamerAudioFile
-import com.example.examer.data.domain.ExamerUser
-import com.example.examer.data.domain.TestDetails
-import com.example.examer.data.domain.WorkBook
+import com.example.examer.data.domain.*
 import com.example.examer.data.dto.AudioFileDTO
 import com.example.examer.data.dto.WorkBookDTO
 import com.example.examer.data.dto.toMultiChoiceQuestion
@@ -27,6 +24,12 @@ interface Repository {
         user: ExamerUser,
         testDetails: TestDetails
     ): Result<List<WorkBook>>
+
+    suspend fun saveUserAnswersForUser(
+        user: ExamerUser,
+        userAnswers: UserAnswers,
+        testDetailId: String
+    )
 }
 
 class ExamerRepository(
@@ -73,6 +76,15 @@ class ExamerRepository(
     } catch (exception: Exception) {
         if (exception is CancellationException) throw exception
         Result.failure(exception)
+    }
+
+    override suspend fun saveUserAnswersForUser(
+        user: ExamerUser,
+        userAnswers: UserAnswers,
+        testDetailId: String
+    ) {
+        // todo exception handling
+        remoteDatabase.saveUserAnswers(user, userAnswers, testDetailId)
     }
 
     private fun AudioFileDTO.toExamerAudioFile(localAudioFileUri: Uri) = ExamerAudioFile(
