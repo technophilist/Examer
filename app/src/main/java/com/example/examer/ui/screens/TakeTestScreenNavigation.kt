@@ -60,13 +60,6 @@ fun NavGraphBuilder.takeTestScreenNavigation(
                     ),
                     viewModelStoreOwner = it
                 )
-                val timerState = remember {
-                    TimerState(
-                        hoursRemaining = testSessionViewModel.hoursRemaining,
-                        minutesRemaining = testSessionViewModel.minutesRemaining,
-                        secondsRemaining = testSessionViewModel.secondsRemaining,
-                    )
-                }
                 val workBookState = remember {
                     WorkBookState(
                         currentWorkBookNumber = testSessionViewModel.currentWorkBookNumber,
@@ -88,8 +81,6 @@ fun NavGraphBuilder.takeTestScreenNavigation(
                     )
                 }
                 ListenToAudioScreen(
-                    timerState = timerState,
-                    workBookState = workBookState,
                     audioPlayBackState = audioPlaybackState,
                     onNavigateToWorkBook = {
                         val currentWorkBookIndex = workBookState.currentWorkBookNumber.value - 1
