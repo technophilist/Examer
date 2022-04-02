@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -24,6 +25,7 @@ import coil.request.CachePolicy
 import com.example.examer.R
 import com.example.examer.data.domain.ExamerUser
 import com.example.examer.data.domain.TestDetails
+import com.example.examer.data.domain.WorkBook
 import com.example.examer.di.AppContainer
 import com.example.examer.ui.components.CircularLoadingProgressOverlay
 import com.example.examer.ui.components.ExamerNavigationScaffold
@@ -35,6 +37,8 @@ import com.example.examer.viewmodels.profileScreenViewModel.*
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 
 @ExperimentalCoilApi
 @ExperimentalAnimationApi
@@ -104,7 +108,7 @@ fun LoggedInScreen(
         }
     )
     val isTopAppBarVisible by derivedStateOf {
-        currentBackStackEntry?.destination?.parent?.route != ExamerDestinations.TakeTestScreen.route
+        currentBackStackEntry?.destination?.route != ExamerDestinations.TakeTestScreen.route
     }
     var navigationIconImageVector by remember { mutableStateOf(Icons.Filled.Menu) }
     val isNavigationDrawerIconVisible by derivedStateOf {
@@ -188,14 +192,34 @@ fun LoggedInScreen(
                     snackbarHostState = scaffoldState.snackbarHostState
                 )
 
-                takeTestScreenNavigation(
+                takeTestScreenComposable(
                     route = ExamerDestinations.TakeTestScreen.route,
-                    navController = loggedInNavController,
                     appContainer = appContainer
                 )
             }
         },
     )
+}
+
+private fun NavGraphBuilder.takeTestScreenComposable(
+    route: String,
+    appContainer: AppContainer
+) {
+    composable(route = route) { backStackEntry ->
+        val navArguments = backStackEntry.arguments!!
+        val testDetails = navArguments
+            .getString(ExamerDestinations.TakeTestScreen.TEST_DETAILS_ARG)!!
+            .let { Json.decodeFromString<TestDetails>(it) }
+        val workBookList = navArguments
+            .getString(ExamerDestinations.TakeTestScreen.WORKBOOK_LIST_ARG)!!
+            .let { Json.decodeFromString<List<WorkBook>>(it) }
+        TakeTestScreen(
+            appContainer = appContainer,
+            viewModelStoreOwner = backStackEntry,
+            testDetails = testDetails,
+            workBookList = workBookList
+        )
+    }
 }
 
 @ExperimentalCoilApi

@@ -22,37 +22,24 @@ import androidx.compose.ui.unit.dp
 import com.example.examer.R
 import com.example.examer.ui.components.NonClickableTestInfoChip
 import com.example.examer.utils.conditional
+import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.systemBarsPadding
 
 
 @Composable
 fun ListenToAudioScreen(
-    timerState: TimerState,
-    workBookState: WorkBookState,
     audioPlayBackState: AudioPlaybackState,
     onNavigateToWorkBook: () -> Unit,
     onAudioIconClick: () -> Unit = {},
     isAudioIconClickEnabled: Boolean = true
 ) {
-    val quizChipTextStyle = MaterialTheme.typography.body2
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .systemBarsPadding()
-            .padding(16.dp)
+            .navigationBarsPadding()
+            .padding(8.dp)
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            TestInfoChipRow(
-                modifier = Modifier
-                    .align(Alignment.Start)
-                    .fillMaxWidth(),
-                currentWorkBookNumber = workBookState.currentWorkBookNumber.value,
-                totalNumberOfWorkBooks = workBookState.totalNumberOfWorkBooks,
-                hoursRemaining = timerState.hoursRemaining.value,
-                minutesRemaining = timerState.minutesRemaining.value,
-                secondsRemaining = timerState.secondsRemaining.value,
-                textStyle = quizChipTextStyle
-            )
             Text(
                 text = stringResource(R.string.label_listen_and_answer),
                 style = MaterialTheme.typography.h5
@@ -98,69 +85,4 @@ fun ListenToAudioScreen(
             Icon(imageVector = Icons.Filled.NavigateNext, contentDescription = null)
         }
     }
-}
-
-@Composable
-private fun TestInfoChipRow(
-    currentWorkBookNumber: Int,
-    totalNumberOfWorkBooks: Int,
-    hoursRemaining: String,
-    minutesRemaining: String,
-    secondsRemaining: String,
-    modifier: Modifier = Modifier,
-    textStyle: TextStyle = TextStyle.Default
-) {
-    Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        WorkbookNumberIndicator(
-            currentWorkBookNumber = currentWorkBookNumber,
-            totalNumberOfWorkBooks = totalNumberOfWorkBooks,
-            textStyle = textStyle
-        )
-        CountDownTimer(
-            hoursRemaining = hoursRemaining,
-            minutesRemaining = minutesRemaining,
-            secondsRemaining = secondsRemaining,
-            textStyle = textStyle
-        )
-    }
-}
-
-@Composable
-private fun CountDownTimer(
-    hoursRemaining: String,
-    minutesRemaining: String,
-    secondsRemaining: String,
-    modifier: Modifier = Modifier,
-    textStyle: TextStyle = TextStyle.Default,
-) {
-    NonClickableTestInfoChip(
-        modifier = modifier,
-        text = "$hoursRemaining : $minutesRemaining : $secondsRemaining",
-        textStyle = textStyle,
-        icon = Icons.Filled.Timer,
-        contentDescription = null
-    )
-}
-
-@Composable
-private fun WorkbookNumberIndicator(
-    currentWorkBookNumber: Int,
-    totalNumberOfWorkBooks: Int,
-    modifier: Modifier = Modifier,
-    textStyle: TextStyle = TextStyle.Default
-) {
-    NonClickableTestInfoChip(
-        modifier = modifier,
-        text = stringResource(
-            R.string.label_workbook,
-            currentWorkBookNumber,
-            totalNumberOfWorkBooks
-        ),
-        textStyle = textStyle,
-        icon = Icons.Filled.Description,
-        contentDescription = null
-    )
 }
