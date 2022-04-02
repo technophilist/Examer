@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.example.examer.R
 import com.example.examer.ui.components.NonClickableTestInfoChip
 import com.example.examer.utils.conditional
+import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.systemBarsPadding
 
 
@@ -35,8 +36,8 @@ fun ListenToAudioScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .systemBarsPadding()
-            .padding(16.dp)
+            .navigationBarsPadding()
+            .padding(8.dp)
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Text(
