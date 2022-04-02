@@ -14,7 +14,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -116,28 +115,26 @@ fun TakeTestScreen(
                                 workBook.id,
                                 workBook.questions
                             )
-                        // the viewModel instance will not be destroyed until
-                        // it is popped off the back stack. Keep the viewModel
-                        // ready with the next workbook and navigate to the
-                        // workbook screen. When the user is navigating from
-                        // the workbook screen, pop the backstack instead of
-                        // navigating back to this screen to play the audio file
-                        // associated with the next question.
                         navController.navigate(routeString)
-                        testSessionViewModel.moveToNextWorkBook()
                     },
                     isAudioIconClickEnabled = isAudioIconClickEnabled,
                     onAudioIconClick = testSessionViewModel::playAudioForCurrentWorkBook
                 )
             }
-            workBookScreenComposable(navController, appContainer.workBookViewModelFactory)
+            workBookScreenComposable(
+                appContainer.workBookViewModelFactory,
+                onAnswerSaved = {
+                    testSessionViewModel.moveToNextWorkBook()
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }
 
 private fun NavGraphBuilder.workBookScreenComposable(
-    navController: NavHostController,
-    workBookViewModelFactory: WorkBookViewModelFactory
+    workBookViewModelFactory: WorkBookViewModelFactory,
+    onAnswerSaved:()->Unit,
 ) {
     composable(route = TakeTestScreenDestinations.WorkBookScreen.route) {
         BackHandler {
@@ -163,14 +160,7 @@ private fun NavGraphBuilder.workBookScreenComposable(
                         answers = answersMap
                     )
                     viewModel.saveUserAnswersForTestId(userAnswers, testDetailsId)
-                    // the viewModel instance of the ListenToAudioScreen
-                    // composable will not be destroyed until it is popped
-                    // off the back stack.The viewModel will be ready with
-                    // the next workbook on navigating to this screen. Pop
-                    // the backstack instead of navigating explicitly to
-                    // ListenToAudioScreen to allow the user to play the
-                    // audio file associated with the next question.
-                    navController.popBackStack()
+                    onAnswerSaved()
                 }
             )
         }
