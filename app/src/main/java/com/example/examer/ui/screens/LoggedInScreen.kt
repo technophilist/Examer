@@ -194,7 +194,8 @@ fun LoggedInScreen(
 
                 takeTestScreenComposable(
                     route = ExamerDestinations.TakeTestScreen.route,
-                    appContainer = appContainer
+                    appContainer = appContainer,
+                    navController = loggedInNavController,
                 )
             }
         },
@@ -203,7 +204,8 @@ fun LoggedInScreen(
 
 private fun NavGraphBuilder.takeTestScreenComposable(
     route: String,
-    appContainer: AppContainer
+    appContainer: AppContainer,
+    navController: NavController
 ) {
     composable(route = route) { backStackEntry ->
         val navArguments = backStackEntry.arguments!!
@@ -216,6 +218,9 @@ private fun NavGraphBuilder.takeTestScreenComposable(
         TakeTestScreen(
             appContainer = appContainer,
             viewModelStoreOwner = backStackEntry,
+            onExitTestButtonClick = {
+//                navController.popBackStack()
+            },
             testDetails = testDetails,
             workBookList = workBookList
         )
