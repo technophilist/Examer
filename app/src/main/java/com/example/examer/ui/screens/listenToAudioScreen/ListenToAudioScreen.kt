@@ -92,13 +92,9 @@ fun ListenToAudioScreen(
         }
         Button(
             modifier = Modifier.align(Alignment.BottomEnd),
-            shape = RoundedCornerShape(50),
             onClick = onNavigateToWorkBook
         ) {
-            Text(
-                modifier = Modifier.padding(8.dp),
-                text = stringResource(R.string.button_label_go_to_workbook)
-            )
+            Text(text = stringResource(R.string.button_label_go_to_workbook))
             Icon(imageVector = Icons.Filled.NavigateNext, contentDescription = null)
         }
     }
