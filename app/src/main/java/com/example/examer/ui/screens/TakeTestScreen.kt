@@ -3,12 +3,13 @@ package com.example.examer.ui.screens
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
-import androidx.compose.material.primarySurface
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelStoreOwner
@@ -63,6 +64,19 @@ fun TakeTestScreen(
             secondsRemaining = testSessionViewModel.secondsRemaining
         )
     }
+    val timerAndExitIconRow = @Composable {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(text = "${timerState.hoursRemaining.value} : ${timerState.minutesRemaining.value} : ${timerState.secondsRemaining.value}")
+            IconButton(
+                onClick = { /*TODO*/ },
+                content = { Icon(imageVector = Icons.Filled.ExitToApp, contentDescription = null) }
+            )
+        }
+    }
+
     Column(modifier = Modifier.fillMaxSize()) {
         TopAppBar(
             modifier = Modifier
@@ -73,7 +87,8 @@ fun TakeTestScreen(
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
                     text = stringResource(
@@ -82,7 +97,7 @@ fun TakeTestScreen(
                         workBookState.totalNumberOfWorkBooks
                     )
                 )
-                Text(text = "${timerState.hoursRemaining.value} : ${timerState.minutesRemaining.value} : ${timerState.secondsRemaining.value}")
+                timerAndExitIconRow()
             }
         }
         NavHost(
@@ -134,7 +149,7 @@ fun TakeTestScreen(
 
 private fun NavGraphBuilder.workBookScreenComposable(
     workBookViewModelFactory: WorkBookViewModelFactory,
-    onAnswerSaved:()->Unit,
+    onAnswerSaved: () -> Unit,
 ) {
     composable(route = TakeTestScreenDestinations.WorkBookScreen.route) {
         BackHandler {
