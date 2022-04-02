@@ -61,4 +61,7 @@
     <string name="label_marks">Des marques: %1$s</string>
     <string name="button_label_next_workbook">Classeur suivant</string>
     <string name="button_label_finish_test">Terminer l\'essai</string>
+    <string name="label_quit_test">Voulez-vous vraiment quitter le test ?</string>
+    <string name="label_quit_test_warning_text">Une fois que vous aurez quitté le test, vous ne pourrez plus le repasser. Les réponses soumises pour les classeurs précédents seront enregistrées.</string>
+    <string name="button_label_quit">"Quitter "</string>
 </resources>

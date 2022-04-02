@@ -87,4 +87,8 @@
     <string name="label_marks">Marks: %1$s</string>
     <string name="button_label_next_workbook">Next workbook</string>
     <string name="button_label_finish_test">Finish Test</string>
+    <!-- TakeTestScreen Alert Dialog  -->
+    <string name="label_quit_test">Are you sure you want to quit the test?</string>
+    <string name="label_quit_test_warning_text">Once you quit the test, you won\'t be able to take the test again. The answers submitted for previous workbooks will be saved.</string>
+    <string name="button_label_quit">Quit</string>
 </resources>
