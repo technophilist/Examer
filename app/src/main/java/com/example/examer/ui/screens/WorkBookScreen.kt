@@ -84,7 +84,6 @@ fun WorkBookScreen(
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .statusBarsPadding()
             .padding(8.dp)
     ) {
         itemsIndexed(questionList) { index, item ->
