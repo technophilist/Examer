@@ -54,7 +54,7 @@ fun TakeTestScreen(
     val workBookState = remember {
         WorkBookState(
             testSessionViewModel.currentWorkBookNumber,
-            10 // TODO hardcoded
+            testDetails.totalNumberOfQuestions //TODO Change variable name to totalNumberOfWorkbooks
         )
     }
     val timerState = remember {
