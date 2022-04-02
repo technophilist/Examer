@@ -40,6 +40,7 @@ import kotlinx.serialization.json.Json
 fun TakeTestScreen(
     appContainer: AppContainer,
     viewModelStoreOwner: ViewModelStoreOwner,
+    onExitTestButtonClick:()->Unit,
     testDetails: TestDetails,
     workBookList: List<WorkBook>
 ) {
@@ -71,7 +72,7 @@ fun TakeTestScreen(
         ) {
             Text(text = "${timerState.hoursRemaining.value} : ${timerState.minutesRemaining.value} : ${timerState.secondsRemaining.value}")
             IconButton(
-                onClick = { /*TODO*/ },
+                onClick = onExitTestButtonClick,
                 content = { Icon(imageVector = Icons.Filled.ExitToApp, contentDescription = null) }
             )
         }
