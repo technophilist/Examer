@@ -215,12 +215,33 @@ private fun NavGraphBuilder.takeTestScreenComposable(
         val workBookList = navArguments
             .getString(ExamerDestinations.TakeTestScreen.WORKBOOK_LIST_ARG)!!
             .let { Json.decodeFromString<List<WorkBook>>(it) }
+        var isAlertDialogVisible by remember { mutableStateOf(false) }
+        if (isAlertDialogVisible) {
+            AlertDialog(
+                title = { Text(text = stringResource(R.string.label_quit_test)) },
+                text = { Text(text = stringResource(R.string.label_quit_test_warning_text)) },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            isAlertDialogVisible = false
+                            navController.popBackStack()
+                        },
+                        content = { Text(text = stringResource(R.string.button_label_quit).uppercase()) }
+                    )
+                },
+                dismissButton = {
+                    TextButton(
+                        onClick = { isAlertDialogVisible = false },
+                        content = { Text(text = stringResource(R.string.alert_dialog_button_label_cancel).uppercase()) }
+                    )
+                },
+                onDismissRequest = { isAlertDialogVisible = false }
+            )
+        }
         TakeTestScreen(
             appContainer = appContainer,
             viewModelStoreOwner = backStackEntry,
-            onExitTestButtonClick = {
-//                navController.popBackStack()
-            },
+            onExitTestButtonClick = { isAlertDialogVisible = true },
             testDetails = testDetails,
             workBookList = workBookList
         )
