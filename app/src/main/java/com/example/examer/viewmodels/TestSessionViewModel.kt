@@ -14,9 +14,11 @@ import com.example.examer.data.domain.TestDetails
 import com.example.examer.data.domain.WorkBook
 import com.example.examer.usecases.ExamerMarkTestAsCompletedUseCase
 import com.example.examer.usecases.MarkTestAsCompletedUseCase
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
+import java.lang.IllegalStateException
 
 /**
  * An interface that contains the methods and properties that are
@@ -65,6 +67,14 @@ class ExamerTestSessionViewModel(
     override val minutesRemaining = derivedStateOf { splitTextList.value[1] }
     override val secondsRemaining = derivedStateOf { splitTextList.value[2] }
 
+    // Audio Playback
+    private val _numberOfRepeatsLeftForAudioFile =
+        mutableStateOf(_currentWorkBook.value.audioFile.numberOfRepeatsAllowedForAudioFile)
+    override val numberOfRepeatsLeftForAudioFile = _numberOfRepeatsLeftForAudioFile as State<Int>
+    private val _isAudioFilePlaying = mutableStateOf(false)
+    private var setPlaybackProgressCoroutineJob: Job? = null
+    override val isAudioFilePlaying = _isAudioFilePlaying as State<Boolean>
+
     private val countDownTimer = createCountDownTimer(
         millisInFuture = convertMinuteToMillis(testDetails.testDurationInMinutes),
         onTimerTick = { millis ->
@@ -73,20 +83,18 @@ class ExamerTestSessionViewModel(
             val seconds = (TimeUnit.MILLISECONDS.toSeconds(millis) % 60).toInt()
             timeRemainingForTest.value = createTimeString(hours, minutes, seconds)
         },
-        onTimerFinished ={
+        onTimerFinished = {
             markCurrentTestAsComplete()
+            // stop updating the playback progress
+            setPlaybackProgressCoroutineJob?.cancel()
+            // stop playing media
             mediaPlayer.stop()
+            // release the resources of the media player
             mediaPlayer.release()
+            // set the appropriate ui state
             _uiState.value = TestSessionViewModel.UiState.TEST_TIMED_OUT
         }
     )
-
-    // Audio Playback
-    private val _numberOfRepeatsLeftForAudioFile =
-        mutableStateOf(_currentWorkBook.value.audioFile.numberOfRepeatsAllowedForAudioFile)
-    override val numberOfRepeatsLeftForAudioFile = _numberOfRepeatsLeftForAudioFile as State<Int>
-    private val _isAudioFilePlaying = mutableStateOf(false)
-    override val isAudioFilePlaying = _isAudioFilePlaying as State<Boolean>
 
     // playback progress states
     /*@FloatRange(from = 0.0, to = 1.0)*/
@@ -115,7 +123,7 @@ class ExamerTestSessionViewModel(
     }
 
     private fun setProgressBasedOnMediaPlayerState(player: MediaPlayer) {
-        viewModelScope.launch {
+        setPlaybackProgressCoroutineJob = viewModelScope.launch {
             while (player.isPlaying) {
                 ensureActive()
                 _playbackProgress.value = player.currentPosition / player.duration.toFloat()
