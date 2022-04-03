@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
  * that is used to manage a single test ([TestDetails]).
  */
 interface TestSessionViewModel {
-    enum class UiState { IDLE, LOADING, WORKBOOK_LIST_FETCH_ERROR }
+    enum class UiState { IDLE, TEST_TIMED_OUT }
 
     val uiState: State<UiState>
     val currentWorkBook: State<WorkBook?>
