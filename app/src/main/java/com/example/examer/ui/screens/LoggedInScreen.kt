@@ -33,6 +33,7 @@ import com.example.examer.ui.components.NavigationDrawerDestination
 import com.example.examer.ui.navigation.ExamerDestinations
 import com.example.examer.viewmodels.ExamerTestSessionViewModel
 import com.example.examer.viewmodels.ExamerTestsViewModel
+import com.example.examer.viewmodels.TestSessionViewModel
 import com.example.examer.viewmodels.TestsViewModelUiState
 import com.example.examer.viewmodels.profileScreenViewModel.*
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -222,6 +223,10 @@ private fun NavGraphBuilder.takeTestScreenComposable(
             factory = appContainer.getTestSessionViewModelFactory(testDetails, workBookList),
             viewModelStoreOwner = backStackEntry
         )
+        val testSessionUiState by testSessionViewModel.uiState
+        val isTestSessionTimedOut = remember(testSessionUiState) {
+            testSessionUiState == TestSessionViewModel.UiState.TEST_TIMED_OUT
+        }
         var isBackButtonPressed by remember { mutableStateOf(false) }
         val alertDialogTitle = remember(isBackButtonPressed) {
             when (isBackButtonPressed) {
@@ -267,6 +272,25 @@ private fun NavGraphBuilder.takeTestScreenComposable(
                 onDismissRequest = {
                     if (isBackButtonPressed) isBackButtonPressed = false
                     isAlertDialogVisible = false
+                }
+            )
+        }
+        // if the test session timed out, show alert dialog box that
+        // cannot be dismissed.
+        if (isTestSessionTimedOut) {
+            AlertDialog(
+                title = { Text(text = resources.getString(R.string.label_test_timed_out)) },
+                text = { Text(text = resources.getString(R.string.label_test_timed_out_message)) },
+                onDismissRequest = { /* Prevent user from dismissing this dialog */ },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            isAlertDialogVisible = false
+                            testSessionViewModel.markCurrentTestAsComplete()
+                            navController.navigate(ExamerDestinations.ScheduledTestsScreen.route)
+                        },
+                        content = { Text(text = stringResource(R.string.button_label_quit).uppercase()) }
+                    )
                 }
             )
         }
