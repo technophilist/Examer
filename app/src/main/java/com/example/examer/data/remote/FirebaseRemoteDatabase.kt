@@ -108,6 +108,15 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
         }
     }
 
+    override suspend fun markTestAsCompleted(user: ExamerUser, testDetailsId: String) {
+        withContext(dispatcherProvider.io) {
+            Firebase.firestore
+                .document("${getCollectionPathForTests(user)}/$testDetailsId")
+                .update("testStatus", Status.COMPLETED.toString().lowercase())
+                .await() // throws exception
+        }
+    }
+
     private fun DocumentSnapshot.toWorkBookDTO(): WorkBookDTO {
         val examerAudioFile = AudioFileDTO(
             audioFileUrl = URL(get("audioFileDownloadUrl").toString()),

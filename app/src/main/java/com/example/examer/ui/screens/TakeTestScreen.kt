@@ -32,6 +32,7 @@ import com.example.examer.ui.screens.listenToAudioScreen.WorkBookState
 import com.example.examer.utils.WorkBookViewModelFactory
 import com.example.examer.viewmodels.ExamerTestSessionViewModel
 import com.example.examer.viewmodels.ExamerWorkBookViewModel
+import com.example.examer.viewmodels.TestSessionViewModel
 import com.google.accompanist.insets.statusBarsPadding
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
@@ -39,19 +40,12 @@ import kotlinx.serialization.json.Json
 @Composable
 fun TakeTestScreen(
     appContainer: AppContainer,
-    viewModelStoreOwner: ViewModelStoreOwner,
+    testSessionViewModel:TestSessionViewModel,
     onExitTestButtonClick:()->Unit,
     testDetails: TestDetails,
     workBookList: List<WorkBook>
 ) {
     val navController = rememberNavController()
-    val testSessionViewModel = viewModel<ExamerTestSessionViewModel>(
-        factory = appContainer.getTestSessionViewModelFactory(
-            testDetails,
-            workBookList
-        ),
-        viewModelStoreOwner = viewModelStoreOwner
-    )
     val workBookState = remember {
         WorkBookState(
             testSessionViewModel.currentWorkBookNumber,

@@ -4,18 +4,16 @@ import android.media.MediaPlayer
 import androidx.annotation.FloatRange
 import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.examer.auth.AuthenticationService
-import com.example.examer.data.Repository
-import com.example.examer.data.domain.ExamerUser
 import com.example.examer.utils.createCountDownTimer
 import com.example.examer.utils.toString
 import java.util.concurrent.TimeUnit
 import com.example.examer.data.domain.TestDetails
 import com.example.examer.data.domain.WorkBook
+import com.example.examer.usecases.ExamerMarkTestAsCompletedUseCase
+import com.example.examer.usecases.MarkTestAsCompletedUseCase
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
@@ -42,12 +40,14 @@ interface TestSessionViewModel {
     val isAudioFilePlaying: State<Boolean>
     fun playAudioForCurrentWorkBook()
     fun moveToNextWorkBook()
+    fun markCurrentTestAsComplete()
 }
 
 class ExamerTestSessionViewModel(
     private val mediaPlayer: MediaPlayer,
     private val testDetails: TestDetails,
-    private val workBookList: List<WorkBook>
+    private val workBookList: List<WorkBook>,
+    private val markTestAsCompletedUseCase: MarkTestAsCompletedUseCase
 ) : ViewModel(), TestSessionViewModel {
     private val _uiState = mutableStateOf(TestSessionViewModel.UiState.IDLE)
     override val uiState = _uiState as State<TestSessionViewModel.UiState>
@@ -131,6 +131,10 @@ class ExamerTestSessionViewModel(
         // with the new workbook
         _numberOfRepeatsLeftForAudioFile.value =
             _currentWorkBook.value.audioFile.numberOfRepeatsAllowedForAudioFile
+    }
+
+    override fun markCurrentTestAsComplete() {
+        viewModelScope.launch { markTestAsCompletedUseCase.invoke(testDetails.id) }
     }
 
     private fun createTimeString(
