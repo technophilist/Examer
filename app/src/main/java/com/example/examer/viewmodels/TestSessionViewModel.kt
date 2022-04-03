@@ -40,6 +40,7 @@ interface TestSessionViewModel {
     val isAudioFilePlaying: State<Boolean>
     fun playAudioForCurrentWorkBook()
     fun moveToNextWorkBook()
+    fun markCurrentTestAsComplete()
 }
 
 class ExamerTestSessionViewModel(
@@ -130,6 +131,10 @@ class ExamerTestSessionViewModel(
         // with the new workbook
         _numberOfRepeatsLeftForAudioFile.value =
             _currentWorkBook.value.audioFile.numberOfRepeatsAllowedForAudioFile
+    }
+
+    override fun markCurrentTestAsComplete() {
+        viewModelScope.launch { markTestAsCompletedUseCase.invoke(testDetails.id) }
     }
 
     private fun createTimeString(
