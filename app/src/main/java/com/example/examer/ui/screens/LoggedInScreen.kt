@@ -229,6 +229,7 @@ private fun NavGraphBuilder.takeTestScreenComposable(
                     TextButton(
                         onClick = {
                             isAlertDialogVisible = false
+                            testSessionViewModel.markCurrentTestAsComplete()
                             navController.popBackStack()
                         },
                         content = { Text(text = stringResource(R.string.button_label_quit).uppercase()) }
