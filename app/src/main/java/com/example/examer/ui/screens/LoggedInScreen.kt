@@ -31,6 +31,7 @@ import com.example.examer.ui.components.CircularLoadingProgressOverlay
 import com.example.examer.ui.components.ExamerNavigationScaffold
 import com.example.examer.ui.components.NavigationDrawerDestination
 import com.example.examer.ui.navigation.ExamerDestinations
+import com.example.examer.viewmodels.ExamerTestSessionViewModel
 import com.example.examer.viewmodels.ExamerTestsViewModel
 import com.example.examer.viewmodels.TestsViewModelUiState
 import com.example.examer.viewmodels.profileScreenViewModel.*
@@ -216,6 +217,10 @@ private fun NavGraphBuilder.takeTestScreenComposable(
             .getString(ExamerDestinations.TakeTestScreen.WORKBOOK_LIST_ARG)!!
             .let { Json.decodeFromString<List<WorkBook>>(it) }
         var isAlertDialogVisible by remember { mutableStateOf(false) }
+        val testSessionViewModel = viewModel<ExamerTestSessionViewModel>(
+            factory = appContainer.getTestSessionViewModelFactory(testDetails, workBookList),
+            viewModelStoreOwner = backStackEntry
+        )
         if (isAlertDialogVisible) {
             AlertDialog(
                 title = { Text(text = stringResource(R.string.label_quit_test)) },
@@ -240,7 +245,7 @@ private fun NavGraphBuilder.takeTestScreenComposable(
         }
         TakeTestScreen(
             appContainer = appContainer,
-            viewModelStoreOwner = backStackEntry,
+            testSessionViewModel = testSessionViewModel,
             onExitTestButtonClick = { isAlertDialogVisible = true },
             testDetails = testDetails,
             workBookList = workBookList
