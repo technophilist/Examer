@@ -230,7 +230,7 @@ private fun NavGraphBuilder.takeTestScreenComposable(
                         onClick = {
                             isAlertDialogVisible = false
                             testSessionViewModel.markCurrentTestAsComplete()
-                            navController.popBackStack()
+                            navController.navigate(ExamerDestinations.ScheduledTestsScreen.route)
                         },
                         content = { Text(text = stringResource(R.string.button_label_quit).uppercase()) }
                     )
@@ -347,11 +347,12 @@ private fun NavGraphBuilder.scheduledTestsComposable(
                         testDetails = selectedTestDetails,
                         workBookList = workBookList
                     )
-                    loggedInNavController.navigate(takeTestScreenRoute)
+                    loggedInNavController.navigate(takeTestScreenRoute) {
+                        popUpTo(ExamerDestinations.ScheduledTestsScreen.route) { inclusive = true }
+                    }
                 },
                 onFailure = {
                     isTestLoading = false
-                    // TODO String res
                     coroutineScope.launch {
                         snackbarHostState.currentSnackbarData?.dismiss()
                         snackbarHostState.showSnackbar(resources.getString(R.string.label_network_error_message))
