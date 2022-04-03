@@ -72,6 +72,12 @@ class ExamerTestSessionViewModel(
             val minutes = (TimeUnit.MILLISECONDS.toMinutes(millis) % 60).toInt()
             val seconds = (TimeUnit.MILLISECONDS.toSeconds(millis) % 60).toInt()
             timeRemainingForTest.value = createTimeString(hours, minutes, seconds)
+        },
+        onTimerFinished ={
+            markCurrentTestAsComplete()
+            mediaPlayer.stop()
+            mediaPlayer.release()
+            _uiState.value = TestSessionViewModel.UiState.TEST_TIMED_OUT
         }
     )
 
