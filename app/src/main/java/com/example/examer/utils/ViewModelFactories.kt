@@ -11,6 +11,8 @@ import com.example.examer.data.domain.WorkBook
 import com.example.examer.di.DispatcherProvider
 import com.example.examer.di.StandardDispatchersProvider
 import com.example.examer.usecases.CredentialsValidationUseCase
+import com.example.examer.usecases.ExamerMarkTestAsCompletedUseCase
+import com.example.examer.usecases.MarkTestAsCompletedUseCase
 import com.example.examer.viewmodels.*
 import com.example.examer.viewmodels.profileScreenViewModel.ExamerProfileScreenViewModel
 import kotlinx.coroutines.Dispatchers
@@ -121,12 +123,14 @@ class TestSessionViewModelFactory(
     private val mediaPlayer: MediaPlayer,
     private val testDetails: TestDetails,
     private val workBookList: List<WorkBook>,
+    private val markTestAsCompletedUseCase: MarkTestAsCompletedUseCase
 ) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>) = ExamerTestSessionViewModel(
         mediaPlayer = mediaPlayer,
         testDetails = testDetails,
-        workBookList = workBookList
+        workBookList = workBookList,
+        markTestAsCompletedUseCase = markTestAsCompletedUseCase
     ) as T
 }
 
