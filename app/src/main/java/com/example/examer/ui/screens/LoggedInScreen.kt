@@ -209,6 +209,7 @@ private fun NavGraphBuilder.takeTestScreenComposable(
     navController: NavController
 ) {
     composable(route = route) { backStackEntry ->
+        val resources = LocalContext.current.resources
         val navArguments = backStackEntry.arguments!!
         val testDetails = navArguments
             .getString(ExamerDestinations.TakeTestScreen.TEST_DETAILS_ARG)!!
@@ -221,10 +222,27 @@ private fun NavGraphBuilder.takeTestScreenComposable(
             factory = appContainer.getTestSessionViewModelFactory(testDetails, workBookList),
             viewModelStoreOwner = backStackEntry
         )
+        var isBackButtonPressed by remember { mutableStateOf(false) }
+        val alertDialogTitle = remember(isBackButtonPressed) {
+            when (isBackButtonPressed) {
+                true -> resources.getString(R.string.label_exit_app_while_taking_test)
+                false -> resources.getString(R.string.label_quit_test)
+            }
+        }
+        val alertDialogBoxMessage = remember(isBackButtonPressed) {
+            when (isBackButtonPressed) {
+                true -> {
+                    "${resources.getString(R.string.label_exit_test_using_back_button_warning)} ${
+                        resources.getString(R.string.label_quit_test_warning_text)
+                    }"
+                }
+                false -> resources.getString(R.string.label_quit_test_warning_text)
+            }
+        }
         if (isAlertDialogVisible) {
             AlertDialog(
-                title = { Text(text = stringResource(R.string.label_quit_test)) },
-                text = { Text(text = stringResource(R.string.label_quit_test_warning_text)) },
+                title = { Text(text = alertDialogTitle) },
+                text = { Text(text = alertDialogBoxMessage) },
                 confirmButton = {
                     TextButton(
                         onClick = {
@@ -237,11 +255,19 @@ private fun NavGraphBuilder.takeTestScreenComposable(
                 },
                 dismissButton = {
                     TextButton(
-                        onClick = { isAlertDialogVisible = false },
-                        content = { Text(text = stringResource(R.string.alert_dialog_button_label_cancel).uppercase()) }
+                        onClick = {
+                            if (isBackButtonPressed) isBackButtonPressed = false
+                            isAlertDialogVisible = false
+                        },
+                        content = {
+                            Text(text = stringResource(R.string.alert_dialog_button_label_cancel).uppercase())
+                        }
                     )
                 },
-                onDismissRequest = { isAlertDialogVisible = false }
+                onDismissRequest = {
+                    if (isBackButtonPressed) isBackButtonPressed = false
+                    isAlertDialogVisible = false
+                }
             )
         }
         TakeTestScreen(
@@ -251,6 +277,10 @@ private fun NavGraphBuilder.takeTestScreenComposable(
             testDetails = testDetails,
             workBookList = workBookList
         )
+        BackHandler {
+            isBackButtonPressed = true
+            isAlertDialogVisible = true
+        }
     }
 }
 
