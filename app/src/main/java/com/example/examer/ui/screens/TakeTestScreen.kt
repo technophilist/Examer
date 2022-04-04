@@ -9,10 +9,8 @@ import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NavHost
@@ -22,7 +20,6 @@ import com.example.examer.R
 import com.example.examer.data.domain.MultiChoiceQuestion
 import com.example.examer.data.domain.TestDetails
 import com.example.examer.data.domain.UserAnswers
-import com.example.examer.data.domain.WorkBook
 import com.example.examer.di.AppContainer
 import com.example.examer.ui.navigation.TakeTestScreenDestinations
 import com.example.examer.ui.screens.listenToAudioScreen.AudioPlaybackState
@@ -30,7 +27,6 @@ import com.example.examer.ui.screens.listenToAudioScreen.ListenToAudioScreen
 import com.example.examer.ui.screens.listenToAudioScreen.TimerState
 import com.example.examer.ui.screens.listenToAudioScreen.WorkBookState
 import com.example.examer.utils.WorkBookViewModelFactory
-import com.example.examer.viewmodels.ExamerTestSessionViewModel
 import com.example.examer.viewmodels.ExamerWorkBookViewModel
 import com.example.examer.viewmodels.TestSessionViewModel
 import com.google.accompanist.insets.statusBarsPadding
@@ -49,11 +45,11 @@ fun TakeTestScreen(
     val workBookState = remember {
         WorkBookState(
             testSessionViewModel.currentWorkBookNumber,
-            testDetails.totalNumberOfQuestions //TODO Change variable name to totalNumberOfWorkbooks
+            testDetails.totalNumberOfWorkBooks
         )
     }
     val isLastWorkBook by derivedStateOf {
-        testSessionViewModel.currentWorkBookNumber.value == testDetails.totalNumberOfQuestions
+        testSessionViewModel.currentWorkBookNumber.value == testDetails.totalNumberOfWorkBooks
     }
     val timerState = remember {
         TimerState(

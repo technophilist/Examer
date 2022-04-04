@@ -23,7 +23,6 @@ import com.example.examer.R
 import com.example.examer.data.domain.Status
 import com.example.examer.data.domain.TestDetails
 import com.example.examer.data.domain.getDateStringAndTimeString
-import kotlin.time.Duration.Companion.minutes
 
 /**
  * This is a default implementation of [ExamerExpandableTestCard]
@@ -54,7 +53,7 @@ fun DefaultExamerExpandableTestCard(
     ) {
         ExamerCardExpandedContent(
             description = test.description,
-            totalNumberOfQuestions = test.totalNumberOfQuestions,
+            totalNumberOfQuestions = test.totalNumberOfWorkBooks,
             onTakeTestButtonClick = onTakeTestButtonClick
         )
     }

@@ -1,9 +1,7 @@
 package com.example.examer.data.domain
 
 import com.example.examer.data.domain.serializers.LocalDateTimeSerializer
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
-import timber.log.Timber
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -26,7 +24,7 @@ enum class Status { OPEN, SCHEDULED, MISSED, COMPLETED }
  * the time and date of the test. The [getLocalDateTimeForMillis]
  * static method can be used to generate the instance for a given
  * timestamp in milliseconds.
- * @param totalNumberOfQuestions indicates the total number of
+ * @param totalNumberOfWorkBooks indicates the total number of
  * questions in this test.
  * @param testDurationInMinutes indicates the number of minutes allotted
  * for each question.
@@ -38,7 +36,7 @@ data class TestDetails(
     val description: String,
     val language: String,
     val localDateTime: @Serializable(with = LocalDateTimeSerializer::class) LocalDateTime,
-    val totalNumberOfQuestions: Int,
+    val totalNumberOfWorkBooks: Int,
     val testDurationInMinutes: Int,
     val testStatus: Status
 ) : java.io.Serializable {

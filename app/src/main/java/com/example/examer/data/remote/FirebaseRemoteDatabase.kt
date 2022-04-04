@@ -5,7 +5,6 @@ import android.net.Uri
 import com.example.examer.data.domain.*
 import com.example.examer.data.dto.AudioFileDTO
 import com.example.examer.data.dto.MultiChoiceQuestionListDTO
-import com.example.examer.data.dto.UserAnswersDTO
 import com.example.examer.data.dto.WorkBookDTO
 import com.example.examer.di.DispatcherProvider
 import com.google.firebase.firestore.CollectionReference
@@ -140,7 +139,7 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
         description = get("description").toString(),
         language = get("language").toString(),
         localDateTime = getLocalDateTimeForTimeStamp(get("timestamp").toString().toLong()),
-        totalNumberOfQuestions = get("totalNumberOfQuestions").toString().toInt(),
+        totalNumberOfWorkBooks = get("totalNumberOfWorkBooks").toString().toInt(),
         testDurationInMinutes = get("testDurationInMinutes").toString().toInt(),
         testStatus = Status.valueOf((get("testStatus").toString().uppercase()))
     )
