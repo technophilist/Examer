@@ -88,8 +88,8 @@
     <string name="button_label_next_workbook">Next workbook</string>
     <string name="button_label_finish_test">Finish Test</string>
     <!-- TakeTestScreen Alert Dialogs  -->
-    <string name="label_quit_test">Are you sure you want to quit the test?</string>
-    <string name="label_quit_test_warning_text">Once you quit the test, you won\'t be able to take the test again. The answers submitted for previous workbooks will be saved.</string>
+    <string name="label_exit_test">Are you sure you want to exit the test?</string>
+    <string name="label_exit_test_warning">Once you exit the test, you won\'t be able to take the test again. The answers submitted for previous workbooks will be saved.</string>
     <string name="button_label_quit">Quit</string>
     <string name="label_exit_app_while_taking_test">You are not allowed to exit the app while taking the test.</string>
     <string name="label_exit_test_using_back_button_warning">The test will be ended when you leave this screen.</string>
