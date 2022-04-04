@@ -95,4 +95,7 @@
     <string name="label_exit_test_using_back_button_warning">The test will be ended when you leave this screen.</string>
     <string name="label_test_timed_out">The test has timed out.</string>
     <string name="label_test_timed_out_message">The answers submitted for previous workbooks have be saved. You can leave this screen now.</string>
+    <string name="label_end_test">Are you sure you want to end the test?</string>
+    <string name="label_end_test_warning">You cannot return back to the test after the test has ended.</string>
+    <string name="button_label_end_test">End test</string>
 </resources>
