@@ -92,7 +92,7 @@ fun WorkBookScreen(
                 questionNumber = index + 1,
                 question = item.question,
                 options = item.options,
-                mark = 10,
+                mark = item.mark,
                 currentlySelectedIndex = currentlySelectedIndexMap.getOrPut(item) { -1 },
                 onOptionClick = { indexOfOption, _, _ ->
                     currentlySelectedIndexMap[item] = indexOfOption
