@@ -244,6 +244,7 @@ private fun NavGraphBuilder.takeTestScreenComposable(
                 false -> resources.getString(R.string.label_quit_test_warning_text)
             }
         }
+        var isFinishTestAlertDialogVisible by remember { mutableStateOf(false) }
         if (isAlertDialogVisible) {
             AlertDialog(
                 title = { Text(text = alertDialogTitle) },
@@ -294,11 +295,34 @@ private fun NavGraphBuilder.takeTestScreenComposable(
                 }
             )
         }
+        if (isFinishTestAlertDialogVisible) {
+            AlertDialog(
+                title = { Text(text = "Are you sure you want to end the test?") },
+                text = { Text(text = "You cannot return back to the test after the test has ended.") },
+                onDismissRequest = { isFinishTestAlertDialogVisible = false },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            isFinishTestAlertDialogVisible = false
+                            testSessionViewModel.markCurrentTestAsComplete()
+                            navController.navigate(ExamerDestinations.ScheduledTestsScreen.route)
+                        },
+                        content = { Text(text = "End test") }
+                    )
+                },
+                dismissButton = {
+                    TextButton(
+                        onClick = { isFinishTestAlertDialogVisible = false },
+                        content = { Text(text = "Cancel") }
+                    )
+                }
+            )
+        }
         TakeTestScreen(
             appContainer = appContainer,
             testSessionViewModel = testSessionViewModel,
             onExitTestButtonClick = { isAlertDialogVisible = true },
-            onFinishTestButtonClick = { /* TODO */ },
+            onFinishTestButtonClick = { isFinishTestAlertDialogVisible = true},
             testDetails = testDetails
         )
         BackHandler {
