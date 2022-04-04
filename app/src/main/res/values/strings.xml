@@ -91,7 +91,7 @@
     <string name="label_exit_test">Are you sure you want to exit the test?</string>
     <string name="label_exit_test_warning">Once you exit the test, you won\'t be able to take the test again. The answers submitted for previous workbooks will be saved.</string>
     <string name="button_label_quit">Quit</string>
-    <string name="label_quit_app_while_taking_test">You are not allowed to quit the app while taking the test.</string>
+    <string name="label_quit_app_while_taking_test">You are not allowed to leave this screen while taking the test.</string>
     <string name="label_quit_test_using_back_button_warning">The test will be ended when you leave this screen.</string>
     <string name="label_test_timed_out">The test has timed out.</string>
     <string name="label_test_timed_out_message">The answers submitted for previous workbooks have be saved. You can leave this screen now.</string>

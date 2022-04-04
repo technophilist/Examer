@@ -64,7 +64,7 @@
     <string name="label_exit_test">Voulez-vous vraiment quitter le test ?</string>
     <string name="label_exit_test_warning">Une fois que vous aurez quitté le test, vous ne pourrez plus le repasser. Les réponses soumises pour les classeurs précédents seront enregistrées.</string>
     <string name="button_label_quit">"Quitter "</string>
-    <string name="label_quit_app_while_taking_test">Vous n\'êtes pas autorisé à quitter l\'application pendant le test.</string>
+    <string name="label_quit_app_while_taking_test">" Vous n'êtes pas autorisé à quitter cet écran pendant le test."</string>
     <string name="label_quit_test_using_back_button_warning">Le test sera terminé lorsque vous quitterez cet écran.</string>
     <string name="label_test_timed_out">Le test a expiré.</string>
     <string name="label_test_timed_out_message">Les réponses soumises pour les classeurs précédents ont été enregistrées. Vous pouvez quitter cet écran maintenant.</string>
