@@ -298,6 +298,7 @@ private fun NavGraphBuilder.takeTestScreenComposable(
             appContainer = appContainer,
             testSessionViewModel = testSessionViewModel,
             onExitTestButtonClick = { isAlertDialogVisible = true },
+            onFinishTestButtonClick = { /* TODO */ },
             testDetails = testDetails
         )
         BackHandler {

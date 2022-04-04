@@ -42,6 +42,7 @@ fun TakeTestScreen(
     appContainer: AppContainer,
     testSessionViewModel: TestSessionViewModel,
     onExitTestButtonClick: () -> Unit,
+    onFinishTestButtonClick: () -> Unit,
     testDetails: TestDetails,
 ) {
     val navController = rememberNavController()
