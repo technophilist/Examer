@@ -234,12 +234,17 @@ private fun NavGraphBuilder.takeTestScreenComposable(
         // display an alert dialog when the user is exiting the test using the exit test
         // icon in the app bar.
         var isExitAlertDialogVisible by remember { mutableStateOf(false) }
+        val onAlertDialogConfirmButtonClick = {
+            testSessionViewModel.markCurrentTestAsComplete()
+            navController.navigate(ExamerDestinations.ScheduledTestsScreen.route) {
+                popUpTo(ExamerDestinations.TakeTestScreen.route) { inclusive = true }
+            }
+        }
         if (isQuitTestAlertDialogVisible) {
             TakeTestScreenComposableAlertDialogBoxes.QuitTestAlertDialog(
                 onConfirmButtonClick = {
                     isQuitTestAlertDialogVisible = false
-                    testSessionViewModel.markCurrentTestAsComplete()
-                    navController.navigate(ExamerDestinations.ScheduledTestsScreen.route)
+                    onAlertDialogConfirmButtonClick()
                 },
                 onDismissButtonClick = {
                     if (isBackButtonPressed) isBackButtonPressed = false
@@ -250,14 +255,12 @@ private fun NavGraphBuilder.takeTestScreenComposable(
                     isQuitTestAlertDialogVisible = false
                 }
             )
-
         }
         if (isExitAlertDialogVisible) {
             TakeTestScreenComposableAlertDialogBoxes.ExitAlertDialog(
                 onConfirmButtonClick = {
                     isExitAlertDialogVisible = false
-                    testSessionViewModel.markCurrentTestAsComplete()
-                    navController.navigate(ExamerDestinations.ScheduledTestsScreen.route)
+                    onAlertDialogConfirmButtonClick()
                 },
                 onDismissButtonClick = {
                     if (isBackButtonPressed) isBackButtonPressed = false
@@ -273,10 +276,7 @@ private fun NavGraphBuilder.takeTestScreenComposable(
         // cannot be dismissed.
         if (isTestSessionTimedOut) {
             TakeTestScreenComposableAlertDialogBoxes.TestSessionTimedOutAlertDialog(
-                onConfirmButtonClick = {
-                    testSessionViewModel.markCurrentTestAsComplete()
-                    navController.navigate(ExamerDestinations.ScheduledTestsScreen.route)
-                }
+                onConfirmButtonClick = onAlertDialogConfirmButtonClick
             )
         }
         if (isFinishTestAlertDialogVisible) {
@@ -284,8 +284,7 @@ private fun NavGraphBuilder.takeTestScreenComposable(
                 onDismissRequest = { isFinishTestAlertDialogVisible = false },
                 onConfirmButtonClick = {
                     isFinishTestAlertDialogVisible = false
-                    testSessionViewModel.markCurrentTestAsComplete()
-                    navController.navigate(ExamerDestinations.ScheduledTestsScreen.route)
+                    onAlertDialogConfirmButtonClick()
                 },
                 onDismissButtonClick = { isFinishTestAlertDialogVisible = false }
             )
