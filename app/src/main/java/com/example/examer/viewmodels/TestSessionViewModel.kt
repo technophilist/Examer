@@ -32,7 +32,7 @@ interface TestSessionViewModel {
     enum class UiState { IDLE, TEST_TIMED_OUT }
 
     val uiState: State<UiState>
-    val currentWorkBook: State<WorkBook?>
+    val currentWorkBook: State<WorkBook>
     val currentWorkBookNumber: State<Int>
     val hoursRemaining: State<String>
     val minutesRemaining: State<String>
