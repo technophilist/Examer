@@ -40,8 +40,8 @@ import kotlinx.serialization.json.Json
 @Composable
 fun TakeTestScreen(
     appContainer: AppContainer,
-    testSessionViewModel:TestSessionViewModel,
-    onExitTestButtonClick:()->Unit,
+    testSessionViewModel: TestSessionViewModel,
+    onExitTestButtonClick: () -> Unit,
     testDetails: TestDetails,
 ) {
     val navController = rememberNavController()
@@ -50,6 +50,9 @@ fun TakeTestScreen(
             testSessionViewModel.currentWorkBookNumber,
             testDetails.totalNumberOfQuestions //TODO Change variable name to totalNumberOfWorkbooks
         )
+    }
+    val isLastWorkBook by derivedStateOf {
+        testSessionViewModel.currentWorkBookNumber.value == testDetails.totalNumberOfQuestions
     }
     val timerState = remember {
         TimerState(
@@ -121,7 +124,8 @@ fun TakeTestScreen(
                             TakeTestScreenDestinations.WorkBookScreen.buildRoute(
                                 testDetails.id,
                                 currentWorkBook.id,
-                                currentWorkBook.questions
+                                currentWorkBook.questions,
+                                isLastWorkBook
                             )
                         navController.navigate(routeString)
                     },
@@ -156,6 +160,9 @@ private fun NavGraphBuilder.workBookScreenComposable(
                 bundle.getString(TakeTestScreenDestinations.WorkBookScreen.WORKBOOK_ID_ARG)!!
             val testDetailsId =
                 bundle.getString(TakeTestScreenDestinations.WorkBookScreen.TEST_DETAILS_ID_ARG)!!
+            val isLastWorkBook = bundle
+                .getString(TakeTestScreenDestinations.WorkBookScreen.IS_LAST_WORKBOOK_ARG)!!
+                .toBoolean()
             val viewModel = viewModel<ExamerWorkBookViewModel>(
                 factory = workBookViewModelFactory,
                 viewModelStoreOwner = it
@@ -169,7 +176,9 @@ private fun NavGraphBuilder.workBookScreenComposable(
                     )
                     viewModel.saveUserAnswersForTestId(userAnswers, testDetailsId)
                     onAnswerSaved()
-                }
+                },
+                buttonTextValue = if (isLastWorkBook) ButtonTextValue.FINISH_TEST
+                else ButtonTextValue.NEXT_WORKBOOK
             )
         }
     }
