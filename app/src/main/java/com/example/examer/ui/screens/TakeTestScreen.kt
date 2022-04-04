@@ -137,8 +137,12 @@ fun TakeTestScreen(
             workBookScreenComposable(
                 appContainer.workBookViewModelFactory,
                 onAnswerSaved = {
-                    testSessionViewModel.moveToNextWorkBook()
-                    navController.popBackStack()
+                    if (isLastWorkBook) {
+                        onFinishTestButtonClick()
+                    } else {
+                        testSessionViewModel.moveToNextWorkBook()
+                        navController.popBackStack()
+                    }
                 }
             )
         }
