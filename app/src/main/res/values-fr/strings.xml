@@ -68,4 +68,7 @@
     <string name="label_exit_test_using_back_button_warning">Le test sera terminé lorsque vous quitterez cet écran.</string>
     <string name="label_test_timed_out">Le test a expiré.</string>
     <string name="label_test_timed_out_message">Les réponses soumises pour les classeurs précédents ont été enregistrées. Vous pouvez quitter cet écran maintenant.</string>
+    <string name="label_end_test">Êtes-vous sûr de vouloir terminer le test ?</string>
+    <string name="label_end_test_warning">Vous ne pouvez pas revenir au test une fois le test terminé.</string>
+    <string name="button_label_end_test">Fin de l\'essai</string>
 </resources>
