@@ -230,14 +230,14 @@ private fun NavGraphBuilder.takeTestScreenComposable(
         var isBackButtonPressed by remember { mutableStateOf(false) }
         val alertDialogTitle = remember(isBackButtonPressed) {
             when (isBackButtonPressed) {
-                true -> resources.getString(R.string.label_exit_app_while_taking_test)
+                true -> resources.getString(R.string.label_quit_app_while_taking_test)
                 false -> resources.getString(R.string.label_exit_test)
             }
         }
         val alertDialogBoxMessage = remember(isBackButtonPressed) {
             when (isBackButtonPressed) {
                 true -> {
-                    "${resources.getString(R.string.label_exit_test_using_back_button_warning)} ${
+                    "${resources.getString(R.string.label_quit_test_using_back_button_warning)} ${
                         resources.getString(R.string.label_exit_test_warning)
                     }"
                 }
