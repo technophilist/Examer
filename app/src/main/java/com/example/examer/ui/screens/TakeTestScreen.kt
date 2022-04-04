@@ -43,7 +43,6 @@ fun TakeTestScreen(
     testSessionViewModel:TestSessionViewModel,
     onExitTestButtonClick:()->Unit,
     testDetails: TestDetails,
-    workBookList: List<WorkBook>
 ) {
     val navController = rememberNavController()
     val workBookState = remember {
@@ -114,16 +113,15 @@ fun TakeTestScreen(
                         numberOfRepeatsLeft = numberOfRepeatsLeftForAudioFile
                     )
                 }
+                val currentWorkBook by testSessionViewModel.currentWorkBook
                 ListenToAudioScreen(
                     audioPlayBackState = audioPlaybackState,
                     onNavigateToWorkBook = {
-                        val currentWorkBookIndex = workBookState.currentWorkBookNumber.value - 1
-                        val workBook = workBookList[currentWorkBookIndex]
                         val routeString =
                             TakeTestScreenDestinations.WorkBookScreen.buildRoute(
                                 testDetails.id,
-                                workBook.id,
-                                workBook.questions
+                                currentWorkBook.id,
+                                currentWorkBook.questions
                             )
                         navController.navigate(routeString)
                     },
