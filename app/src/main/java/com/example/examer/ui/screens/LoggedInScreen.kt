@@ -210,7 +210,6 @@ private fun NavGraphBuilder.takeTestScreenComposable(
     navController: NavController
 ) {
     composable(route = route) { backStackEntry ->
-        val resources = LocalContext.current.resources
         val navArguments = backStackEntry.arguments!!
         val testDetails = navArguments
             .getString(ExamerDestinations.TakeTestScreen.TEST_DETAILS_ARG)!!
@@ -218,7 +217,6 @@ private fun NavGraphBuilder.takeTestScreenComposable(
         val workBookList = navArguments
             .getString(ExamerDestinations.TakeTestScreen.WORKBOOK_LIST_ARG)!!
             .let { Json.decodeFromString<List<WorkBook>>(it) }
-        var isAlertDialogVisible by remember { mutableStateOf(false) }
         val testSessionViewModel = viewModel<ExamerTestSessionViewModel>(
             factory = appContainer.getTestSessionViewModelFactory(testDetails, workBookList),
             viewModelStoreOwner = backStackEntry
@@ -228,106 +226,80 @@ private fun NavGraphBuilder.takeTestScreenComposable(
             testSessionUiState == TestSessionViewModel.UiState.TEST_TIMED_OUT
         }
         var isBackButtonPressed by remember { mutableStateOf(false) }
-        val alertDialogTitle = remember(isBackButtonPressed) {
-            when (isBackButtonPressed) {
-                true -> resources.getString(R.string.label_quit_app_while_taking_test)
-                false -> resources.getString(R.string.label_exit_test)
-            }
-        }
-        val alertDialogBoxMessage = remember(isBackButtonPressed) {
-            when (isBackButtonPressed) {
-                true -> {
-                    "${resources.getString(R.string.label_quit_test_using_back_button_warning)} ${
-                        resources.getString(R.string.label_exit_test_warning)
-                    }"
-                }
-                false -> resources.getString(R.string.label_exit_test_warning)
-            }
-        }
+        // alert dialog must be visible when the user clicks on finish test button.
         var isFinishTestAlertDialogVisible by remember { mutableStateOf(false) }
-        if (isAlertDialogVisible) {
-            AlertDialog(
-                title = { Text(text = alertDialogTitle) },
-                text = { Text(text = alertDialogBoxMessage) },
-                confirmButton = {
-                    TextButton(
-                        onClick = {
-                            isAlertDialogVisible = false
-                            testSessionViewModel.markCurrentTestAsComplete()
-                            navController.navigate(ExamerDestinations.ScheduledTestsScreen.route)
-                        },
-                        content = { Text(text = stringResource(R.string.button_label_quit).uppercase()) }
-                    )
+        // display an alert dialog when the user is trying to quit the test by clicking
+        // the back button while taking the test.
+        var isQuitTestAlertDialogVisible by remember { mutableStateOf(false) }
+        // display an alert dialog when the user is exiting the test using the exit test
+        // icon in the app bar.
+        var isExitAlertDialogVisible by remember { mutableStateOf(false) }
+        if (isQuitTestAlertDialogVisible) {
+            TakeTestScreenComposableAlertDialogBoxes.QuitTestAlertDialog(
+                onConfirmButtonClick = {
+                    isQuitTestAlertDialogVisible = false
+                    testSessionViewModel.markCurrentTestAsComplete()
+                    navController.navigate(ExamerDestinations.ScheduledTestsScreen.route)
                 },
-                dismissButton = {
-                    TextButton(
-                        onClick = {
-                            if (isBackButtonPressed) isBackButtonPressed = false
-                            isAlertDialogVisible = false
-                        },
-                        content = {
-                            Text(text = stringResource(R.string.alert_dialog_button_label_cancel).uppercase())
-                        }
-                    )
+                onDismissButtonClick = {
+                    if (isBackButtonPressed) isBackButtonPressed = false
+                    isQuitTestAlertDialogVisible = false
                 },
                 onDismissRequest = {
                     if (isBackButtonPressed) isBackButtonPressed = false
-                    isAlertDialogVisible = false
+                    isQuitTestAlertDialogVisible = false
+                }
+            )
+
+        }
+        if (isExitAlertDialogVisible) {
+            TakeTestScreenComposableAlertDialogBoxes.ExitAlertDialog(
+                onConfirmButtonClick = {
+                    isExitAlertDialogVisible = false
+                    testSessionViewModel.markCurrentTestAsComplete()
+                    navController.navigate(ExamerDestinations.ScheduledTestsScreen.route)
+                },
+                onDismissButtonClick = {
+                    if (isBackButtonPressed) isBackButtonPressed = false
+                    isExitAlertDialogVisible = false
+                },
+                onDismissRequest = {
+                    if (isBackButtonPressed) isBackButtonPressed = false
+                    isExitAlertDialogVisible = false
                 }
             )
         }
         // if the test session timed out, show alert dialog box that
         // cannot be dismissed.
         if (isTestSessionTimedOut) {
-            AlertDialog(
-                title = { Text(text = resources.getString(R.string.label_test_timed_out)) },
-                text = { Text(text = resources.getString(R.string.label_test_timed_out_message)) },
-                onDismissRequest = { /* Prevent user from dismissing this dialog */ },
-                confirmButton = {
-                    TextButton(
-                        onClick = {
-                            isAlertDialogVisible = false
-                            testSessionViewModel.markCurrentTestAsComplete()
-                            navController.navigate(ExamerDestinations.ScheduledTestsScreen.route)
-                        },
-                        content = { Text(text = stringResource(R.string.button_label_quit).uppercase()) }
-                    )
+            TakeTestScreenComposableAlertDialogBoxes.TestSessionTimedOutAlertDialog(
+                onConfirmButtonClick = {
+                    testSessionViewModel.markCurrentTestAsComplete()
+                    navController.navigate(ExamerDestinations.ScheduledTestsScreen.route)
                 }
             )
         }
         if (isFinishTestAlertDialogVisible) {
-            AlertDialog(
-                title = { Text(text = stringResource(R.string.label_end_test)) },
-                text = { Text(text = stringResource(R.string.label_end_test_warning)) },
+            TakeTestScreenComposableAlertDialogBoxes.FinishTestAlertDialog(
                 onDismissRequest = { isFinishTestAlertDialogVisible = false },
-                confirmButton = {
-                    TextButton(
-                        onClick = {
-                            isFinishTestAlertDialogVisible = false
-                            testSessionViewModel.markCurrentTestAsComplete()
-                            navController.navigate(ExamerDestinations.ScheduledTestsScreen.route)
-                        },
-                        content = { Text(text = stringResource(R.string.button_label_end_test).uppercase()) }
-                    )
+                onConfirmButtonClick = {
+                    isFinishTestAlertDialogVisible = false
+                    testSessionViewModel.markCurrentTestAsComplete()
+                    navController.navigate(ExamerDestinations.ScheduledTestsScreen.route)
                 },
-                dismissButton = {
-                    TextButton(
-                        onClick = { isFinishTestAlertDialogVisible = false },
-                        content = { Text(text = stringResource(R.string.alert_dialog_button_label_cancel).uppercase()) }
-                    )
-                }
+                onDismissButtonClick = { isFinishTestAlertDialogVisible = false }
             )
         }
         TakeTestScreen(
             appContainer = appContainer,
             testSessionViewModel = testSessionViewModel,
-            onExitTestButtonClick = { isAlertDialogVisible = true },
+            onExitTestButtonClick = { isExitAlertDialogVisible = true },
             onFinishTestButtonClick = { isFinishTestAlertDialogVisible = true },
             testDetails = testDetails
         )
         BackHandler {
             isBackButtonPressed = true
-            isAlertDialogVisible = true
+            isQuitTestAlertDialogVisible = true
         }
     }
 }
@@ -449,3 +421,4 @@ private fun NavGraphBuilder.scheduledTestsComposable(
         }
     }
 }
+
