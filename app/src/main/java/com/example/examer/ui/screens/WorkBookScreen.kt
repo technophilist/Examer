@@ -29,6 +29,7 @@ enum class ButtonTextValue {
 
 @Composable
 fun WorkBookScreen(
+    workBookId: String,
     questionList: List<MultiChoiceQuestion>,
     onFooterButtonClick: (Map<MultiChoiceQuestion, IndexOfChosenOption>, marksObtainedForWorkBook: Int) -> Unit,
     buttonTextValue: ButtonTextValue = ButtonTextValue.NEXT_WORKBOOK
@@ -69,7 +70,7 @@ fun WorkBookScreen(
                             IndexOfChosenOption(it.value)
                         }
                     val marksObtainedForWorkBook = computeMarks(questionList, transformedMap)
-                    onFooterButtonClick(transformedMap,marksObtainedForWorkBook)
+                    onFooterButtonClick(transformedMap, marksObtainedForWorkBook)
                 },
                 content = {
                     Text(

@@ -169,6 +169,7 @@ private fun NavGraphBuilder.workBookScreenComposable(
                 viewModelStoreOwner = it
             )
             WorkBookScreen(
+                workBookId = workBookId,
                 questionList = multiChoiceQuestionList,
                 onFooterButtonClick = { answersMap,marksObtainedForWorkBook ->
                     val userAnswers = UserAnswers(
