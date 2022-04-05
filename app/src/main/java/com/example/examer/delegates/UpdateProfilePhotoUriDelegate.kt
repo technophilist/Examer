@@ -5,14 +5,14 @@ import com.example.examer.auth.AuthenticationResult
 import com.example.examer.auth.AuthenticationService
 import com.example.examer.utils.PasswordManager
 
-interface UpdateProfilePhotoUriUseCase {
+interface UpdateProfileUriDelegate {
     suspend fun update(uri: Uri)
 }
 
-class UpdateProfilePhotoUriUseCaseImpl(
+class ExamerUpdateProfileUriDelegate(
     private val authenticationService: AuthenticationService,
     private val passwordManager: PasswordManager
-) : UpdateProfilePhotoUriUseCase {
+) : UpdateProfileUriDelegate {
     override suspend fun update(uri: Uri) {
         authenticationService.currentUser.value?.let {
             val result = authenticationService.updateAttributeForUser(

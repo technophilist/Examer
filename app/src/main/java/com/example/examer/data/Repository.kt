@@ -9,7 +9,7 @@ import com.example.examer.data.dto.AudioFileDTO
 import com.example.examer.data.dto.WorkBookDTO
 import com.example.examer.data.dto.toMultiChoiceQuestion
 import com.example.examer.data.remote.RemoteDatabase
-import com.example.examer.delegates.UpdateProfilePhotoUriUseCase
+import com.example.examer.delegates.UpdateProfileUriDelegate
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -37,7 +37,7 @@ interface Repository {
 class ExamerRepository(
     private val context: Context,
     private val remoteDatabase: RemoteDatabase,
-    private val updateProfilePhotoUriUseCase: UpdateProfilePhotoUriUseCase
+    private val updateProfilePhotoUriUseCase: UpdateProfileUriDelegate
 ) : Repository {
     override suspend fun fetchScheduledTestListForUser(user: ExamerUser): List<TestDetails> =
         remoteDatabase.fetchScheduledTestListForUser(user)
