@@ -20,8 +20,8 @@ import androidx.compose.ui.unit.sp
 import com.example.examer.R
 import com.example.examer.data.domain.IndexOfChosenOption
 import com.example.examer.data.domain.MultiChoiceQuestion
+import com.example.examer.data.domain.UserAnswers
 import com.google.accompanist.insets.navigationBarsHeight
-import com.google.accompanist.insets.statusBarsPadding
 import timber.log.Timber
 
 enum class ButtonTextValue {
@@ -30,8 +30,9 @@ enum class ButtonTextValue {
 
 @Composable
 fun WorkBookScreen(
+    workBookId: String,
     questionList: List<MultiChoiceQuestion>,
-    onFooterButtonClick: (Map<MultiChoiceQuestion, IndexOfChosenOption>) -> Unit,
+    onFooterButtonClick: (UserAnswers) -> Unit,
     buttonTextValue: ButtonTextValue = ButtonTextValue.NEXT_WORKBOOK
 ) {
     // a map that stores the currently selected item associated
@@ -65,7 +66,17 @@ fun WorkBookScreen(
                 modifier = Modifier.align(Alignment.End),
                 enabled = isFooterButtonEnabled,
                 onClick = {
-                    onFooterButtonClick(currentlySelectedIndexMap.mapValues { IndexOfChosenOption(it.value) })
+                    val transformedMap: Map<MultiChoiceQuestion, IndexOfChosenOption> =
+                        currentlySelectedIndexMap.mapValues {
+                            IndexOfChosenOption(it.value)
+                        }
+                    val marksObtainedForWorkBook = computeMarks(questionList, transformedMap)
+                    val userAnswers = UserAnswers(
+                        associatedWorkBookId = workBookId,
+                        answers = transformedMap,
+                        marksObtainedForWorkBook = marksObtainedForWorkBook
+                    )
+                    onFooterButtonClick(userAnswers)
                 },
                 content = {
                     Text(
@@ -209,4 +220,13 @@ private fun RadioButtonWithText(
             onClick = { onClick() }
         )
     }
+}
+
+private fun computeMarks(
+    questionsList: List<MultiChoiceQuestion>,
+    answersMap: Map<MultiChoiceQuestion, IndexOfChosenOption>
+): Int = questionsList.fold(0) { acc, mcq ->
+    Timber.d("acc = ${acc},mcq = $mcq,answersMap[mcq] = ${answersMap[mcq]!!.index}")
+    if (answersMap[mcq]!!.index == mcq.indexOfCorrectOption) acc + mcq.mark
+    else 0
 }

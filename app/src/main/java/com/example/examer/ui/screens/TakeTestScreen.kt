@@ -169,12 +169,9 @@ private fun NavGraphBuilder.workBookScreenComposable(
                 viewModelStoreOwner = it
             )
             WorkBookScreen(
+                workBookId = workBookId,
                 questionList = multiChoiceQuestionList,
-                onFooterButtonClick = { answersMap ->
-                    val userAnswers = UserAnswers(
-                        associatedWorkBookId = workBookId,
-                        answers = answersMap
-                    )
+                onFooterButtonClick = { userAnswers ->
                     viewModel.saveUserAnswersForTestId(userAnswers, testDetailsId)
                     onAnswerSaved()
                 },
