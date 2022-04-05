@@ -12,7 +12,8 @@ value class IndexOfChosenOption(val index: Int) {
 @Serializable
 data class UserAnswers(
     val associatedWorkBookId: String,
-    val answers: Map<MultiChoiceQuestion, IndexOfChosenOption>
+    val answers: Map<MultiChoiceQuestion, IndexOfChosenOption>,
+    val marksObtainedForWorkBook:Int
 )
 
 fun UserAnswers.toUserAnswersDTO() = UserAnswersDTO(
@@ -23,5 +24,6 @@ fun UserAnswers.toUserAnswersDTO() = UserAnswersDTO(
             "indexOfCorrectOption" to it.indexOfCorrectOption.toString(),
             "indexOfChosenOption" to answers[it].toString()
         )
-    }
+    },
+    marksObtainedForWorkBook = marksObtainedForWorkBook
 )
