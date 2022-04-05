@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.sp
 import com.example.examer.R
 import com.example.examer.data.domain.IndexOfChosenOption
 import com.example.examer.data.domain.MultiChoiceQuestion
+import com.example.examer.data.domain.UserAnswers
 import com.google.accompanist.insets.navigationBarsHeight
 import timber.log.Timber
 
@@ -31,7 +32,7 @@ enum class ButtonTextValue {
 fun WorkBookScreen(
     workBookId: String,
     questionList: List<MultiChoiceQuestion>,
-    onFooterButtonClick: (Map<MultiChoiceQuestion, IndexOfChosenOption>, marksObtainedForWorkBook: Int) -> Unit,
+    onFooterButtonClick: (UserAnswers) -> Unit,
     buttonTextValue: ButtonTextValue = ButtonTextValue.NEXT_WORKBOOK
 ) {
     // a map that stores the currently selected item associated
@@ -70,7 +71,12 @@ fun WorkBookScreen(
                             IndexOfChosenOption(it.value)
                         }
                     val marksObtainedForWorkBook = computeMarks(questionList, transformedMap)
-                    onFooterButtonClick(transformedMap, marksObtainedForWorkBook)
+                    val userAnswers = UserAnswers(
+                        associatedWorkBookId = workBookId,
+                        answers = transformedMap,
+                        marksObtainedForWorkBook = marksObtainedForWorkBook
+                    )
+                    onFooterButtonClick(userAnswers)
                 },
                 content = {
                     Text(
