@@ -11,7 +11,7 @@ import com.example.examer.data.remote.FirebaseRemoteDatabase
 import com.example.examer.data.remote.RemoteDatabase
 import com.example.examer.usecases.ExamerCredentialsValidationUseCase
 import com.example.examer.usecases.ExamerMarkTestAsCompletedUseCase
-import com.example.examer.delegates.UpdateProfilePhotoUriUseCaseImpl
+import com.example.examer.delegates.ExamerUpdateProfileUriDelegate
 import com.example.examer.utils.*
 import com.example.examer.viewmodels.TestDetailsListType
 
@@ -23,7 +23,7 @@ class AppContainer(application: Application) {
     val repository = ExamerRepository(
         context = application,
         remoteDatabase = remoteDatabase,
-        updateProfilePhotoUriUseCase = UpdateProfilePhotoUriUseCaseImpl(
+        updateProfilePhotoUriUseCase = ExamerUpdateProfileUriDelegate(
             authenticationService,
             passwordManager
         )
