@@ -1,4 +1,4 @@
-package com.example.examer.usecases
+package com.example.examer.delegates
 
 import android.net.Uri
 import com.example.examer.auth.AuthenticationResult

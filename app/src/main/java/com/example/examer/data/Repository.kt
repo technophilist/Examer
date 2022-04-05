@@ -9,7 +9,7 @@ import com.example.examer.data.dto.AudioFileDTO
 import com.example.examer.data.dto.WorkBookDTO
 import com.example.examer.data.dto.toMultiChoiceQuestion
 import com.example.examer.data.remote.RemoteDatabase
-import com.example.examer.usecases.UpdateProfilePhotoUriUseCase
+import com.example.examer.delegates.UpdateProfilePhotoUriUseCase
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
