@@ -15,5 +15,6 @@ import com.example.examer.data.domain.UserAnswers
  */
 data class UserAnswersDTO(
     val associatedWorkBookId: String,
-    val answersDetailsMap: List<Map<String, String>>
+    val answersDetailsMap: List<Map<String, String>>,
+    val marksObtainedForWorkBook: Int
 )
