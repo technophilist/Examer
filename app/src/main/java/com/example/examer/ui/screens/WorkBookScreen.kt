@@ -22,7 +22,6 @@ import com.example.examer.data.domain.IndexOfChosenOption
 import com.example.examer.data.domain.MultiChoiceQuestion
 import com.example.examer.data.domain.UserAnswers
 import com.google.accompanist.insets.navigationBarsHeight
-import timber.log.Timber
 
 enum class ButtonTextValue {
     NEXT_WORKBOOK, FINISH_TEST
@@ -226,7 +225,6 @@ private fun computeMarks(
     questionsList: List<MultiChoiceQuestion>,
     answersMap: Map<MultiChoiceQuestion, IndexOfChosenOption>
 ): Int = questionsList.fold(0) { acc, mcq ->
-    Timber.d("acc = ${acc},mcq = $mcq,answersMap[mcq] = ${answersMap[mcq]!!.index}")
     if (answersMap[mcq]!!.index == mcq.indexOfCorrectOption) acc + mcq.mark
     else 0
 }
