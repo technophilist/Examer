@@ -19,7 +19,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.examer.R
 import com.example.examer.data.domain.MultiChoiceQuestion
 import com.example.examer.data.domain.TestDetails
-import com.example.examer.data.domain.UserAnswers
 import com.example.examer.di.AppContainer
 import com.example.examer.ui.navigation.TakeTestScreenDestinations
 import com.example.examer.ui.screens.listenToAudioScreen.AudioPlaybackState
@@ -99,6 +98,9 @@ fun TakeTestScreen(
             startDestination = TakeTestScreenDestinations.ListenToAudioScreen.route
         ) {
             composable(route = TakeTestScreenDestinations.ListenToAudioScreen.route) {
+                // TODO AudioPlayBack state api not upto the mark
+                //  isAudioPlayBackEnabled and isAudioIconEnabled param
+                //  of composable - two sources of truth.(Change it)
                 val isAudioPlaybackEnabled = remember { mutableStateOf(true) }
                 val numberOfRepeatsLeftForAudioFile =
                     testSessionViewModel.numberOfRepeatsLeftForAudioFile
@@ -124,6 +126,7 @@ fun TakeTestScreen(
                                 currentWorkBook.questions,
                                 isLastWorkBook
                             )
+                        testSessionViewModel.stopAudioPlayback()
                         navController.navigate(routeString)
                     },
                     isAudioIconClickEnabled = isAudioIconClickEnabled,
