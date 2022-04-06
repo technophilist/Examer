@@ -130,7 +130,17 @@ class ExamerTestSessionViewModel(
                 _playbackProgress.value = player.currentPosition / player.duration.toFloat()
                 delay(1_000)
             }
+            // when the media player has finished playing, the loop
+            // will be exited. This means that the progress value
+            // will never reach 1.0f since the body of the loop would
+            // not be executed for one last time - when the player has
+            // finished playing the audio file. In order to accommodate
+            // for that, set the value to 1.0f outside the loop.
             _playbackProgress.value = 1.0f
+            // set the playbackProgress back to zero after 1 second to
+            // indicate to the user that the playback has completed.
+            delay(1_000)
+            _playbackProgress.value = 0.0f
         }
     }
 
