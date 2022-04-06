@@ -43,6 +43,7 @@ interface TestSessionViewModel {
     fun playAudioForCurrentWorkBook()
     fun moveToNextWorkBook()
     fun markCurrentTestAsComplete()
+    fun stopAudioPlayback()
 }
 
 class ExamerTestSessionViewModel(
@@ -149,6 +150,13 @@ class ExamerTestSessionViewModel(
 
     override fun markCurrentTestAsComplete() {
         viewModelScope.launch { markTestAsCompletedUseCase.invoke(testDetails.id) }
+    }
+
+    override fun stopAudioPlayback() {
+        if (!mediaPlayer.isPlaying) return
+        mediaPlayer.stop()
+        mediaPlayer.reset()
+        _isAudioFilePlaying.value = false
     }
 
     private fun createTimeString(
