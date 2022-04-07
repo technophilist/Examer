@@ -1,13 +1,13 @@
 package com.example.examer.ui.screens
 
 import androidx.compose.animation.*
-import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.example.examer.R
 import com.example.examer.data.domain.TestDetails
+import com.example.examer.data.domain.isTestOpen
 import com.example.examer.ui.components.examerTestCard.DefaultExamerExpandableTestCard
 import com.google.accompanist.swiperefresh.SwipeRefreshState
 import com.example.examer.ui.components.AlertDialog
@@ -22,16 +22,15 @@ fun ScheduledTestsScreen(
     onStartTest: (TestDetails) -> Unit
 ) {
     val listHeader = stringResource(id = R.string.label_upcoming_tests)
-    var isAlertDialogVisible by remember {
-        mutableStateOf(false)
-    }
+    var isStartTestAlertDialogVisible by remember { mutableStateOf(false) }
+    var isTestExpiredAlertDialogVisible by remember { mutableStateOf(false) }
     val resources = LocalContext.current.resources
     var currentlySelectedTestDetails by remember { mutableStateOf<TestDetails?>(null) }
     val onConfirmButtonClick: () -> Unit = {
-        isAlertDialogVisible = false
+        isStartTestAlertDialogVisible = false
         currentlySelectedTestDetails?.let(onStartTest)
     }
-    if (isAlertDialogVisible) {
+    if (isStartTestAlertDialogVisible) {
         AlertDialog(
             title = resources.getString(R.string.label_start_test),
             message = resources.getString(R.string.label_start_test_message),
@@ -40,9 +39,22 @@ fun ScheduledTestsScreen(
             dismissButtonText = resources
                 .getString(R.string.alert_dialog_button_label_cancel)
                 .uppercase(),
-            onDismissButtonClick = { isAlertDialogVisible = false },
-            onDismissRequest = { isAlertDialogVisible = false })
+            onDismissButtonClick = { isStartTestAlertDialogVisible = false },
+            onDismissRequest = { isStartTestAlertDialogVisible = false })
     }
+
+    if (isTestExpiredAlertDialogVisible) {
+        AlertDialog(
+            title = stringResource(R.string.label_test_expired),
+            message = stringResource(R.string.alert_dialog_label_test_expired_warning),
+            confirmText = stringResource(R.string.button_label_close).uppercase(),
+            onConfirmButtonClick = {
+                isTestExpiredAlertDialogVisible = false
+                /* TODO remove test from list*/
+            },
+            onDismissRequest = { isTestExpiredAlertDialogVisible = false })
+    }
+
     TestListScreen(
         listHeader = listHeader,
         testList = tests,
@@ -57,7 +69,8 @@ fun ScheduledTestsScreen(
             is24HourTimeFormat = is24hourFormat,
             onTakeTestButtonClick = {
                 currentlySelectedTestDetails = testDetailsItem
-                isAlertDialogVisible = true
+                if (!testDetailsItem.isTestOpen()) isTestExpiredAlertDialogVisible = true
+                else isStartTestAlertDialogVisible = true
             }
         )
     }
