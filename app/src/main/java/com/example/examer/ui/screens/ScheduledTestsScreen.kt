@@ -7,6 +7,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.example.examer.R
 import com.example.examer.data.domain.TestDetails
+import com.example.examer.data.domain.isScheduledNotOpen
+import com.example.examer.data.domain.isTestExpired
 import com.example.examer.data.domain.isTestOpen
 import com.example.examer.ui.components.examerTestCard.DefaultExamerExpandableTestCard
 import com.google.accompanist.swiperefresh.SwipeRefreshState
@@ -70,8 +72,11 @@ fun ScheduledTestsScreen(
             is24HourTimeFormat = is24hourFormat,
             onTakeTestButtonClick = {
                 currentlySelectedTestDetails = testDetailsItem
-                if (!testDetailsItem.isTestOpen()) isTestExpiredAlertDialogVisible = true
-                else isStartTestAlertDialogVisible = true
+                when {
+                    testDetailsItem.isScheduledNotOpen() -> TODO()
+                    testDetailsItem.isTestExpired() -> isTestExpiredAlertDialogVisible = true
+                    else -> isStartTestAlertDialogVisible = true
+                }
             }
         )
     }
