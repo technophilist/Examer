@@ -32,6 +32,7 @@ interface Repository {
     )
 
     suspend fun markTestAsCompleted(user: ExamerUser, testDetailId: String)
+    suspend fun markTestAsMissed(user: ExamerUser, testDetailId: String)
 }
 
 class ExamerRepository(
@@ -92,6 +93,11 @@ class ExamerRepository(
     override suspend fun markTestAsCompleted(user: ExamerUser, testDetailId: String) {
         // todo exception handling
         remoteDatabase.markTestAsCompleted(user, testDetailId)
+    }
+
+    override suspend fun markTestAsMissed(user: ExamerUser, testDetailId: String) {
+        // todo exception handling
+        remoteDatabase.markTestAsMissed(user, testDetailId)
     }
 
     private fun AudioFileDTO.toExamerAudioFile(localAudioFileUri: Uri) = ExamerAudioFile(
