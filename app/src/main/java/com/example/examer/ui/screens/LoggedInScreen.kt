@@ -416,7 +416,10 @@ private fun NavGraphBuilder.scheduledTestsComposable(
                 swipeRefreshState = swipeRefreshState,
                 onRefresh = testsViewModel::refreshTestDetailsList,
                 onStartTest = onTakeTestButtonClick,
-                onTestExpired = { /* TODO */ }
+                onTestExpired = { testDetailsItem ->
+                    testsViewModel.markTestAsMissed(testDetailsItem)
+                    testsViewModel.refreshTestDetailsList()
+                }
             )
         }
     }
