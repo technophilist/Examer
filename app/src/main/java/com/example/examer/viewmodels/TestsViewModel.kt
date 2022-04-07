@@ -33,6 +33,7 @@ interface TestsViewModel {
     val testDetailsList: State<List<TestDetails>>
     val testsViewModelUiState: State<TestsViewModelUiState>
     fun refreshTestDetailsList()
+    fun markTestAsMissed(testDetails: TestDetails)
     fun fetchWorkBookListForTestDetails(
         testDetails: TestDetails,
         @MainThread onSuccess: (List<WorkBook>) -> Unit,
@@ -81,6 +82,11 @@ class ExamerTestsViewModel(
             repository.fetchWorkBookList(currentUser, testDetails)
                 .fold(onSuccess = onSuccess, onFailure = { onFailure?.invoke(it) })
         }
+    }
+
+    override fun markTestAsMissed(testDetails: TestDetails) {
+        val currentUser = authenticationService.currentUser.value ?: return
+        viewModelScope.launch { repository.markTestAsMissed(currentUser, testDetails.id) }
     }
 
     /**
