@@ -50,10 +50,14 @@ fun ScheduledTestsScreen(
             message = stringResource(R.string.alert_dialog_label_test_expired_warning),
             confirmText = stringResource(R.string.button_label_close).uppercase(),
             onConfirmButtonClick = {
-                isTestExpiredAlertDialogVisible = false
                 currentlySelectedTestDetails?.let(onTestExpired)
+                isTestExpiredAlertDialogVisible = false
             },
-            onDismissRequest = { isTestExpiredAlertDialogVisible = false })
+            onDismissRequest = {
+                currentlySelectedTestDetails?.let(onTestExpired)
+                isTestExpiredAlertDialogVisible = false
+            }
+        )
     }
 
     if (isTestNotOpenAlertDialogVisible) {
