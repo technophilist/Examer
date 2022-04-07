@@ -1,32 +1,16 @@
 package com.example.examer.ui.screens
 
-import android.text.format.DateFormat
-import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.runtime.*
-import androidx.compose.runtime.snapshots.SnapshotStateMap
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import com.example.examer.R
 import com.example.examer.data.domain.TestDetails
 import com.example.examer.ui.components.examerTestCard.DefaultExamerExpandableTestCard
-import com.google.accompanist.insets.navigationBarsPadding
-import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.SwipeRefreshState
-import kotlinx.coroutines.launch
-import timber.log.Timber
+import com.example.examer.ui.components.AlertDialog
 
 @ExperimentalMaterialApi
 @ExperimentalAnimationApi
@@ -49,31 +33,15 @@ fun ScheduledTestsScreen(
     }
     if (isAlertDialogVisible) {
         AlertDialog(
-            title = {
-                Text(
-                    text = resources.getString(R.string.label_start_test),
-                    fontWeight = FontWeight.Bold
-                )
-            },
-            text = { Text(text = resources.getString(R.string.label_start_test_message)) },
-            confirmButton = {
-                TextButton(onClick = onConfirmButtonClick) {
-                    Text(text = resources.getString(R.string.button_label_start_test).uppercase())
-                }
-            },
-            dismissButton = {
-                TextButton(
-                    onClick = { isAlertDialogVisible = false }
-                ) {
-                    Text(
-                        text = resources
-                            .getString(R.string.alert_dialog_button_label_cancel)
-                            .uppercase()
-                    )
-                }
-            },
-            onDismissRequest = { isAlertDialogVisible = false }
-        )
+            title = resources.getString(R.string.label_start_test),
+            message = resources.getString(R.string.label_start_test_message),
+            confirmText = resources.getString(R.string.button_label_start_test).uppercase(),
+            onConfirmButtonClick = onConfirmButtonClick,
+            dismissButtonText = resources
+                .getString(R.string.alert_dialog_button_label_cancel)
+                .uppercase(),
+            onDismissButtonClick = { isAlertDialogVisible = false },
+            onDismissRequest = { isAlertDialogVisible = false })
     }
     TestListScreen(
         listHeader = listHeader,
