@@ -34,3 +34,24 @@ fun AlertDialog(
         onDismissRequest = onDismissRequest
     )
 }
+
+@Composable
+fun AlertDialog(
+    title: String,
+    message: String,
+    confirmText: String,
+    onConfirmButtonClick: () -> Unit,
+    onDismissRequest: () -> Unit
+) {
+    AlertDialog(
+        title = { Text(text = title, fontWeight = FontWeight.Bold) },
+        text = { Text(text = message) },
+        confirmButton = {
+            TextButton(
+                onClick = onConfirmButtonClick,
+                content = { Text(text = confirmText) }
+            )
+        },
+        onDismissRequest = onDismissRequest
+    )
+}
