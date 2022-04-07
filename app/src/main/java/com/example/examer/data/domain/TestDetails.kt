@@ -79,6 +79,7 @@ fun TestDetails.getDateStringAndTimeString(is24hourFormat: Boolean = false): Pai
  * (inclusive), ignoring the seconds, then it returns true. Else, it
  * returns false.
  */
+@Deprecated("Use the more fine grained isTestExpired or isScheduledNotOpen methods.")
 fun TestDetails.isTestOpen(): Boolean {
     val currentDateTimeTruncatedToMinutes = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES)
     val testDetailsLocalDateTimeTruncatedToMinutes =
@@ -87,4 +88,24 @@ fun TestDetails.isTestOpen(): Boolean {
         testDetailsLocalDateTimeTruncatedToMinutes..testDetailsLocalDateTimeTruncatedToMinutes
             .plusMinutes(testDurationInMinutes.toLong())
     return currentDateTimeTruncatedToMinutes in validDateTimeRange
+}
+
+fun TestDetails.isTestExpired(): Boolean {
+    val currentDateTimeTruncatedToMinutes = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES)
+    val testDetailsLocalDateTimeTruncatedToMinutes =
+        this.localDateTime.truncatedTo(ChronoUnit.MINUTES)
+    // the same as calling TestDetails.isScheduledButNotOpen
+    if (currentDateTimeTruncatedToMinutes < testDetailsLocalDateTimeTruncatedToMinutes) return false
+    val validRange =
+        testDetailsLocalDateTimeTruncatedToMinutes..testDetailsLocalDateTimeTruncatedToMinutes
+            .plusMinutes(60)
+    return currentDateTimeTruncatedToMinutes !in validRange
+
+}
+
+fun TestDetails.isScheduledNotOpen(): Boolean {
+    val currentDateTimeTruncatedToMinutes = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES)
+    val testDetailsLocalDateTimeTruncatedToMinutes =
+        this.localDateTime.truncatedTo(ChronoUnit.MINUTES)
+    return currentDateTimeTruncatedToMinutes < testDetailsLocalDateTimeTruncatedToMinutes
 }
