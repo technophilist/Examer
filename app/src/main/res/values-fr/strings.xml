@@ -71,4 +71,7 @@
     <string name="label_end_test">Êtes-vous sûr de vouloir terminer le test ?</string>
     <string name="label_end_test_warning">Vous ne pouvez pas revenir au test une fois le test terminé.</string>
     <string name="button_label_end_test">Fin de l\'essai</string>
+    <string name="label_test_expired">Le test a expiré</string>
+    <string name="alert_dialog_label_test_expired_warning">La fenêtre pour passer le test s\'est fermée.Le test a expiré.Vous pouvez fermer cette boîte de dialogue en cliquant sur le bouton \"Fermer\" en bas de la boîte de dialogue.</string>
+    <string name="button_label_close">proche</string>
 </resources>
