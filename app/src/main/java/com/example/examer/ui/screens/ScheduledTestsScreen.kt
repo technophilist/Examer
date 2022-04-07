@@ -19,7 +19,8 @@ fun ScheduledTestsScreen(
     tests: List<TestDetails>,
     swipeRefreshState: SwipeRefreshState,
     onRefresh: () -> Unit,
-    onStartTest: (TestDetails) -> Unit
+    onStartTest: (TestDetails) -> Unit,
+    onTestExpired: (TestDetails) -> Unit
 ) {
     val listHeader = stringResource(id = R.string.label_upcoming_tests)
     var isStartTestAlertDialogVisible by remember { mutableStateOf(false) }
@@ -50,7 +51,7 @@ fun ScheduledTestsScreen(
             confirmText = stringResource(R.string.button_label_close).uppercase(),
             onConfirmButtonClick = {
                 isTestExpiredAlertDialogVisible = false
-                /* TODO remove test from list*/
+                currentlySelectedTestDetails?.let(onTestExpired)
             },
             onDismissRequest = { isTestExpiredAlertDialogVisible = false })
     }
