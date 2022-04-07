@@ -74,4 +74,5 @@
     <string name="label_test_expired">Le test a expiré</string>
     <string name="alert_dialog_label_test_expired_warning">La fenêtre pour passer le test s\'est fermée.Le test a expiré.Vous pouvez fermer cette boîte de dialogue en cliquant sur le bouton \"Fermer\" en bas de la boîte de dialogue.</string>
     <string name="button_label_close">proche</string>
+    <string name="label_test_not_open">Ce test n\'est pas encore ouvert. Vous pouvez commencer à tenter le test à partir de l\'heure prévue.</string>
 </resources>

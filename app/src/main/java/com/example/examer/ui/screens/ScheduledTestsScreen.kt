@@ -6,10 +6,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.example.examer.R
-import com.example.examer.data.domain.TestDetails
-import com.example.examer.data.domain.isScheduledNotOpen
-import com.example.examer.data.domain.isTestExpired
-import com.example.examer.data.domain.isTestOpen
+import com.example.examer.data.domain.*
 import com.example.examer.ui.components.examerTestCard.DefaultExamerExpandableTestCard
 import com.google.accompanist.swiperefresh.SwipeRefreshState
 import com.example.examer.ui.components.AlertDialog
@@ -27,6 +24,7 @@ fun ScheduledTestsScreen(
     val listHeader = stringResource(id = R.string.label_upcoming_tests)
     var isStartTestAlertDialogVisible by remember { mutableStateOf(false) }
     var isTestExpiredAlertDialogVisible by remember { mutableStateOf(false) }
+    var isTestNotOpenAlertDialogVisible by remember { mutableStateOf(false) }
     val resources = LocalContext.current.resources
     var currentlySelectedTestDetails by remember { mutableStateOf<TestDetails?>(null) }
     val onConfirmButtonClick: () -> Unit = {
@@ -58,6 +56,15 @@ fun ScheduledTestsScreen(
             onDismissRequest = { isTestExpiredAlertDialogVisible = false })
     }
 
+    if (isTestNotOpenAlertDialogVisible) {
+        AlertDialog(
+            title = stringResource(R.string.label_test_not_open),
+            message = stringResource(id = R.string.label_test_not_open),
+            confirmText = stringResource(R.string.button_label_close).uppercase(),
+            onConfirmButtonClick = { isTestNotOpenAlertDialogVisible = false },
+            onDismissRequest = { isTestNotOpenAlertDialogVisible = false })
+    }
+
     TestListScreen(
         listHeader = listHeader,
         testList = tests,
@@ -73,7 +80,7 @@ fun ScheduledTestsScreen(
             onTakeTestButtonClick = {
                 currentlySelectedTestDetails = testDetailsItem
                 when {
-                    testDetailsItem.isScheduledNotOpen() -> TODO()
+                    testDetailsItem.isScheduledNotOpen() -> isTestNotOpenAlertDialogVisible = true
                     testDetailsItem.isTestExpired() -> isTestExpiredAlertDialogVisible = true
                     else -> isStartTestAlertDialogVisible = true
                 }
