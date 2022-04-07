@@ -2,11 +2,13 @@ package com.example.examer.data.domain
 
 import com.example.examer.data.domain.serializers.LocalDateTimeSerializer
 import kotlinx.serialization.Serializable
+import timber.log.Timber
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 
 import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 
 /**
  * An enum class representing the status of the test.
@@ -67,4 +69,22 @@ fun TestDetails.getDateStringAndTimeString(is24hourFormat: Boolean = false): Pai
         .toLocalTime()
         .format(format)
     return Pair(dateString, timeString)
+}
+
+/**
+ * Used to check whether the test is open for accepting answers.
+ *
+ * If the [TestDetails.localDateTime] is within [LocalDateTime.now]
+ * and  [LocalDateTime.now] + the [TestDetails.testDurationInMinutes]
+ * (inclusive), ignoring the seconds, then it returns true. Else, it
+ * returns false.
+ */
+fun TestDetails.isTestOpen(): Boolean {
+    val currentDateTimeTruncatedToMinutes = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES)
+    val testDetailsLocalDateTimeTruncatedToMinutes =
+        this.localDateTime.truncatedTo(ChronoUnit.MINUTES)
+    val validDateTimeRange =
+        testDetailsLocalDateTimeTruncatedToMinutes..testDetailsLocalDateTimeTruncatedToMinutes
+            .plusMinutes(testDurationInMinutes.toLong())
+    return currentDateTimeTruncatedToMinutes in validDateTimeRange
 }
