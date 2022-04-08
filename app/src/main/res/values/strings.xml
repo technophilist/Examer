@@ -1,6 +1,11 @@
 <resources>
     <!-- TODO Naming doesn't follow a consistent convention-->
     <string name="app_name">Examer</string>
+    <!-- Main Activity -->
+    <string name="label_device_time_set_manually_warning">Device\'s date time/time zone is set manually.</string>
+    <string name="button_label_open_settings">open settings</string>
+    <string name="label_device_time_set_manually_message">You cannot take tests if the device\'s date/time or time zone is set manually. Please change the setting by navigating to the settings app.</string>
+
     <!-- Common -->
     <string name="label_email_address">Email Address</string>
     <string name="label_password">Password</string>
