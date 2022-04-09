@@ -22,6 +22,8 @@ interface RemoteDatabase {
         userAnswers: UserAnswers,
         testDetailsId: String
     )
-    suspend fun markTestAsCompleted(user: ExamerUser,testDetailsId: String)
-    suspend fun markTestAsMissed(user: ExamerUser,testDetailsId: String)
+
+    suspend fun markTestAsCompleted(user: ExamerUser, testDetailsId: String)
+    suspend fun markTestAsMissed(user: ExamerUser, testDetailsId: String)
+    suspend fun saveNotificationToken(user: ExamerUser, notificationToken: String)
 }

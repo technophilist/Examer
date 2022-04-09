@@ -124,6 +124,16 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
                 .await() // throws exception
         }
     }
+
+    override suspend fun saveNotificationToken(user: ExamerUser, notificationToken: String) {
+        withContext(dispatcherProvider.io) {
+            Firebase.firestore
+                .document(getDocumentPathForUserDocument(user))
+                .update("notificationToken", notificationToken)
+                .await() // throws exception
+        }
+    }
+
     private fun DocumentSnapshot.toWorkBookDTO(): WorkBookDTO {
         val examerAudioFile = AudioFileDTO(
             audioFileUrl = URL(get("audioFileDownloadUrl").toString()),
@@ -183,6 +193,8 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
 
         private fun getCollectionPathForUserAnswers(user: ExamerUser, testDetailsId: String) =
             "${getCollectionPathForTests(user)}/${testDetailsId}/answersForEachWorkBook"
+
+        private fun getDocumentPathForUserDocument(user: ExamerUser) = "users/${user.id}"
     }
 
 }
