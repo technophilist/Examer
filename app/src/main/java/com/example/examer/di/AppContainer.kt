@@ -56,6 +56,11 @@ class AppContainer(application: Application) {
     )
 
     val workBookViewModelFactory = WorkBookViewModelFactory(application = application)
+    val mainActivityViewModelFactory = MainActivityViewModelFactory(
+        application = application,
+        preferencesManager = preferencesManager
+    )
+
     fun getTestSessionViewModelFactory(
         testDetails: TestDetails,
         workBookList: List<WorkBook>
