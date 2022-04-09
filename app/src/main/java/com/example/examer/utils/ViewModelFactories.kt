@@ -8,6 +8,7 @@ import com.example.examer.auth.AuthenticationService
 import com.example.examer.data.Repository
 import com.example.examer.data.domain.TestDetails
 import com.example.examer.data.domain.WorkBook
+import com.example.examer.data.preferences.PreferencesManager
 import com.example.examer.di.DispatcherProvider
 import com.example.examer.di.StandardDispatchersProvider
 import com.example.examer.usecases.CredentialsValidationUseCase
@@ -138,5 +139,16 @@ class WorkBookViewModelFactory(private val application: Application) : ViewModel
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>) = ExamerWorkBookViewModel(
         application = application
+    ) as T
+}
+
+class MainActivityViewModelFactory(
+    private val application: Application,
+    private val preferencesManager: PreferencesManager
+) : ViewModelProvider.Factory {
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel?> create(modelClass: Class<T>) = ExamerMainActivityViewModel(
+        application = application,
+        preferencesManager = preferencesManager
     ) as T
 }
