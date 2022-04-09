@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.*
 import com.example.examer.ui.components.AlertDialog
@@ -19,6 +20,7 @@ import com.example.examer.ui.screens.ExamerApp
 import com.example.examer.ui.theme.ExamerTheme
 import com.example.examer.utils.isDeviceAutomaticDateTimeEnabled
 import com.example.examer.utils.isDeviceAutomaticTimeZoneEnabled
+import com.example.examer.viewmodels.ExamerMainActivityViewModel
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.pager.ExperimentalPagerApi
 
@@ -26,6 +28,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var appContainer: AppContainer
     private var isAutomaticDateTimeEnabled by mutableStateOf(false)
     private var isAutomaticTimeZoneEnabled by mutableStateOf(false)
+    private val mainActivityViewModel by viewModels<ExamerMainActivityViewModel> { appContainer.mainActivityViewModelFactory }
 
     @ExperimentalCoilApi
     @ExperimentalMaterialApi
@@ -35,6 +38,12 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         appContainer = (application as ExamerApplication).appContainer
+        appContainer.authenticationService.currentUser.observe(this) { user ->
+            // FIXME, when the user object is modified, ie name,email modification
+            //  this lambda will be executed everytime. Fix that.
+            // TODO delete token after user signs out
+            user?.let(mainActivityViewModel::associateNotificationTokenWithUser)
+        }
         setContent {
             ExamerTheme {
                 ProvideWindowInsets {
