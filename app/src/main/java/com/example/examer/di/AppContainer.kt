@@ -7,6 +7,8 @@ import com.example.examer.data.ExamerRepository
 import com.example.examer.data.Repository
 import com.example.examer.data.domain.TestDetails
 import com.example.examer.data.domain.WorkBook
+import com.example.examer.data.preferences.ExamerPreferencesManager
+import com.example.examer.data.preferences.PreferencesManager
 import com.example.examer.data.remote.FirebaseRemoteDatabase
 import com.example.examer.data.remote.RemoteDatabase
 import com.example.examer.usecases.ExamerCredentialsValidationUseCase
@@ -19,6 +21,7 @@ class AppContainer(application: Application) {
     private val remoteDatabase =
         FirebaseRemoteDatabase(StandardDispatchersProvider()) as RemoteDatabase
     private val passwordManager = ExamerPasswordManager(application) as PasswordManager
+    private val preferencesManager = ExamerPreferencesManager(application) as PreferencesManager
     val authenticationService = FirebaseAuthenticationService()
     val repository = ExamerRepository(
         context = application,
