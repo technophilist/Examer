@@ -21,7 +21,7 @@ class AppContainer(application: Application) {
     private val remoteDatabase =
         FirebaseRemoteDatabase(StandardDispatchersProvider()) as RemoteDatabase
     private val passwordManager = ExamerPasswordManager(application) as PasswordManager
-    private val preferencesManager = ExamerPreferencesManager(application) as PreferencesManager
+    val preferencesManager = ExamerPreferencesManager(application) as PreferencesManager
     val authenticationService = FirebaseAuthenticationService()
     val repository = ExamerRepository(
         context = application,
