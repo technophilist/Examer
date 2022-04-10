@@ -53,7 +53,8 @@
     <string name="label_test_expired">The test has expired</string>
     <string name="alert_dialog_label_test_expired_warning">The window for taking the has closed.The test has expired.You can close this dialog by clicking on the \'close\' button at the bottom of the dialog.</string>
     <string name="button_label_close">close</string>
-    <string name="label_test_not_open">"This test is not open yet. You can start attempting the test from the scheduled time."</string>
+    <string name="label_test_not_open">"This test is not open yet"</string>
+    <string name="label_test_not_open_message">This test is not open yet.You can start attempting the test from the scheduled time.</string>
 
     <!-- Test History Screen-->
     <string name="label_test_history">Test history</string>

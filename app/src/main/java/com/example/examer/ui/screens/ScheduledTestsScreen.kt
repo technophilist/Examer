@@ -63,7 +63,7 @@ fun ScheduledTestsScreen(
     if (isTestNotOpenAlertDialogVisible) {
         AlertDialog(
             title = stringResource(R.string.label_test_not_open),
-            message = stringResource(id = R.string.label_test_not_open),
+            message = stringResource(id = R.string.label_test_not_open_message),
             confirmText = stringResource(R.string.button_label_close).uppercase(),
             onConfirmButtonClick = { isTestNotOpenAlertDialogVisible = false },
             onDismissRequest = { isTestNotOpenAlertDialogVisible = false })

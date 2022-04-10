@@ -78,4 +78,5 @@
     <string name="label_device_time_set_manually_warning">La date, l\'heure et le fuseau horaire de l\'appareil sont définis manuellement</string>
     <string name="button_label_open_settings">ouvrir les paramètres</string>
     <string name="label_device_time_set_manually_message">Vous ne pouvez pas effectuer de tests si la date/l\'heure ou le fuseau horaire de l\'appareil sont définis manuellement. Veuillez modifier le paramètre en accédant à l\'application des paramètres.</string>
+    <string name="label_test_not_open_message">Ce test n\'est pas encore ouvert. Vous pouvez commencer à tenter le test à partir de l\'heure prévue.</string>
 </resources>
