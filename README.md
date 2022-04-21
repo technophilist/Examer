@@ -4,6 +4,9 @@
 Examer is a **work-in-progress** Android app that is used to take tests that evaluate a person's ability to listen to, and understand conversations in English.
 To try out this app you need to use the latest version of [Android Studio Arctic Fox](https://developer.android.com/studio?gclid=EAIaIQobChMInc7OlbDD9QIVmpJmAh2lKgaZEAAYASAAEgLvsfD_BwE&gclsrc=aw.ds).
 
+## Screenshots
+![akt](screenshots/screenshot-compilation.png)
+
 ## Tech stack 
 - Entirely written in [Kotlin](https://kotlinlang.org/).
 - Manual dependency injection.
