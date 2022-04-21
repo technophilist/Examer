@@ -5,7 +5,12 @@ Examer is a **work-in-progress** Android app that is used to take tests that eva
 To try out this app you need to use the latest version of [Android Studio Arctic Fox](https://developer.android.com/studio?gclid=EAIaIQobChMInc7OlbDD9QIVmpJmAh2lKgaZEAAYASAAEgLvsfD_BwE&gclsrc=aw.ds).
 
 ## Screenshots
-![akt](screenshots/screenshot-compilation.png)
+![A compilation of, some of the app' screenshots](screenshots/screenshot-compilation.png)
+
+## Color Scheme
+The color palette and the typography used in this app is entirely based on the specification for [Reply app](https://material.io/design/material-studies/reply.html#color), which is one of the many material studies app maitained by google.
+
+<img src = "screenshots/color-scheme.png" height = "675" width = "245">
 
 ## Tech stack 
 - Entirely written in [Kotlin](https://kotlinlang.org/).
