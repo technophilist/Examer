@@ -3,20 +3,37 @@ package com.example.examer.viewmodels
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.work.*
+import com.example.examer.data.domain.IndexOfChosenOption
+import com.example.examer.data.domain.MultiChoiceQuestion
 import com.example.examer.data.domain.UserAnswers
 import com.example.examer.data.workers.SaveUserAnswersWorker
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 interface WorkBookViewModel {
-    fun saveUserAnswersForTestId(userAnswers: UserAnswers, testDetailsId: String)
+    fun saveUserAnswersForTestId(
+        questionsList: List<MultiChoiceQuestion>,
+        answersMap: Map<MultiChoiceQuestion, IndexOfChosenOption>,
+        testDetailsId: String,
+        workBookId: String
+    )
 }
 
 class ExamerWorkBookViewModel(
     application: Application
 ) : AndroidViewModel(application), WorkBookViewModel {
     private val workManager = WorkManager.getInstance(application)
-    override fun saveUserAnswersForTestId(userAnswers: UserAnswers, testDetailsId: String) {
+    override fun saveUserAnswersForTestId(
+        questionsList: List<MultiChoiceQuestion>,
+        answersMap: Map<MultiChoiceQuestion, IndexOfChosenOption>,
+        testDetailsId: String,
+        workBookId: String
+    ) {
+        val userAnswers = UserAnswers(
+            associatedWorkBookId = workBookId,
+            answers = answersMap,
+            marksObtainedForWorkBook = computeMarks(questionsList, answersMap)
+        )
         val workerConstraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
@@ -32,5 +49,12 @@ class ExamerWorkBookViewModel(
             .setInputData(inputData)
             .build()
         workManager.enqueue(workRequest)
+    }
+
+    private fun computeMarks(
+        questionsList: List<MultiChoiceQuestion>,
+        answersMap: Map<MultiChoiceQuestion, IndexOfChosenOption>
+    ): Int = questionsList.fold(0) { acc, mcq ->
+        acc + if (answersMap[mcq]!!.index == mcq.indexOfCorrectOption) mcq.mark else 0
     }
 }
