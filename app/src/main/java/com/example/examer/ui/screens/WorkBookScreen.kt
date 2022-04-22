@@ -228,5 +228,5 @@ private fun computeMarks(
     answersMap: Map<MultiChoiceQuestion, IndexOfChosenOption>
 ): Int = questionsList.fold(0) { acc, mcq ->
     if (answersMap[mcq]!!.index == mcq.indexOfCorrectOption) acc + mcq.mark
-    else 0
+    else acc + 0
 }
