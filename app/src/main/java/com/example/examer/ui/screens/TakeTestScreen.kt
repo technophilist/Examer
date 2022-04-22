@@ -19,6 +19,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.examer.R
 import com.example.examer.data.domain.MultiChoiceQuestion
 import com.example.examer.data.domain.TestDetails
+import com.example.examer.data.domain.UserAnswers
 import com.example.examer.di.AppContainer
 import com.example.examer.ui.navigation.TakeTestScreenDestinations
 import com.example.examer.ui.screens.listenToAudioScreen.AudioPlaybackState
@@ -172,10 +173,14 @@ private fun NavGraphBuilder.workBookScreenComposable(
                 viewModelStoreOwner = it
             )
             WorkBookScreen(
-                workBookId = workBookId,
                 questionList = multiChoiceQuestionList,
-                onFooterButtonClick = { userAnswers ->
-                    viewModel.saveUserAnswersForTestId(userAnswers, testDetailsId)
+                onFooterButtonClick = { answersMap ->
+                    viewModel.saveUserAnswersForTestId(
+                        multiChoiceQuestionList,
+                        answersMap,
+                        testDetailsId,
+                        workBookId
+                    )
                     onAnswerSaved()
                 },
                 buttonTextValue = if (isLastWorkBook) ButtonTextValue.FINISH_TEST

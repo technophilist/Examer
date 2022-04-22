@@ -30,9 +30,8 @@ enum class ButtonTextValue {
 
 @Composable
 fun WorkBookScreen(
-    workBookId: String,
     questionList: List<MultiChoiceQuestion>,
-    onFooterButtonClick: (UserAnswers) -> Unit,
+    onFooterButtonClick: (answersMap:Map<MultiChoiceQuestion,IndexOfChosenOption>) -> Unit,
     buttonTextValue: ButtonTextValue = ButtonTextValue.NEXT_WORKBOOK
 ) {
     // a map that stores the currently selected item associated
@@ -70,13 +69,7 @@ fun WorkBookScreen(
                         currentlySelectedIndexMap.mapValues {
                             IndexOfChosenOption(it.value)
                         }
-                    val marksObtainedForWorkBook = computeMarks(questionList, transformedMap)
-                    val userAnswers = UserAnswers(
-                        associatedWorkBookId = workBookId,
-                        answers = transformedMap,
-                        marksObtainedForWorkBook = marksObtainedForWorkBook
-                    )
-                    onFooterButtonClick(userAnswers)
+                    onFooterButtonClick(transformedMap)
                 },
                 content = {
                     Text(
@@ -221,11 +214,4 @@ private fun RadioButtonWithText(
             onClick = { onClick() }
         )
     }
-}
-
-private fun computeMarks(
-    questionsList: List<MultiChoiceQuestion>,
-    answersMap: Map<MultiChoiceQuestion, IndexOfChosenOption>
-): Int = questionsList.fold(0) { acc, mcq ->
-    acc + if (answersMap[mcq]!!.index == mcq.indexOfCorrectOption) mcq.mark else 0
 }
