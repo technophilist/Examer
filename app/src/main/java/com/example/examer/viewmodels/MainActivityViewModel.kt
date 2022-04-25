@@ -21,6 +21,12 @@ class ExamerMainActivityViewModel(
     private val workManager = WorkManager.getInstance(application)
 
     override fun associateNotificationTokenWithUser(user: ExamerUser) {
+        // the worker will remove the entry from preferences, once
+        // it has successfully associated the user with the
+        // notification token. Therefore, this function will return
+        // if it is called multiple times, since
+        // preferencesManager.getNotificationTokenIfExists() will return
+        // null if it called more than once.
         val notificationToken = preferencesManager.getNotificationTokenIfExists() ?: return
         val workerConstraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
