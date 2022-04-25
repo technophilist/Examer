@@ -235,6 +235,7 @@ private fun NavGraphBuilder.takeTestScreenComposable(
         // icon in the app bar.
         var isExitAlertDialogVisible by remember { mutableStateOf(false) }
         val onAlertDialogConfirmButtonClick = {
+            testSessionViewModel.stopAudioPlayback()
             testSessionViewModel.markCurrentTestAsComplete()
             navController.navigate(ExamerDestinations.ScheduledTestsScreen.route) {
                 popUpTo(ExamerDestinations.TakeTestScreen.route) { inclusive = true }
