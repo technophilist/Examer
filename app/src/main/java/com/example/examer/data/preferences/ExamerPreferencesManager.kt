@@ -18,6 +18,10 @@ class ExamerPreferencesManager(context: Context) : PreferencesManager {
         sharedPreferences.edit { clear() }
     }
 
+    override fun deleteValueIfExists(key: String) {
+        sharedPreferences.edit { remove(key) }
+    }
+
     companion object {
         const val NOTIFICATION_TOKEN_KEY =
             "com.example.examer.data.preferences.ExamerPreferencesManger.KEY_NOTIFICATION_TOKEN"
