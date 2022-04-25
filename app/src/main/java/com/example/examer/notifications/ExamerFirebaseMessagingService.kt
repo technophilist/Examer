@@ -10,8 +10,7 @@ class ExamerFirebaseMessagingService : FirebaseMessagingService() {
         // generation. Therefore, just store it in shared preferences.
         // Associate the new token with the user after the user has successfully
         // logged in.
-        (application as ExamerApplication?)?.appContainer
-            ?.preferencesManager
-            ?.saveNotificationToken(newToken)
+        val appContainer = (application as ExamerApplication).appContainer
+        appContainer.preferencesManager.saveNotificationToken(newToken)
     }
 }
