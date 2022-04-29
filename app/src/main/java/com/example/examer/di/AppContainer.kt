@@ -46,10 +46,9 @@ class AppContainer(application: Application) {
         repository = repository,
         testDetailsListType = TestDetailsListType.SCHEDULED_TESTS
     )
-    val previousTestsViewModelFactory = TestsViewModelFactory(
+    val previousTestsViewModelFactory = PreviousTestsViewModelFactory(
         authenticationService = authenticationService,
-        repository = repository,
-        testDetailsListType = TestDetailsListType.PREVIOUS_TESTS
+        repository = repository
     )
 
     val workBookViewModelFactory = WorkBookViewModelFactory(application = application)
