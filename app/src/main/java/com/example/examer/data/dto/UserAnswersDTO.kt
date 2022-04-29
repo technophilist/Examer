@@ -1,6 +1,7 @@
 package com.example.examer.data.dto
 
 import com.example.examer.data.domain.UserAnswers
+import com.google.firebase.firestore.DocumentSnapshot
 
 /**
  * A DTO object for [UserAnswers].
@@ -17,4 +18,11 @@ data class UserAnswersDTO(
     val associatedWorkBookId: String,
     val answersDetailsMap: List<Map<String, String>>,
     val marksObtainedForWorkBook: Int
+)
+
+@Suppress("UNCHECKED_CAST")
+fun DocumentSnapshot.toUserAnswersDTO() = UserAnswersDTO(
+    associatedWorkBookId = getString("associatedWorkBookId")!!,
+    answersDetailsMap = get("answersDetailsMap") as List<Map<String, String>>,
+    marksObtainedForWorkBook = getString("marksObtainedForWorkBook")!!.toInt()
 )
