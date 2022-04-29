@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 enum class PreviousTestsViewModelUiState { LOADING, SUCCESSFULLY_LOADED }
 interface PreviousTestsViewModel {
     val uiState: State<PreviousTestsViewModelUiState>
-    val previousTestsList: State<Map<TestDetails, TestResult>>
+    val testResultsMap: State<Map<TestDetails, TestResult>>
     fun refreshPreviousTestsList()
 }
 
@@ -23,9 +23,9 @@ class ExamerPreviousTestsViewModel(
 ) : ViewModel(), PreviousTestsViewModel {
 
     private val _uiState = mutableStateOf(PreviousTestsViewModelUiState.LOADING)
-    private val _previousTestsList = mutableStateOf<Map<TestDetails, TestResult>>(emptyMap())
+    private val _testResultsMap = mutableStateOf<Map<TestDetails, TestResult>>(emptyMap())
     override val uiState = _uiState as State<PreviousTestsViewModelUiState>
-    override val previousTestsList = _previousTestsList as State<Map<TestDetails, TestResult>>
+    override val testResultsMap = _testResultsMap as State<Map<TestDetails, TestResult>>
 
     init {
         fetchAndAssignPreviousTestsList()
@@ -38,7 +38,7 @@ class ExamerPreviousTestsViewModel(
     private fun fetchAndAssignPreviousTestsList() {
         viewModelScope.launch {
             _uiState.value = PreviousTestsViewModelUiState.LOADING
-            _previousTestsList.value = authenticationService.currentUser.value?.let { user ->
+            _testResultsMap.value = authenticationService.currentUser.value?.let { user ->
                 val previousTests = repository.fetchPreviousTestListForUser(user)
                 previousTests.associateWith { repository.fetchTestResults(user, it.id) }
             } ?: emptyMap()
