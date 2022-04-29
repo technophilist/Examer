@@ -1,7 +1,7 @@
 package com.example.examer.data.domain
 
 data class TestResult(
-    val testDetails: TestDetails,
+    val testDetailsId: String,
     val marksObtained: Int,
     val maximumMarks: Int
 )
