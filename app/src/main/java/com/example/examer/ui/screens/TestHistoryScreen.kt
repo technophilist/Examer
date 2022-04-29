@@ -24,8 +24,7 @@ import com.google.accompanist.swiperefresh.SwipeRefreshState
 fun TestHistoryScreen(
     swipeRefreshState: SwipeRefreshState,
     onRefresh: () -> Unit,
-    tests: List<TestDetails>,
-    onReviewButtonClick: (TestDetails) -> Unit
+    tests: List<TestDetails>
 ) {
     val listHeader = stringResource(id = R.string.label_test_history)
     SwipeRefresh(state = swipeRefreshState, onRefresh = onRefresh) {

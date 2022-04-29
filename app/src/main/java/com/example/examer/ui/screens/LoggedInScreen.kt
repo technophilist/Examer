@@ -361,8 +361,7 @@ private fun NavGraphBuilder.testHistoryScreenComposable(
         TestHistoryScreen(
             swipeRefreshState = swipeRefreshState,
             onRefresh = testsViewModel::refreshTestDetailsList,
-            tests = testsViewModel.testDetailsList.value,
-            onReviewButtonClick = {}
+            tests = testsViewModel.testDetailsList.value
         )
     }
 }
