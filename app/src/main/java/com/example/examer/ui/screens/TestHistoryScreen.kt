@@ -13,18 +13,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.examer.R
 import com.example.examer.data.domain.TestDetails
+import com.example.examer.data.domain.TestResult
 import com.example.examer.data.domain.getDateStringAndTimeString
 import com.example.examer.ui.components.examerTestCard.ExamerCardMetadataRow
 import com.example.examer.ui.components.examerTestCard.StatusRow
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.SwipeRefreshState
 
-// TODO: The implementation of this screen could be improved.
 @Composable
 fun TestHistoryScreen(
     swipeRefreshState: SwipeRefreshState,
     onRefresh: () -> Unit,
-    tests: List<TestDetails>
+    testResultsMap: Map<TestDetails, TestResult>
 ) {
     val listHeader = stringResource(id = R.string.label_test_history)
     SwipeRefresh(state = swipeRefreshState, onRefresh = onRefresh) {
@@ -41,12 +41,12 @@ fun TestHistoryScreen(
                     fontWeight = FontWeight.SemiBold
                 )
             }
-            items(tests) {
+            items(testResultsMap.keys.toList()) { testDetailsItem ->
                 TestResultCard(
                     modifier = Modifier.fillMaxWidth(),
-                    test = it,
-                    marksObtained = 5,
-                    maxMarks = 10
+                    test = testDetailsItem,
+                    marksObtained = testResultsMap.getValue(testDetailsItem).marksObtained,
+                    maxMarks = testResultsMap.getValue(testDetailsItem).maximumMarks
                 )
             }
         }
