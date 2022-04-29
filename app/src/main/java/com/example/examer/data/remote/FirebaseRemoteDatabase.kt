@@ -6,6 +6,7 @@ import com.example.examer.data.domain.*
 import com.example.examer.data.dto.AudioFileDTO
 import com.example.examer.data.dto.MultiChoiceQuestionListDTO
 import com.example.examer.data.dto.WorkBookDTO
+import com.example.examer.data.dto.toUserAnswersDTO
 import com.example.examer.di.DispatcherProvider
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
@@ -124,6 +125,22 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
                 .await() // throws exception
         }
     }
+
+    override suspend fun fetchResultsForTest(
+        user: ExamerUser,
+        testDetailsId: String
+    ): TestResult = withContext(dispatcherProvider.io) {
+        val marksObtained = fetchCollection(getCollectionPathForUserAnswers(user, testDetailsId))
+            .documents
+            .map { it.toUserAnswersDTO() }
+            .fold(0) { acc, userAnswersDTO -> acc + userAnswersDTO.marksObtainedForWorkBook }
+        TestResult(
+            testDetailsId = testDetailsId,
+            marksObtained = marksObtained,
+            maximumMarks = 111 // TODO Remove hardcoded value
+        )
+    }
+
     private fun DocumentSnapshot.toWorkBookDTO(): WorkBookDTO {
         val examerAudioFile = AudioFileDTO(
             audioFileUrl = URL(get("audioFileDownloadUrl").toString()),
