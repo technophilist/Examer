@@ -198,12 +198,40 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
 
     companion object {
         private const val PROFILE_PICTURES_FOLDER_NAME = "profile_pics"
+
+        @Deprecated(
+            message = "Use the string overload of this function",
+            replaceWith = ReplaceWith("getCollectionPathForTests(userId = )")
+        )
         private fun getCollectionPathForTests(user: ExamerUser) = "users/${user.id}/tests"
+
+        @Deprecated(
+            message = "Use the string overload of this function",
+            replaceWith = ReplaceWith("getCollectionPathForWorkBooks(userId,testDetailsId=)")
+        )
         private fun getCollectionPathForWorkBooks(user: ExamerUser, testDetails: TestDetails) =
             "${getCollectionPathForTests(user)}/${testDetails.id}/workbooks"
 
+
+        @Deprecated(
+            message = "Use the string overload of this function",
+            replaceWith = ReplaceWith("getCollectionPathForUserAnswers(userId=,testDetailsId=)")
+        )
         private fun getCollectionPathForUserAnswers(user: ExamerUser, testDetailsId: String) =
             "${getCollectionPathForTests(user)}/${testDetailsId}/answersForEachWorkBook"
+
+
+        private fun getCollectionPathForWorkBooks(
+            userId: String,
+            testDetailsId: String
+        ) = "${getCollectionPathForTests(userId)}/${testDetailsId}}/workbooks"
+
+        private fun getCollectionPathForUserAnswers(
+            userId: String,
+            testDetailsId: String
+        ) = "${getCollectionPathForTests(userId)}/${testDetailsId}/answersForEachWorkBook"
+
+        private fun getCollectionPathForTests(userId: String) = "users/${userId}/tests"
     }
 
 }
