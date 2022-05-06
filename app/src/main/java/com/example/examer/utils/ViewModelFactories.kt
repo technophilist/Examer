@@ -140,3 +140,30 @@ class WorkBookViewModelFactory(private val application: Application) : ViewModel
         application = application
     ) as T
 }
+
+class Previos(
+    private val mediaPlayer: MediaPlayer,
+    private val testDetails: TestDetails,
+    private val workBookList: List<WorkBook>,
+    private val markTestAsCompletedUseCase: MarkTestAsCompletedUseCase
+) : ViewModelProvider.Factory {
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel?> create(modelClass: Class<T>) = ExamerTestSessionViewModel(
+        mediaPlayer = mediaPlayer,
+        testDetails = testDetails,
+        workBookList = workBookList,
+        markTestAsCompletedUseCase = markTestAsCompletedUseCase
+    ) as T
+}
+
+@Suppress("UNCHECKED_CAST")
+class PreviousTestsViewModelFactory(
+    private val authenticationService: AuthenticationService,
+    private val repository: Repository
+) : ViewModelProvider.Factory {
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel?> create(modelClass: Class<T>) = ExamerPreviousTestsViewModel(
+        authenticationService = authenticationService,
+        repository = repository
+    ) as T
+}

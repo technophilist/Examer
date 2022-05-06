@@ -31,10 +31,7 @@ import com.example.examer.ui.components.CircularLoadingProgressOverlay
 import com.example.examer.ui.components.ExamerNavigationScaffold
 import com.example.examer.ui.components.NavigationDrawerDestination
 import com.example.examer.ui.navigation.ExamerDestinations
-import com.example.examer.viewmodels.ExamerTestSessionViewModel
-import com.example.examer.viewmodels.ExamerTestsViewModel
-import com.example.examer.viewmodels.TestSessionViewModel
-import com.example.examer.viewmodels.TestsViewModelUiState
+import com.example.examer.viewmodels.*
 import com.example.examer.viewmodels.profileScreenViewModel.*
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlinx.coroutines.CoroutineScope
@@ -351,18 +348,17 @@ private fun NavGraphBuilder.testHistoryScreenComposable(
 ) {
     composable(route = route) {
         val previousTestsViewModelFactory = appContainer.previousTestsViewModelFactory
-        val testsViewModel = viewModel<ExamerTestsViewModel>(
+        val previousTestsViewModel = viewModel<ExamerPreviousTestsViewModel>(
             factory = previousTestsViewModelFactory,
             viewModelStoreOwner = it
         )
         val swipeRefreshState = rememberSwipeRefreshState(
-            isRefreshing = testsViewModel.testsViewModelUiState.value == TestsViewModelUiState.LOADING
+            isRefreshing = previousTestsViewModel.uiState.value == PreviousTestsViewModelUiState.LOADING
         )
         TestHistoryScreen(
             swipeRefreshState = swipeRefreshState,
-            onRefresh = testsViewModel::refreshTestDetailsList,
-            tests = testsViewModel.testDetailsList.value,
-            onReviewButtonClick = {}
+            onRefresh = previousTestsViewModel::refreshPreviousTestsList,
+            testResultsMap = previousTestsViewModel.testResultsMap.value
         )
     }
 }

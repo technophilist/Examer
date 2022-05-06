@@ -6,11 +6,9 @@ import com.example.examer.data.domain.*
 import com.example.examer.data.dto.AudioFileDTO
 import com.example.examer.data.dto.MultiChoiceQuestionListDTO
 import com.example.examer.data.dto.WorkBookDTO
+import com.example.examer.data.dto.toUserAnswersDTO
 import com.example.examer.di.DispatcherProvider
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -124,6 +122,29 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
                 .await() // throws exception
         }
     }
+
+    override suspend fun fetchResultsForTest(
+        user: ExamerUser,
+        testDetailsId: String
+    ): TestResult = withContext(dispatcherProvider.io) {
+        val marksObtained = fetchCollection(getCollectionPathForUserAnswers(user, testDetailsId))
+            .documents
+            .map { it.toUserAnswersDTO() }
+            .fold(0) { acc, userAnswersDTO -> acc + userAnswersDTO.marksObtainedForWorkBook }
+        val maximumMarks = Firebase.firestore
+            .document("${getCollectionPathForTests(user)}/$testDetailsId")
+            .get()
+            .await()
+            .getString("maximumMarks")!!
+            .toInt()// TODO create/use test details dto object
+
+        TestResult(
+            testDetailsId = testDetailsId,
+            marksObtained = marksObtained,
+            maximumMarks = maximumMarks
+        )
+    }
+
     private fun DocumentSnapshot.toWorkBookDTO(): WorkBookDTO {
         val examerAudioFile = AudioFileDTO(
             audioFileUrl = URL(get("audioFileDownloadUrl").toString()),

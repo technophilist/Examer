@@ -161,7 +161,7 @@ private fun ExamerCardHeader(
 
 
 @Composable
-private fun ExamerCardMetadataRow(
+fun ExamerCardMetadataRow(
     dateString: String,
     timeString: String,
     testDurationInMinutes: String,

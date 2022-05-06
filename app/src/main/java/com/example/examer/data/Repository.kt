@@ -20,6 +20,7 @@ interface Repository {
     suspend fun saveProfilePictureForUser(user: ExamerUser, bitmap: Bitmap)
     suspend fun fetchScheduledTestListForUser(user: ExamerUser): List<TestDetails>
     suspend fun fetchPreviousTestListForUser(user: ExamerUser): List<TestDetails>
+    suspend fun fetchTestResults(user: ExamerUser, testDetailsId: String): TestResult
     suspend fun fetchWorkBookList(
         user: ExamerUser,
         testDetails: TestDetails
@@ -99,6 +100,11 @@ class ExamerRepository(
         // todo exception handling
         remoteDatabase.markTestAsMissed(user, testDetailId)
     }
+
+    override suspend fun fetchTestResults(
+        user: ExamerUser,
+        testDetailsId: String
+    ): TestResult = remoteDatabase.fetchResultsForTest(user, testDetailsId)
 
     private fun AudioFileDTO.toExamerAudioFile(localAudioFileUri: Uri) = ExamerAudioFile(
         localAudioFileUri = localAudioFileUri,
