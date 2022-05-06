@@ -28,7 +28,7 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
     override suspend fun fetchScheduledTestListForUser(user: ExamerUser): List<TestDetails> =
         withContext(dispatcherProvider.io) {
             val scheduledTestsCollection = fetchCollection(
-                collectionPath = getCollectionPathForTests(user),
+                collectionPath = getCollectionPathForTests(user.id),
                 runOnCollectionReference = { whereEqualTo("testStatus", "scheduled") }
             )
             // if no collection exists for the user, which likely indicates
@@ -40,7 +40,7 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
     override suspend fun fetchPreviousTestListForUser(user: ExamerUser): List<TestDetails> =
         withContext(dispatcherProvider.io) {
             val previousTestsCollection = fetchCollection(
-                collectionPath = getCollectionPathForTests(user),
+                collectionPath = getCollectionPathForTests(user.id),
                 runOnCollectionReference = { whereIn("testStatus", listOf("completed", "missed")) }
             )
             // if no collection exists for the user, which likely indicates
@@ -80,7 +80,7 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
         testDetails: TestDetails
     ): Result<List<WorkBookDTO>> = withContext(dispatcherProvider.io) {
         try {
-            val workbooksCollectionPath = getCollectionPathForWorkBooks(user, testDetails)
+            val workbooksCollectionPath = getCollectionPathForWorkBooks(user.id, testDetails.id)
             val workbooksCollection = fetchCollection(workbooksCollectionPath)
                 .documents
                 .map { it.toWorkBookDTO() }
@@ -98,7 +98,7 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
     ) {
         withContext(dispatcherProvider.io) {
             Firebase.firestore
-                .collection(getCollectionPathForUserAnswers(user, testDetailsId))
+                .collection(getCollectionPathForUserAnswers(user.id, testDetailsId))
                 .document()
                 .set(userAnswers.toUserAnswersDTO())
                 .await() // throws exception
@@ -108,7 +108,7 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
     override suspend fun markTestAsCompleted(user: ExamerUser, testDetailsId: String) {
         withContext(dispatcherProvider.io) {
             Firebase.firestore
-                .document("${getCollectionPathForTests(user)}/$testDetailsId")
+                .document("${getCollectionPathForTests(user.id)}/$testDetailsId")
                 .update("testStatus", Status.COMPLETED.toString().lowercase())
                 .await() // throws exception
         }
@@ -117,7 +117,7 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
     override suspend fun markTestAsMissed(user: ExamerUser, testDetailsId: String) {
         withContext(dispatcherProvider.io) {
             Firebase.firestore
-                .document("${getCollectionPathForTests(user)}/$testDetailsId")
+                .document("${getCollectionPathForTests(user.id)}/$testDetailsId")
                 .update("testStatus", Status.MISSED.toString().lowercase())
                 .await() // throws exception
         }
@@ -127,12 +127,12 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
         user: ExamerUser,
         testDetailsId: String
     ): TestResult = withContext(dispatcherProvider.io) {
-        val marksObtained = fetchCollection(getCollectionPathForUserAnswers(user, testDetailsId))
+        val marksObtained = fetchCollection(getCollectionPathForUserAnswers(user.id, testDetailsId))
             .documents
             .map { it.toUserAnswersDTO() }
             .fold(0) { acc, userAnswersDTO -> acc + userAnswersDTO.marksObtainedForWorkBook }
         val maximumMarks = Firebase.firestore
-            .document("${getCollectionPathForTests(user)}/$testDetailsId")
+            .document("${getCollectionPathForTests(user.id)}/$testDetailsId")
             .get()
             .await()
             .getString("maximumMarks")!!
@@ -224,7 +224,7 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
         private fun getCollectionPathForWorkBooks(
             userId: String,
             testDetailsId: String
-        ) = "${getCollectionPathForTests(userId)}/${testDetailsId}}/workbooks"
+        ) = "${getCollectionPathForTests(userId)}/${testDetailsId}/workbooks"
 
         private fun getCollectionPathForUserAnswers(
             userId: String,
