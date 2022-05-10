@@ -11,6 +11,7 @@ import com.example.examer.data.domain.WorkBook
 import com.example.examer.data.preferences.PreferencesManager
 import com.example.examer.di.DispatcherProvider
 import com.example.examer.di.StandardDispatchersProvider
+import com.example.examer.notifications.RemoteNotificationService
 import com.example.examer.usecases.CredentialsValidationUseCase
 import com.example.examer.usecases.ExamerMarkTestAsCompletedUseCase
 import com.example.examer.usecases.MarkTestAsCompletedUseCase
@@ -144,11 +145,13 @@ class WorkBookViewModelFactory(private val application: Application) : ViewModel
 
 class MainActivityViewModelFactory(
     private val application: Application,
-    private val preferencesManager: PreferencesManager
+    private val preferencesManager: PreferencesManager,
+    private val remoteNotificationService: RemoteNotificationService
 ) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>) = ExamerMainActivityViewModel(
         application = application,
-        preferencesManager = preferencesManager
+        preferencesManager = preferencesManager,
+        remoteNotificationService = remoteNotificationService,
     ) as T
 }

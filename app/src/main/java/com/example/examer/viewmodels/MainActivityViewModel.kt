@@ -2,12 +2,14 @@ package com.example.examer.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.work.*
 import com.example.examer.data.domain.ExamerUser
 import com.example.examer.data.preferences.PreferencesManager
 import com.example.examer.data.workers.SaveNotificationTokenWorker
 import com.example.examer.data.workers.SaveNotificationTokenWorker.Companion.KEY_NOTIFICATION_TOKEN
 import com.example.examer.notifications.RemoteNotificationService
+import kotlinx.coroutines.launch
 
 interface MainActivityViewModel {
     fun associateNotificationTokenWithUser(user: ExamerUser)
@@ -16,6 +18,7 @@ interface MainActivityViewModel {
 
 class ExamerMainActivityViewModel(
     private val preferencesManager: PreferencesManager,
+    private val remoteNotificationService: RemoteNotificationService,
     application: Application
 ) : AndroidViewModel(application), MainActivityViewModel {
     private val workManager = WorkManager.getInstance(application)
@@ -42,6 +45,6 @@ class ExamerMainActivityViewModel(
     }
 
     override fun deleteNotificationToken() {
-        // TODO
+        viewModelScope.launch { remoteNotificationService.deleteNotificationToken() }
     }
 }
