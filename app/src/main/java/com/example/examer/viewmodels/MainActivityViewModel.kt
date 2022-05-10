@@ -2,16 +2,16 @@ package com.example.examer.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import androidx.work.*
-import com.example.examer.data.Repository
 import com.example.examer.data.domain.ExamerUser
 import com.example.examer.data.preferences.PreferencesManager
 import com.example.examer.data.workers.SaveNotificationTokenWorker
 import com.example.examer.data.workers.SaveNotificationTokenWorker.Companion.KEY_NOTIFICATION_TOKEN
+import com.example.examer.notifications.RemoteNotificationService
 
 interface MainActivityViewModel {
     fun associateNotificationTokenWithUser(user: ExamerUser)
+    fun deleteNotificationToken()
 }
 
 class ExamerMainActivityViewModel(
@@ -39,5 +39,9 @@ class ExamerMainActivityViewModel(
             .setConstraints(workerConstraints)
             .build()
         workManager.enqueue(oneTimeWorkRequest)
+    }
+
+    override fun deleteNotificationToken() {
+        // TODO
     }
 }
