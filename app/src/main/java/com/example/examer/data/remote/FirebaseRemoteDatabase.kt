@@ -130,7 +130,7 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
         val marksObtained = fetchCollection(getCollectionPathForUserAnswers(user.id, testDetailsId))
             .documents
             .map { it.toUserAnswersDTO() }
-            .fold(0) { acc, userAnswersDTO -> acc + userAnswersDTO.marksObtainedForWorkBook }
+            .fold(0) { acc, userAnswersDTO -> acc + userAnswersDTO.marksObtainedForWorkBook.toInt() }
         val maximumMarks = Firebase.firestore
             .document("${getCollectionPathForTests(user.id)}/$testDetailsId")
             .get()

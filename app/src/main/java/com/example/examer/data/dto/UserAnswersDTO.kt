@@ -17,12 +17,12 @@ import com.google.firebase.firestore.DocumentSnapshot
 data class UserAnswersDTO(
     val associatedWorkBookId: String,
     val answersDetailsMap: List<Map<String, String>>,
-    val marksObtainedForWorkBook: Int
+    val marksObtainedForWorkBook: String
 )
 
 @Suppress("UNCHECKED_CAST")
 fun DocumentSnapshot.toUserAnswersDTO() = UserAnswersDTO(
     associatedWorkBookId = getString("associatedWorkBookId")!!,
     answersDetailsMap = get("answersDetailsMap") as List<Map<String, String>>,
-    marksObtainedForWorkBook = getString("marksObtainedForWorkBook")!!.toInt()
+    marksObtainedForWorkBook = getString("marksObtainedForWorkBook")!!
 )

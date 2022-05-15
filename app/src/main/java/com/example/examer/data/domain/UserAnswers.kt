@@ -25,5 +25,5 @@ fun UserAnswers.toUserAnswersDTO() = UserAnswersDTO(
             "indexOfChosenOption" to answers[it].toString()
         )
     },
-    marksObtainedForWorkBook = marksObtainedForWorkBook
+    marksObtainedForWorkBook = marksObtainedForWorkBook.toString()
 )
