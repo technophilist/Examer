@@ -3,10 +3,7 @@ package com.example.examer.data.remote
 import android.graphics.Bitmap
 import android.net.Uri
 import com.example.examer.data.domain.*
-import com.example.examer.data.dto.AudioFileDTO
-import com.example.examer.data.dto.MultiChoiceQuestionListDTO
-import com.example.examer.data.dto.WorkBookDTO
-import com.example.examer.data.dto.toUserAnswersDTO
+import com.example.examer.data.dto.*
 import com.example.examer.di.DispatcherProvider
 import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.firestore
@@ -34,7 +31,7 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
             // if no collection exists for the user, which likely indicates
             // that the user is a newly registered user, an empty list will
             // be returned.
-            scheduledTestsCollection.documents.map { it.toTestDetails() }
+            scheduledTestsCollection.documents.map { it.toTestDetailsDTO().toTestDetails() }
         }
 
     override suspend fun fetchPreviousTestListForUser(user: ExamerUser): List<TestDetails> =
@@ -46,7 +43,7 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
             // if no collection exists for the user, which likely indicates
             // that the user is a newly registered user, an empty list will
             // be returned.
-            previousTestsCollection.documents.map { it.toTestDetails() }
+            previousTestsCollection.documents.map { it.toTestDetailsDTO().toTestDetails() }
         }
 
     override suspend fun saveBitmap(
@@ -162,22 +159,18 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
         )
     }
 
-    private fun DocumentSnapshot.toTestDetails() = TestDetails(
+    private fun DocumentSnapshot.toTestDetailsDTO() = TestDetailsDTO(
         id = id,
-        title = get("title").toString(),
-        description = get("description").toString(),
-        language = get("language").toString(),
-        localDateTime = getLocalDateTimeForTimeStamp(get("timestamp").toString().toLong()),
-        totalNumberOfWorkBooks = get("totalNumberOfWorkBooks").toString().toInt(),
-        testDurationInMinutes = get("testDurationInMinutes").toString().toInt(),
-        testStatus = Status.valueOf((get("testStatus").toString().uppercase()))
+        title = getString("title")!!,
+        description = getString("description")!!,
+        language = getString("language")!!,
+        timeStamp = getString("timestamp")!!,
+        totalNumberOfWorkBooks = getString("totalNumberOfWorkBooks")!!,
+        testDurationInMinutes = getString("testDurationInMinutes")!!,
+        testStatus = getString("testStatus")!!,
+        maximumMarks = getString("maximumMarks")!!
     )
 
-    private fun getLocalDateTimeForTimeStamp(timestamp: Long): LocalDateTime =
-        Instant
-            .ofEpochMilli(timestamp)
-            .atZone(ZoneId.systemDefault())
-            .toLocalDateTime()
 
     //TODO add doc
     private suspend fun fetchCollection(
