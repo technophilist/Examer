@@ -132,9 +132,9 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
             .document("${getCollectionPathForTests(user.id)}/$testDetailsId")
             .get()
             .await()
-            .getString("maximumMarks")!!
-            .toInt()// TODO create/use test details dto object
-
+            .toTestDetailsDTO()
+            .maximumMarks
+            .toInt()
         TestResult(
             testDetailsId = testDetailsId,
             marksObtained = marksObtained,
@@ -170,7 +170,6 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
         testStatus = getString("testStatus")!!,
         maximumMarks = getString("maximumMarks")!!
     )
-
 
     //TODO add doc
     private suspend fun fetchCollection(
