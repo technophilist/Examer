@@ -171,7 +171,24 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
         maximumMarks = getString("maximumMarks")!!
     )
 
-    //TODO add doc
+    /**
+     * Used to fetch a collection from [collectionPath] and return a
+     * [QuerySnapshot].
+     * This is a convenience method that allows for both fetching a
+     * collection and also specifying methods to run while fetching
+     * the collection using the [runOnCollectionReference] lambda.
+     * The lambda receives a [CollectionReference] as a parameter.
+     * This method is mainly created as a shorthand method
+     * of specifying both - the collection to fetch & filters to
+     * apply while fetching from the collection.
+     * Eg:
+     * ```
+     *  val previousTestsCollection = fetchCollection(
+     *   collectionPath = getCollectionPathForTests(user.id),
+     *   runOnCollectionReference = { whereIn("testStatus", listOf("completed", "missed")) }
+     *  )
+     *```
+     */
     private suspend fun fetchCollection(
         collectionPath: String,
         runOnCollectionReference: (CollectionReference.() -> Query)? = null
