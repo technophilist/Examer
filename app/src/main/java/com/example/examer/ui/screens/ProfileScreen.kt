@@ -6,6 +6,8 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
 import androidx.compose.foundation.*
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -145,10 +147,12 @@ fun DefaultExamerProfileScreen(
             startDestination = DefaultExamerProfileScreenDestinations.ProfileScreen.route
         ) {
             composable(DefaultExamerProfileScreenDestinations.ProfileScreen.route) {
+                val scrollState = rememberScrollState()
                 ProfileScreen(
                     imagePainter = profileScreenImagePainter,
                     onEditProfilePictureButtonClick = { launcher.launch() },
-                    userAttributes = profileScreenUserAttributes
+                    userAttributes = profileScreenUserAttributes,
+                    scrollState = scrollState
                 )
             }
             composable(
@@ -325,6 +329,7 @@ fun ProfileScreen(
     imagePainter: ImagePainter,
     onEditProfilePictureButtonClick: () -> Unit,
     userAttributes: List<UserAttribute>,
+    scrollState: ScrollState
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         Header(
@@ -335,10 +340,10 @@ fun ProfileScreen(
             onEditProfilePictureButtonClick = onEditProfilePictureButtonClick,
             painter = imagePainter
         )
-        // TODO Make column scrollable
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .verticalScroll(scrollState)
                 .padding(16.dp)
         ) {
             userAttributes.forEach {
