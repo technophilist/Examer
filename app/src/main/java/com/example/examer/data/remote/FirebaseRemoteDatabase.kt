@@ -26,7 +26,7 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
         withContext(dispatcherProvider.io) {
             val scheduledTestsCollection = fetchCollection(
                 collectionPath = getCollectionPathForTests(user.id),
-                runOnCollectionReference = { whereEqualTo("testStatus", "scheduled") }
+                runOnCollectionReference = { whereIn("testStatus", listOf("scheduled", "open")) }
             )
             // if no collection exists for the user, which likely indicates
             // that the user is a newly registered user, an empty list will
