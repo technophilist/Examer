@@ -18,7 +18,7 @@
     <string name="label_take_your_test_online_description">Examer is a platform that allows you to take online tests right from your phone.</string>
 
     <string name="label_reduce_eye_strain_with_dark_mode_title">Reduce eye strain with dark mode</string>
-    <string name="label_reduce_eye_strain_with_dark_mode_description">Want to dim the lights? Don\'t let a bright screen mess with your eyes.Turn on dark mode to reduce eye strain and save battery</string>
+    <string name="label_reduce_eye_strain_with_dark_mode_description">Want to dim the lights? Don\'t let a bright screen mess with your eyes.If you are running Android 10 or above, you can turn on dark mode to reduce eye strain and save battery.</string>
 
     <string name="label_taking_test_have_never_been_easier_title">Taking tests have never been easier</string>
     <string name="label_taking_test_have_never_been_easier_description">Scheduled tests automatically appear on the home screen. Just click on the scheduled test to start taking the test.</string>
