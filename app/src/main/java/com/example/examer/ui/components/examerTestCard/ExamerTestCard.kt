@@ -29,7 +29,17 @@ import com.example.examer.data.domain.getDateStringAndTimeString
  * which displays the [ExamerCardExpandedContent] when the card is
  * expanded. [ExamerExpandableTestCard] provides slot for defining
  * the content to be displayed when the card is expanded.
- * // TODO Add docs for params
+ * @param test an instance of [TestDetails] that the card will use
+ * to display the information.
+ * @param isExpanded indicates whether the card is expanded.
+ * @param onExpandButtonClick callback to be called when the expand
+ * button of the card is clicked.
+ * @param onTakeTestButtonClick callback to be called when the take
+ * test button is clicked.
+ * @param modifier the [Modifier] to be applied to the composable.
+ * @param onClick callback to be called when the card is clicked
+ * @param is24HourTimeFormat indicates whether the time information
+ * displayed in the card is in 24 hour format.
  */
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
