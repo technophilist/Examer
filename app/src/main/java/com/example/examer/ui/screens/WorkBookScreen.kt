@@ -22,6 +22,7 @@ import com.example.examer.R
 import com.example.examer.data.domain.IndexOfChosenOption
 import com.example.examer.data.domain.MultiChoiceQuestion
 import com.example.examer.data.domain.UserAnswers
+import com.example.examer.ui.components.MultiChoiceQuestionCard
 import com.google.accompanist.insets.navigationBarsHeight
 
 enum class ButtonTextValue {
@@ -31,16 +32,14 @@ enum class ButtonTextValue {
 @Composable
 fun WorkBookScreen(
     questionList: List<MultiChoiceQuestion>,
-    onFooterButtonClick: (answersMap:Map<MultiChoiceQuestion,IndexOfChosenOption>) -> Unit,
+    onFooterButtonClick: (answersMap: Map<MultiChoiceQuestion, IndexOfChosenOption>) -> Unit,
     buttonTextValue: ButtonTextValue = ButtonTextValue.NEXT_WORKBOOK
 ) {
     // a map that stores the currently selected item associated
     // with a MultiChoiceQuestion object. The key is the
     // MultiChoiceQuestion obj and the value is the index of the
     // currently selected item of that particular question.
-    val currentlySelectedIndexMap = remember {
-        mutableStateMapOf<MultiChoiceQuestion, Int>()
-    }
+    val currentlySelectedIndexMap = remember { mutableStateMapOf<MultiChoiceQuestion, Int>() }
     var isFooterButtonEnabled by remember { mutableStateOf(false) }
     val resources = LocalContext.current.resources
     val (footerButtonText, footerButtonIcon) = remember(buttonTextValue) {
@@ -118,100 +117,5 @@ fun WorkBookScreen(
                     .padding(bottom = 8.dp)
             )
         }
-    }
-}
-
-@Composable
-private fun MultiChoiceQuestionCard(
-    questionNumber: Int,
-    question: String,
-    options: Array<String>,
-    mark: Int,
-    currentlySelectedIndex: Int,
-    onOptionClick: (index: Int, questionNumber: Int, string: String) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    // TODO extract as stateless component
-    Card(modifier = modifier.defaultMinSize(minHeight = 156.dp)) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = stringResource(id = R.string.label_question_number, questionNumber),
-                    style = MaterialTheme.typography.caption,
-                    textAlign = TextAlign.Left,
-                )
-                Text(
-                    text = stringResource(id = R.string.label_marks, mark),
-                    style = MaterialTheme.typography.caption,
-                    textAlign = TextAlign.Left,
-                )
-            }
-            Spacer(modifier = Modifier.size(8.dp))
-            Text(
-                text = question,
-                fontSize = 18.sp,
-                textAlign = TextAlign.Justify,
-                fontWeight = FontWeight.Bold
-            )
-            Spacer(modifier = Modifier.size(16.dp))
-            OptionsRadioGroup(
-                options = options,
-                onRadioButtonClick = { index, string ->
-                    onOptionClick(
-                        index,
-                        questionNumber,
-                        string
-                    )
-                },
-                currentlySelectedIndex = currentlySelectedIndex
-            )
-        }
-    }
-}
-
-@Composable
-private fun OptionsRadioGroup(
-    options: Array<String>,
-    onRadioButtonClick: (Int, String) -> Unit,
-    currentlySelectedIndex: Int,
-) {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        options.forEachIndexed { index, string ->
-            RadioButtonWithText(
-                text = string,
-                selected = currentlySelectedIndex == index,
-                onClick = { onRadioButtonClick(index, string) }
-            )
-        }
-    }
-}
-
-@Composable
-private fun RadioButtonWithText(
-    text: String,
-    selected: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        RadioButton(
-            selected = selected,
-            onClick = onClick
-        )
-        ClickableText(
-            text = AnnotatedString(text),
-            style = TextStyle.Default.copy(MaterialTheme.colors.onSurface),
-            onClick = { onClick() }
-        )
     }
 }
