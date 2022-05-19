@@ -26,8 +26,14 @@ fun ListenToAudioScreen(
     audioPlayBackState: AudioPlaybackState,
     onNavigateToWorkBook: () -> Unit,
     onAudioIconClick: () -> Unit = {},
-    isAudioIconClickEnabled: Boolean = true
 ) {
+    val isAudioFilePlaying by derivedStateOf {
+        audioPlayBackState.progress.value > 0 && audioPlayBackState.progress.value < 1f
+    }
+    val isAudioIconClickEnabled by derivedStateOf {
+        audioPlayBackState.numberOfRepeatsLeft.value > 0 && !isAudioFilePlaying
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()

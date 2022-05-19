@@ -99,16 +99,9 @@ fun TakeTestScreen(
             startDestination = TakeTestScreenDestinations.ListenToAudioScreen.route
         ) {
             composable(route = TakeTestScreenDestinations.ListenToAudioScreen.route) {
-                // TODO AudioPlayBack state api not upto the mark
-                //  isAudioPlayBackEnabled and isAudioIconEnabled param
-                //  of composable - two sources of truth.(Change it)
                 val isAudioPlaybackEnabled = remember { mutableStateOf(true) }
                 val numberOfRepeatsLeftForAudioFile =
                     testSessionViewModel.numberOfRepeatsLeftForAudioFile
-                val isAudioFilePlaying by testSessionViewModel.isAudioFilePlaying
-                val isAudioIconClickEnabled by derivedStateOf {
-                    numberOfRepeatsLeftForAudioFile.value > 0 && !isAudioFilePlaying
-                }
                 val audioPlaybackState = remember {
                     AudioPlaybackState(
                         isEnabled = isAudioPlaybackEnabled,
@@ -130,7 +123,6 @@ fun TakeTestScreen(
                         testSessionViewModel.stopAudioPlayback()
                         navController.navigate(routeString)
                     },
-                    isAudioIconClickEnabled = isAudioIconClickEnabled,
                     onAudioIconClick = testSessionViewModel::playAudioForCurrentWorkBook
                 )
             }
