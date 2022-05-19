@@ -6,7 +6,7 @@ import com.example.examer.data.domain.*
 import com.example.examer.data.dto.WorkBookDTO
 
 interface RemoteDatabase {
-    suspend fun fetchScheduledTestListForUser(user: ExamerUser): List<TestDetails>
+    suspend fun fetchActiveTestListForUser(user: ExamerUser): List<TestDetails>
     suspend fun fetchPreviousTestListForUser(user: ExamerUser): List<TestDetails>
     suspend fun fetchResultsForTest(user: ExamerUser, testDetailsId: String): TestResult
     suspend fun fetchWorkBookList(

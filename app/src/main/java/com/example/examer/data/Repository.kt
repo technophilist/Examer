@@ -42,7 +42,7 @@ class ExamerRepository(
     private val updateProfileUriDelegate: UpdateProfileUriDelegate
 ) : Repository {
     override suspend fun fetchScheduledTestListForUser(user: ExamerUser): List<TestDetails> =
-        remoteDatabase.fetchScheduledTestListForUser(user)
+        remoteDatabase.fetchActiveTestListForUser(user)
 
     override suspend fun fetchPreviousTestListForUser(user: ExamerUser): List<TestDetails> =
         remoteDatabase.fetchPreviousTestListForUser(user)

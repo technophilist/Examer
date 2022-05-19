@@ -22,7 +22,7 @@ import java.time.ZoneId
 
 class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider) : RemoteDatabase {
 
-    override suspend fun fetchScheduledTestListForUser(user: ExamerUser): List<TestDetails> =
+    override suspend fun fetchActiveTestListForUser(user: ExamerUser): List<TestDetails> =
         withContext(dispatcherProvider.io) {
             val scheduledTestsCollection = fetchCollection(
                 collectionPath = getCollectionPathForTests(user.id),
