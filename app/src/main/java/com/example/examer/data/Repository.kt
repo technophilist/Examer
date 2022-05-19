@@ -39,7 +39,7 @@ interface Repository {
 class ExamerRepository(
     private val context: Context,
     private val remoteDatabase: RemoteDatabase,
-    private val updateProfilePhotoUriUseCase: UpdateProfileUriDelegate
+    private val updateProfileUriDelegate: UpdateProfileUriDelegate
 ) : Repository {
     override suspend fun fetchScheduledTestListForUser(user: ExamerUser): List<TestDetails> =
         remoteDatabase.fetchScheduledTestListForUser(user)
@@ -52,7 +52,7 @@ class ExamerRepository(
             bitmap = bitmap,
             fileName = user.id
         ).getOrThrow()
-        updateProfilePhotoUriUseCase.update(photoUri) // can throw exception
+        updateProfileUriDelegate.update(photoUri) // can throw exception
     }
 
     override suspend fun fetchWorkBookList(

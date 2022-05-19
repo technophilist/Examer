@@ -23,7 +23,7 @@ class AppContainer(application: Application) {
     val repository = ExamerRepository(
         context = application,
         remoteDatabase = remoteDatabase,
-        updateProfilePhotoUriUseCase = ExamerUpdateProfileUriDelegate(
+        updateProfileUriDelegate = ExamerUpdateProfileUriDelegate(
             authenticationService,
             passwordManager
         )
