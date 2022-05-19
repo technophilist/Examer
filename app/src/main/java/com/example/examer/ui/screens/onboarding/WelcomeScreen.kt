@@ -43,7 +43,6 @@ val defaultExamerVectorArtCards: List<VectorArtCard>
             description = stringResource(id = R.string.label_taking_test_have_never_been_easier_description),
             imageDescription = stringResource(id = R.string.label_taking_test_have_never_been_easier_description)
         ),
-        // TODO This is not be applicable to devices running Android P and below
         VectorArtCard(
             id = R.drawable.dark_mode_vector_art,
             title = stringResource(id = R.string.label_reduce_eye_strain_with_dark_mode_title),
