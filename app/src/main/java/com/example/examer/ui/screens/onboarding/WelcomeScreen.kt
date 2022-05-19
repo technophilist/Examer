@@ -2,11 +2,13 @@ package com.example.examer.ui.screens.onboarding
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -122,9 +124,6 @@ private fun VectorArtCarousel(modifier: Modifier = Modifier, vectorArtCards: Lis
         infiniteLoop = true,
         initialOffscreenLimit = 2,
     )
-    val body1TextStyle = MaterialTheme.typography.body1
-    // TODO Remove - this will cause UI jank
-    var descriptionTextStyle by remember { mutableStateOf(body1TextStyle) }
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center
@@ -160,23 +159,11 @@ private fun VectorArtCarousel(modifier: Modifier = Modifier, vectorArtCards: Lis
                         .padding(start = 32.dp, end = 32.dp)
                         .fillMaxWidth(),
                     text = vectorArtCards[page].description,
-                    style = descriptionTextStyle,
-                    maxLines = 3,
-                    onTextLayout = {
-                        // if the text overflows, then try reducing
-                        // the font size to 90% of its previous value
-                        if (it.didOverflowHeight) {
-                            descriptionTextStyle = descriptionTextStyle.copy(
-                                fontSize =
-                                descriptionTextStyle.fontSize * 0.95
-                            )
-                        }
-                    },
+                    style = MaterialTheme.typography.body1,
                     textAlign = TextAlign.Center
                 )
             }
         }
-
         HorizontalPagerIndicator(
             modifier = Modifier
                 .padding(top = 16.dp)
