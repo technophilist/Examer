@@ -87,17 +87,17 @@ class ExamerRepository(
         userAnswers: UserAnswers,
         testDetailId: String
     ) {
-        // todo exception handling
+        // throws exception
         remoteDatabase.saveUserAnswers(user, userAnswers, testDetailId)
     }
 
     override suspend fun markTestAsCompleted(user: ExamerUser, testDetailId: String) {
-        // todo exception handling
+        // throws exception
         remoteDatabase.markTestAsCompleted(user, testDetailId)
     }
 
     override suspend fun markTestAsMissed(user: ExamerUser, testDetailId: String) {
-        // todo exception handling
+        // throws exception
         remoteDatabase.markTestAsMissed(user, testDetailId)
     }
 
