@@ -274,7 +274,14 @@ private fun NavGraphBuilder.takeTestScreenComposable(
         // cannot be dismissed.
         if (isTestSessionTimedOut) {
             TakeTestScreenComposableAlertDialogBoxes.TestSessionTimedOutAlertDialog(
-                onConfirmButtonClick = onAlertDialogConfirmButtonClick
+                onConfirmButtonClick = {
+                    // stopping the music playback and marking the test
+                    // as completed will be automatically done by the
+                    // viewModel.
+                    navController.navigate(ExamerDestinations.ScheduledTestsScreen.route) {
+                        popUpTo(ExamerDestinations.TakeTestScreen.route) { inclusive = true }
+                    }
+                }
             )
         }
         if (isFinishTestAlertDialogVisible) {
