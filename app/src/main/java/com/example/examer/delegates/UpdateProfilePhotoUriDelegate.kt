@@ -10,16 +10,13 @@ interface UpdateProfileUriDelegate {
 }
 
 class ExamerUpdateProfileUriDelegate(
-    private val authenticationService: AuthenticationService,
-    private val passwordManager: PasswordManager
+    private val authenticationService: AuthenticationService
 ) : UpdateProfileUriDelegate {
     override suspend fun update(uri: Uri) {
         authenticationService.currentUser.value?.let {
             val result = authenticationService.updateAttributeForUser(
-                it,
-                AuthenticationService.UpdateAttributeType.PROFILE_PHOTO_URI,
-                uri.toString(),
-                passwordManager.getPasswordForUser(it) // TODO Possible un-necessary arg for profile photo
+                user = it,
+                updateAttribute = AuthenticationService.UpdateAttribute.ProfilePhotoUri(uri)
             )
             if (result is AuthenticationResult.Failure) {
                 throw Exception(result.failureType.toString())

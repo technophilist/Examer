@@ -23,10 +23,7 @@ class AppContainer(application: Application) {
     val repository = ExamerRepository(
         context = application,
         remoteDatabase = remoteDatabase,
-        updateProfileUriDelegate = ExamerUpdateProfileUriDelegate(
-            authenticationService,
-            passwordManager
-        )
+        updateProfileUriDelegate = ExamerUpdateProfileUriDelegate(authenticationService)
     ) as Repository
     val logInViewModelFactory = LogInViewModelFactory(authenticationService, passwordManager)
     val signUpViewModelFactory = SignUpViewModelFactory(
