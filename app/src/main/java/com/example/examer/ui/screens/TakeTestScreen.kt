@@ -1,6 +1,5 @@
 package com.example.examer.ui.screens
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -19,7 +18,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.examer.R
 import com.example.examer.data.domain.MultiChoiceQuestion
 import com.example.examer.data.domain.TestDetails
-import com.example.examer.data.domain.UserAnswers
 import com.example.examer.di.AppContainer
 import com.example.examer.ui.navigation.TakeTestScreenDestinations
 import com.example.examer.ui.screens.listenToAudioScreen.AudioPlaybackState
@@ -70,7 +68,6 @@ fun TakeTestScreen(
             )
         }
     }
-
     Column(modifier = Modifier.fillMaxSize()) {
         TopAppBar(
             modifier = Modifier
@@ -146,9 +143,6 @@ private fun NavGraphBuilder.workBookScreenComposable(
     onAnswerSaved: () -> Unit,
 ) {
     composable(route = TakeTestScreenDestinations.WorkBookScreen.route) {
-        BackHandler {
-            /* TODO: Temporarily use this composable to not allow the user to navigate back.*/
-        }
         it.arguments?.let { bundle ->
             val multiChoiceQuestionList = Json.decodeFromString<List<MultiChoiceQuestion>>(
                 bundle.getString(TakeTestScreenDestinations.WorkBookScreen.QUESTIONS_LIST_ARG)!!
