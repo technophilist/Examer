@@ -143,6 +143,12 @@ class FirebaseAuthenticationService(
         }
     }
 
+    override suspend fun updateAttributeForUser(
+        user: ExamerUser,
+        updateAttribute: UpdateAttribute
+    ): AuthenticationResult {
+        TODO("Not yet implemented")
+    }
 
     /**
      * Utility method to convert an instance of [FirebaseUser] to

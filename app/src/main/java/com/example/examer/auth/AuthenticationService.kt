@@ -55,11 +55,20 @@ interface AuthenticationService {
      */
     fun signOut()
 
+    @Deprecated(
+        message = "Use the other overload of this function",
+        replaceWith = ReplaceWith("updateAttributeForUser(user=,updateAttribute=)")
+    )
     suspend fun updateAttributeForUser(
         user: ExamerUser,
         updateAttributeType: UpdateAttributeType,
         newValue: String,
         password: String,
+    ): AuthenticationResult
+
+    suspend fun updateAttributeForUser(
+        user: ExamerUser,
+        updateAttribute: UpdateAttribute
     ): AuthenticationResult
 }
 
