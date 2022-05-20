@@ -7,6 +7,7 @@ import com.example.examer.auth.AuthenticationService.*
 import com.example.examer.data.domain.ExamerUser
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.*
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
@@ -146,9 +147,41 @@ class FirebaseAuthenticationService(
     override suspend fun updateAttributeForUser(
         user: ExamerUser,
         updateAttribute: UpdateAttribute
-    ): AuthenticationResult {
-        TODO("Not yet implemented")
+    ): AuthenticationResult = withContext(defaultDispatcher) {
+        val currentUser = firebaseAuth.currentUser!!
+        runCatching {
+            when (updateAttribute) {
+                is UpdateAttribute.Email -> {
+                    currentUser.changeEmail(
+                        updateAttribute.newEmail,
+                        updateAttribute.password
+                    )
+                }
+                is UpdateAttribute.Password -> {
+                    currentUser.changePassword(
+                        updateAttribute.newPassword,
+                        updateAttribute.oldPassword
+                    )
+                }
+                is UpdateAttribute.Name -> {
+                    currentUser.changeUserName(updateAttribute.newName)
+                }
+                is UpdateAttribute.ProfilePhotoUri -> {
+                    currentUser.changePhotoUri(updateAttribute.newPhotoUri)
+                }
+            }
+            // getting the updated user object
+            val updatedUserObject = firebaseAuth.currentUser!!.toExamerUser()
+            // assigning the updated user object to the livedata
+            _currentUser.postValue(updatedUserObject)
+            // passing the updated user object as an argument to success
+            AuthenticationResult.Success(updatedUserObject)
+        }.getOrElse {
+            if (it is CancellationException) throw it
+            AuthenticationResult.Failure(AuthenticationResult.FailureType.NetworkFailure)
+        }
     }
+
 
     /**
      * Utility method to convert an instance of [FirebaseUser] to
