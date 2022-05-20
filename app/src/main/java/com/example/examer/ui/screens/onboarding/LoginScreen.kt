@@ -124,7 +124,7 @@ fun LoginScreen(
             Text(
                 modifier = Modifier
                     .paddingFromBaseline(top = 176.dp),
-                text = stringResource(id = R.string.label_login_with_email),
+                text = stringResource(id = R.string.button_label_login_with_email),
                 style = MaterialTheme.typography.h3
             )
 
@@ -187,7 +187,7 @@ fun LoginScreen(
                 shape = MaterialTheme.shapes.medium,
                 content = {
                     Text(
-                        text = stringResource(id = R.string.label_login),
+                        text = stringResource(id = R.string.button_label_login),
                         fontWeight = FontWeight.Bold
                     )
                 },

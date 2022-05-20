@@ -16,7 +16,7 @@ object TakeTestScreenComposableAlertDialogBoxes {
     @Composable
     fun TestSessionTimedOutAlertDialog(onConfirmButtonClick: () -> Unit) {
         AlertDialog(
-            title = { Text(text = resources.getString(R.string.label_test_timed_out)) },
+            title = { Text(text = resources.getString(R.string.alert_dialog_label_test_timed_out)) },
             text = { Text(text = resources.getString(R.string.label_test_timed_out_message)) },
             onDismissRequest = { /* Prevent user from dismissing this dialog */ },
             confirmButton = {
@@ -36,8 +36,8 @@ object TakeTestScreenComposableAlertDialogBoxes {
         onDismissButtonClick: () -> Unit
     ) {
         AlertDialog(
-            title = { Text(text = stringResource(R.string.label_end_test)) },
-            text = { Text(text = stringResource(R.string.label_end_test_warning)) },
+            title = { Text(text = stringResource(R.string.alert_dialog_label_end_test)) },
+            text = { Text(text = stringResource(R.string.alert_dialog_label_end_test_warning)) },
             onDismissRequest = onDismissRequest,
             confirmButton = {
                 TextButton(
@@ -62,8 +62,8 @@ object TakeTestScreenComposableAlertDialogBoxes {
         onDismissRequest: () -> Unit
     ) {
         AlertDialog(
-            title = { Text(text = resources.getString(R.string.label_quit_app_while_taking_test)) },
-            text = { Text(text = resources.getString(R.string.label_quit_test_using_back_button_warning)) },
+            title = { Text(text = resources.getString(R.string.alert_dialog_label_quit_app_while_taking_test)) },
+            text = { Text(text = resources.getString(R.string.alert_dialog_label_quit_test_using_back_button_warning)) },
             confirmButton = {
                 TextButton(
                     onClick = onConfirmButtonClick,
@@ -90,9 +90,9 @@ object TakeTestScreenComposableAlertDialogBoxes {
         onDismissRequest: () -> Unit
     ) {
         AlertDialog(
-            title = { Text(text = resources.getString(R.string.label_exit_test)) },
+            title = { Text(text = resources.getString(R.string.alert_dialog_label_exit_test)) },
             text = {
-                Text(text = resources.getString(R.string.label_exit_test_warning))
+                Text(text = resources.getString(R.string.alert_dialog_label_exit_test_warning))
             },
             confirmButton = {
                 TextButton(

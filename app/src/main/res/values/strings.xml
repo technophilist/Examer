@@ -1,16 +1,17 @@
 <resources>
-    <!-- TODO Naming doesn't follow a consistent convention-->
     <string name="app_name">Examer</string>
     <!-- Main Activity -->
     <string name="label_device_time_set_manually_warning">Device\'s date time/time zone is set manually.</string>
     <string name="button_label_open_settings">open settings</string>
     <string name="label_device_time_set_manually_message">You cannot take tests if the device\'s date/time or time zone is set manually. Please change the setting by navigating to the settings app.</string>
 
-    <!-- Common -->
+    <!-- Shared -->
     <string name="label_email_address">Email Address</string>
     <string name="label_password">Password</string>
     <string name="label_terms_and_conditions">By clicking below, you agree to our Terms of Use and consent to our Privacy Policy.</string>
     <string name="label_network_error_message">A network error occurred.</string>
+    <string name="button_label_login">Log in</string>
+    <string name="button_label_start_test">Start test</string>
 
     <!-- OnBoarding -->
     <string name="label_welcome_to_examer">Welcome to Examer</string>
@@ -24,11 +25,9 @@
     <string name="label_taking_test_have_never_been_easier_description">Scheduled tests automatically appear on the home screen. Just click on the scheduled test to start taking the test.</string>
 
     <string name="button_label_create_account">Create account</string>
-    <string name="button_label_login">Log in</string>
 
     <!-- Login Screen -->
-    <string name="label_login_with_email">Log in with mail</string>
-    <string name="label_login">Log in</string>
+    <string name="button_label_login_with_email">Log in with mail</string>
     <string name="label_login_error_message">The email address or password that you\'ve entered is incorrect. Please check the credentials.</string>
 
     <!-- Signup Screen-->]
@@ -36,13 +35,12 @@
     <string name="label_invalid_password">The password must be of length 8, and must contain atleast one uppercase and lowercase letter and atleast one digit.</string>
     <string name="label_user_already_exists">A user with the same email already exists.</string>
     <string name="label_enter_valid_email_and_password">Please enter a valid email and password. A password is valid if, and only if,it is of length 8 , contains atleast one uppercase and lowercase letter and contains atleast one digit.</string>
-    <string name="label_signup_for_new_account">Sign up for a new account</string>
+    <string name="button_label_signup_for_new_account">Sign up for a new account</string>
     <string name="label_first_name">First Name</string>
     <string name="label_last_name">Last Name</string>
-    <string name="label_signup">Sign up</string>
+    <string name="button_label_signup">Sign up</string>
 
     <!-- Examer Test Card -->
-    <string name="button_label_start_test">Start test</string>
     <string name="label_test_description">Test Description</string>
     <string name="label_total_number_of_questions">Total number of questions</string>
     <string name="label_minutes">minutes</string>
@@ -53,7 +51,7 @@
     <string name="label_test_expired">The test has expired</string>
     <string name="alert_dialog_label_test_expired_warning">The window for taking the has closed.The test has expired.You can close this dialog by clicking on the \'close\' button at the bottom of the dialog.</string>
     <string name="button_label_close">close</string>
-    <string name="label_test_not_open">"This test is not open yet. You can start attempting the test from the scheduled time."</string>
+    <string name="alert_dialog_label_test_not_open">"This test is not open yet. You can start attempting the test from the scheduled time."</string>
 
     <!-- Test History Screen-->
     <string name="label_test_history">Test history</string>
@@ -87,7 +85,6 @@
     <string name="button_label_go_to_workbook">Go to work book</string>
     <string name="label_workbook">Workbook %1$s/%2$s</string>
     <!-- Take test alert dialog-->
-    <string name="label_start_test">Start test</string>
     <string name="label_start_test_message">You are about to start the test. Please ensure that : \n\n
             * The device has sufficient battery.\n
             * Do not disturb is turned on.\n
@@ -99,14 +96,14 @@
     <string name="button_label_next_workbook">Next workbook</string>
     <string name="button_label_finish_test">Finish Test</string>
     <!-- TakeTestScreen Alert Dialogs  -->
-    <string name="label_exit_test">Are you sure you want to exit the test?</string>
-    <string name="label_exit_test_warning">Once you exit the test, you won\'t be able to take the test again. The answers submitted for previous workbooks will be saved.</string>
+    <string name="alert_dialog_label_exit_test">Are you sure you want to exit the test?</string>
+    <string name="alert_dialog_label_exit_test_warning">Once you exit the test, you won\'t be able to take the test again. The answers submitted for previous workbooks will be saved.</string>
     <string name="button_label_quit">Quit</string>
-    <string name="label_quit_app_while_taking_test">You are not allowed to leave this screen while taking the test.</string>
-    <string name="label_quit_test_using_back_button_warning">The test will be ended when you leave this screen.</string>
-    <string name="label_test_timed_out">The test has timed out.</string>
+    <string name="alert_dialog_label_quit_app_while_taking_test">You are not allowed to leave this screen while taking the test.</string>
+    <string name="alert_dialog_label_quit_test_using_back_button_warning">The test will be ended when you leave this screen.</string>
+    <string name="alert_dialog_label_test_timed_out">The test has timed out.</string>
     <string name="label_test_timed_out_message">The answers submitted for previous workbooks have been saved. You can leave this screen now.</string>
-    <string name="label_end_test">Are you sure you want to end the test?</string>
-    <string name="label_end_test_warning">You cannot return back to the test after the test has ended.</string>
+    <string name="alert_dialog_label_end_test">Are you sure you want to end the test?</string>
+    <string name="alert_dialog_label_end_test_warning">You cannot return back to the test after the test has ended.</string>
     <string name="button_label_end_test">End test</string>
 </resources>

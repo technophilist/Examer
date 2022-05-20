@@ -14,17 +14,16 @@
     <string name="label_taking_test_have_never_been_easier_description">Les tests programmés apparaissent automatiquement sur l\'écran d\'accueil. Cliquez simplement sur le test programmé pour commencer à passer le test.</string>
     <string name="button_label_create_account">Créer un compte</string>
     <string name="button_label_login">Connexion</string>
-    <string name="label_login_with_email">Connectez-vous avec e-mail</string>
-    <string name="label_login">Connexion</string>
+    <string name="button_label_login_with_email">Connectez-vous avec e-mail</string>
     <string name="label_login_error_message">L\'adresse e-mail ou le mot de passe que vous avez entré est incorrect. Veuillez vérifier les informations d\'identification.</string>
     <string name="label_invalid_email">Please enter a valid email.</string>
     <string name="label_invalid_password">Le mot de passe doit être de longueur 8 et doit contenir au moins une lettre majuscule et minuscule et au moins un chiffre.</string>
     <string name="label_user_already_exists">Un utilisateur avec le même email existe déjà.</string>
     <string name="label_enter_valid_email_and_password">Veuillez saisir un e-mail et un mot de passe valides. Un mot de passe est valide si, et seulement si, il est de longueur 8 , contient au moins une lettre majuscule et minuscule et contient au moins un chiffre.</string>
-    <string name="label_signup_for_new_account">Inscrivez-vous pour un nouveau compte</string>
+    <string name="button_label_signup_for_new_account">Inscrivez-vous pour un nouveau compte</string>
     <string name="label_first_name">Prénom</string>
     <string name="label_last_name">Nom de famille</string>
-    <string name="label_signup">S\'inscrire</string>
+    <string name="button_label_signup">S\'inscrire</string>
     <string name="button_label_start_test">Démarrer l\'essai</string>
     <string name="label_test_description">Description du test</string>
     <string name="label_total_number_of_questions">Nombre total de questions</string>
@@ -51,7 +50,6 @@
     <string name="label_no_of_repeats_left">" Nombre de répétitions restantes:  %1$s"</string>
     <string name="button_label_go_to_workbook">Aller au classeur</string>
     <string name="label_workbook">Classeur</string>
-    <string name="label_start_test">Démarrer l\'essai</string>
     <string name="label_start_test_message">Vous êtes sur le point de commencer le test.Veuillez vous assurer que:\n\n
         * L\'appareil dispose d\'une batterie suffisante. \n
         * Ne pas déranger est activé.\n
@@ -61,20 +59,20 @@
     <string name="label_marks">Des marques: %1$s</string>
     <string name="button_label_next_workbook">Classeur suivant</string>
     <string name="button_label_finish_test">Terminer l\'essai</string>
-    <string name="label_exit_test">Voulez-vous vraiment quitter le test ?</string>
-    <string name="label_exit_test_warning">Une fois que vous aurez quitté le test, vous ne pourrez plus le repasser. Les réponses soumises pour les classeurs précédents seront enregistrées.</string>
+    <string name="alert_dialog_label_exit_test">Voulez-vous vraiment quitter le test ?</string>
+    <string name="alert_dialog_label_exit_test_warning">Une fois que vous aurez quitté le test, vous ne pourrez plus le repasser. Les réponses soumises pour les classeurs précédents seront enregistrées.</string>
     <string name="button_label_quit">"Quitter "</string>
-    <string name="label_quit_app_while_taking_test">" Vous n'êtes pas autorisé à quitter cet écran pendant le test."</string>
-    <string name="label_quit_test_using_back_button_warning">Le test sera terminé lorsque vous quitterez cet écran.</string>
-    <string name="label_test_timed_out">Le test a expiré.</string>
+    <string name="alert_dialog_label_quit_app_while_taking_test">" Vous n'êtes pas autorisé à quitter cet écran pendant le test."</string>
+    <string name="alert_dialog_label_quit_test_using_back_button_warning">Le test sera terminé lorsque vous quitterez cet écran.</string>
+    <string name="alert_dialog_label_test_timed_out">Le test a expiré.</string>
     <string name="label_test_timed_out_message">Les réponses soumises pour les classeurs précédents ont été enregistrées. Vous pouvez quitter cet écran maintenant.</string>
-    <string name="label_end_test">Êtes-vous sûr de vouloir terminer le test ?</string>
-    <string name="label_end_test_warning">Vous ne pouvez pas revenir au test une fois le test terminé.</string>
+    <string name="alert_dialog_label_end_test">Êtes-vous sûr de vouloir terminer le test ?</string>
+    <string name="alert_dialog_label_end_test_warning">Vous ne pouvez pas revenir au test une fois le test terminé.</string>
     <string name="button_label_end_test">Fin de l\'essai</string>
     <string name="label_test_expired">Le test a expiré</string>
     <string name="alert_dialog_label_test_expired_warning">La fenêtre pour passer le test s\'est fermée.Le test a expiré.Vous pouvez fermer cette boîte de dialogue en cliquant sur le bouton \"Fermer\" en bas de la boîte de dialogue.</string>
     <string name="button_label_close">proche</string>
-    <string name="label_test_not_open">Ce test n\'est pas encore ouvert. Vous pouvez commencer à tenter le test à partir de l\'heure prévue.</string>
+    <string name="alert_dialog_label_test_not_open">Ce test n\'est pas encore ouvert. Vous pouvez commencer à tenter le test à partir de l\'heure prévue.</string>
     <string name="label_device_time_set_manually_warning">La date, l\'heure et le fuseau horaire de l\'appareil sont définis manuellement</string>
     <string name="button_label_open_settings">ouvrir les paramètres</string>
     <string name="label_device_time_set_manually_message">Vous ne pouvez pas effectuer de tests si la date/l\'heure ou le fuseau horaire de l\'appareil sont définis manuellement. Veuillez modifier le paramètre en accédant à l\'application des paramètres.</string>

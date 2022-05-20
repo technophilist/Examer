@@ -153,7 +153,7 @@ fun SignUpScreen(
             Text(
                 modifier = Modifier
                     .paddingFromBaseline(top = 160.dp),
-                text = stringResource(id = R.string.label_signup_for_new_account),
+                text = stringResource(id = R.string.button_label_signup_for_new_account),
                 style = MaterialTheme.typography.h4
             )
 
@@ -236,7 +236,7 @@ fun SignUpScreen(
                 shape = MaterialTheme.shapes.medium,
                 content = {
                     Text(
-                        text = stringResource(id = R.string.label_signup),
+                        text = stringResource(id = R.string.button_label_signup),
                         fontWeight = FontWeight.Bold
                     )
                 },
