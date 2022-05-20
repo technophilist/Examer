@@ -10,7 +10,13 @@ import com.example.examer.data.domain.ExamerUser
  * for an authentication service.
  */
 interface AuthenticationService {
-    enum class UpdateAttributeType { NAME, EMAIL, PASSWORD,PROFILE_PHOTO_URI }
+    enum class UpdateAttributeType { NAME, EMAIL, PASSWORD, PROFILE_PHOTO_URI }
+    sealed class UpdateAttribute {
+        data class Name(val newName: String, val password: String)
+        data class Email(val newEmail: String, val password: String)
+        data class Password(val newPassword: String, val oldPassword: String)
+        data class ProfilePhotoUri(val newPhotoUri: Uri)
+    }
 
     /**
      * The current user represents the user that is
@@ -54,7 +60,7 @@ interface AuthenticationService {
         updateAttributeType: UpdateAttributeType,
         newValue: String,
         password: String,
-    ):AuthenticationResult
+    ): AuthenticationResult
 }
 
 /**
