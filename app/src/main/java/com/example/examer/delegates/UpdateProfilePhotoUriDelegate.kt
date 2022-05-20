@@ -10,8 +10,7 @@ interface UpdateProfileUriDelegate {
 }
 
 class ExamerUpdateProfileUriDelegate(
-    private val authenticationService: AuthenticationService,
-    private val passwordManager: PasswordManager
+    private val authenticationService: AuthenticationService
 ) : UpdateProfileUriDelegate {
     override suspend fun update(uri: Uri) {
         authenticationService.currentUser.value?.let {
