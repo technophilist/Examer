@@ -75,14 +75,12 @@ class ExamerProfileScreenViewModel(
             // this method will throw an exception.
             val password = passwordManager.getPasswordForUser(currentUser)
             val result = authenticationService.updateAttributeForUser(
-                currentUser,
-                updateAttributeType = when (updateAttribute) {
-                    NAME -> AuthenticationService.UpdateAttributeType.NAME
-                    EMAIL -> AuthenticationService.UpdateAttributeType.EMAIL
-                    PASSWORD -> AuthenticationService.UpdateAttributeType.PASSWORD
+                user = currentUser,
+                updateAttribute = when (updateAttribute) {
+                    NAME -> AuthenticationService.UpdateAttribute.Name(newValue)
+                    EMAIL -> AuthenticationService.UpdateAttribute.Email(newValue, password)
+                    PASSWORD -> AuthenticationService.UpdateAttribute.Password(newValue, password)
                 },
-                newValue = newValue,
-                password = password
             )
             when (result) {
                 is AuthenticationResult.Success -> ProfileScreenViewModel.UiState.UPDATE_SUCCESS
