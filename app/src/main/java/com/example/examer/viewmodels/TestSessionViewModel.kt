@@ -1,24 +1,21 @@
 package com.example.examer.viewmodels
 
 import android.media.MediaPlayer
-import androidx.annotation.FloatRange
 import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.examer.utils.createCountDownTimer
+import com.example.examer.utils.buildCountDownTimer
 import com.example.examer.utils.toString
 import java.util.concurrent.TimeUnit
 import com.example.examer.data.domain.TestDetails
 import com.example.examer.data.domain.WorkBook
-import com.example.examer.usecases.ExamerMarkTestAsCompletedUseCase
 import com.example.examer.usecases.MarkTestAsCompletedUseCase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
-import java.lang.IllegalStateException
 
 /**
  * An interface that contains the methods and properties that are
@@ -76,7 +73,7 @@ class ExamerTestSessionViewModel(
     private var setPlaybackProgressCoroutineJob: Job? = null
     override val isAudioFilePlaying = _isAudioFilePlaying as State<Boolean>
 
-    private val countDownTimer = createCountDownTimer(
+    private val countDownTimer = buildCountDownTimer(
         millisInFuture = convertMinuteToMillis(testDetails.testDurationInMinutes),
         onTimerTick = { millis ->
             val hours = (TimeUnit.MILLISECONDS.toHours(millis) % 60).toInt()

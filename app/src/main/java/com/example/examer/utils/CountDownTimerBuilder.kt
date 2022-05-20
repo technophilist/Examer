@@ -13,7 +13,7 @@ import android.os.CountDownTimer
  * @param onTimerFinished an optional lambda the will be executed
  * when the timer finishes.
  */
-fun createCountDownTimer(
+fun buildCountDownTimer(
     millisInFuture: Long,
     countDownInterval: Long = 1_000,
     onTimerTick: (millisUntilFinished: Long) -> Unit,
