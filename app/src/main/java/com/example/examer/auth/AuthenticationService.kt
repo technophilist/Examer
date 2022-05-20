@@ -10,7 +10,6 @@ import com.example.examer.data.domain.ExamerUser
  * for an authentication service.
  */
 interface AuthenticationService {
-    enum class UpdateAttributeType { NAME, EMAIL, PASSWORD, PROFILE_PHOTO_URI }
     sealed class UpdateAttribute {
         data class Name(val newName: String) : UpdateAttribute()
         data class Email(val newEmail: String, val password: String) : UpdateAttribute()
@@ -54,17 +53,6 @@ interface AuthenticationService {
      * Used to sign out the current user.
      */
     fun signOut()
-
-    @Deprecated(
-        message = "Use the other overload of this function",
-        replaceWith = ReplaceWith("updateAttributeForUser(user=,updateAttribute=)")
-    )
-    suspend fun updateAttributeForUser(
-        user: ExamerUser,
-        updateAttributeType: UpdateAttributeType,
-        newValue: String,
-        password: String,
-    ): AuthenticationResult
 
     suspend fun updateAttributeForUser(
         user: ExamerUser,

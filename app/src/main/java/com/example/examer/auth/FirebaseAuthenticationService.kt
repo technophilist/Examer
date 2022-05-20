@@ -120,32 +120,6 @@ class FirebaseAuthenticationService(
 
     override suspend fun updateAttributeForUser(
         user: ExamerUser,
-        updateAttributeType: UpdateAttributeType,
-        newValue: String,
-        password: String
-    ): AuthenticationResult = withContext(defaultDispatcher) {
-        runCatching {
-            val currentUser = firebaseAuth.currentUser
-            when (updateAttributeType) {
-                UpdateAttributeType.NAME -> currentUser?.changeUserName(newValue)
-                UpdateAttributeType.EMAIL -> currentUser?.changeEmail(newValue, password)
-                UpdateAttributeType.PASSWORD -> currentUser?.changePassword(newValue, password)
-                UpdateAttributeType.PROFILE_PHOTO_URI -> currentUser?.changePhotoUri(
-                    Uri.parse(newValue)
-                )
-            }
-            _currentUser.postValue(firebaseAuth.currentUser!!.toExamerUser())
-            AuthenticationResult.Success(firebaseAuth.currentUser!!.toExamerUser())
-        }.getOrElse {
-            AuthenticationResult.Failure(
-                if (it is FirebaseNetworkException) AuthenticationResult.FailureType.NetworkFailure
-                else AuthenticationResult.FailureType.InvalidCredentials
-            )
-        }
-    }
-
-    override suspend fun updateAttributeForUser(
-        user: ExamerUser,
         updateAttribute: UpdateAttribute
     ): AuthenticationResult = withContext(defaultDispatcher) {
         val currentUser = firebaseAuth.currentUser!!
