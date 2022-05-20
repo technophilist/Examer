@@ -12,10 +12,10 @@ import com.example.examer.data.domain.ExamerUser
 interface AuthenticationService {
     enum class UpdateAttributeType { NAME, EMAIL, PASSWORD, PROFILE_PHOTO_URI }
     sealed class UpdateAttribute {
-        data class Name(val newName: String, val password: String)
-        data class Email(val newEmail: String, val password: String)
-        data class Password(val newPassword: String, val oldPassword: String)
-        data class ProfilePhotoUri(val newPhotoUri: Uri)
+        data class Name(val newName: String, val password: String) : UpdateAttribute()
+        data class Email(val newEmail: String, val password: String) : UpdateAttribute()
+        data class Password(val newPassword: String, val oldPassword: String) : UpdateAttribute()
+        data class ProfilePhotoUri(val newPhotoUri: Uri) : UpdateAttribute()
     }
 
     /**
