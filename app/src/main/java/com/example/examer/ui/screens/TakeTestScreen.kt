@@ -23,7 +23,6 @@ import com.example.examer.ui.navigation.TakeTestScreenDestinations
 import com.example.examer.ui.screens.listenToAudioScreen.AudioPlaybackState
 import com.example.examer.ui.screens.listenToAudioScreen.ListenToAudioScreen
 import com.example.examer.ui.screens.listenToAudioScreen.TimerState
-import com.example.examer.ui.screens.listenToAudioScreen.WorkBookState
 import com.example.examer.utils.WorkBookViewModelFactory
 import com.example.examer.viewmodels.ExamerWorkBookViewModel
 import com.example.examer.viewmodels.TestSessionViewModel
@@ -40,12 +39,6 @@ fun TakeTestScreen(
     testDetails: TestDetails,
 ) {
     val navController = rememberNavController()
-    val workBookState = remember {
-        WorkBookState(
-            testSessionViewModel.currentWorkBookNumber,
-            testDetails.totalNumberOfWorkBooks
-        )
-    }
     val isLastWorkBook by derivedStateOf {
         testSessionViewModel.currentWorkBookNumber.value == testDetails.totalNumberOfWorkBooks
     }
@@ -84,8 +77,8 @@ fun TakeTestScreen(
                 Text(
                     text = stringResource(
                         R.string.label_workbook,
-                        workBookState.currentWorkBookNumber.value,
-                        workBookState.totalNumberOfWorkBooks
+                        testSessionViewModel.currentWorkBookNumber.value,
+                        testDetails.totalNumberOfWorkBooks
                     )
                 )
                 timerAndExitIconRow()

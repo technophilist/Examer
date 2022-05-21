@@ -11,11 +11,6 @@ data class TimerState(
     val secondsRemaining: State<String>
 )
 
-data class WorkBookState(
-    val currentWorkBookNumber: State<Int>,
-    val totalNumberOfWorkBooks: Int
-)
-
 data class AudioPlaybackState(
     val isEnabled: State<Boolean>,
     /*@FloatRange(from = 0.0, to = 1.0)*/ val progress: State<Float>,
