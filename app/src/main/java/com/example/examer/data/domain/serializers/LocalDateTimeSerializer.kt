@@ -9,6 +9,13 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZoneOffset
 
+/**
+ * A serializer for an instance of [LocalDateTime].
+ * The instance will be serialized by converting it to its
+ * corresponding milliseconds value. It will be deserialized
+ * by converting the milliseconds value into a [LocalDateTime]
+ * object.
+ */
 @Serializer(forClass = LocalDateTime::class)
 class LocalDateTimeSerializer : KSerializer<LocalDateTime> {
     override fun deserialize(decoder: Decoder): LocalDateTime {
