@@ -26,20 +26,83 @@ import kotlinx.coroutines.launch
  * that is used to manage a single test ([TestDetails]).
  */
 interface TestSessionViewModel {
+    /**
+     * An enum class that contains different UI stats associated  with
+     * a concrete implementation of [TestSessionViewModel].
+     */
     enum class UiState { IDLE, TEST_TIMED_OUT }
 
+    /**
+     * A state property that contains the current [UiState] of the
+     * [TestSessionViewModel].
+     */
     val uiState: State<UiState>
+
+    /**
+     * A state property that contains the current [WorkBook].
+     */
     val currentWorkBook: State<WorkBook>
+
+    /**
+     * A state property that contains the current workbook number.
+     */
     val currentWorkBookNumber: State<Int>
+
+    /**
+     * A state property that contains a string indicating the number
+     * of hours remaining for the test.
+     */
     val hoursRemaining: State<String>
+
+    /**
+     * A state property that contains a string indicating the number
+     * of minutes remaining for the test.
+     */
     val minutesRemaining: State<String>
+
+    /**
+     * A state property that contains a string indicating the number
+     * of seconds remaining for the test.
+     */
     val secondsRemaining: State<String>
+
+    /**
+     * A state property that contains a string indicating the number
+     * of repeats left for the **current** audio file .
+     */
     val numberOfRepeatsLeftForAudioFile: State<Int>
+
+    /**
+     * A state property that contains a string indicating the playback
+     * progress for the **current** audio file .
+     */
     val playbackProgress: State<Float>
+
+    /**
+     * A state property that indicates whether the **current** audio
+     * is playing.
+     */
     val isAudioFilePlaying: State<Boolean>
+
+    /**
+     * Used to play the audio file for the [currentWorkBook].
+     */
     fun playAudioForCurrentWorkBook()
+
+    /**
+     * Used to update the [currentWorkBook] value to the next workbook.
+     */
     fun moveToNextWorkBook()
+
+    /**
+     * Used to mark the current test as complete.
+     */
     fun markCurrentTestAsComplete()
+
+    /**
+     * Used to stop the playback of the **currently** playing
+     * audio file.
+     */
     fun stopAudioPlayback()
 }
 
@@ -120,6 +183,10 @@ class ExamerTestSessionViewModel(
         }
     }
 
+    /**
+     * Used to start a coroutine, that will set the [_playbackProgress]
+     * based on the state of the [player].
+     */
     private fun setProgressBasedOnMediaPlayerState(player: MediaPlayer) {
         setPlaybackProgressCoroutineJob = viewModelScope.launch {
             while (player.isPlaying) {
@@ -166,6 +233,10 @@ class ExamerTestSessionViewModel(
         _isAudioFilePlaying.value = false
     }
 
+    /**
+     * Utility function used to create a time string based on the
+     * [hour],[minute] and [second] parameters
+     */
     private fun createTimeString(
         hour: Int,
         minute: Int,
@@ -177,5 +248,9 @@ class ExamerTestSessionViewModel(
         return "$hourString:$minuteString:$secondString"
     }
 
+    /**
+     * Used to convert the specified [minute] to a [Long] representing
+     * the [minute] in milliseconds.
+     */
     private fun convertMinuteToMillis(minute: Int): Long = minute * 60_000L
 }
