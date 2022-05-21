@@ -20,7 +20,6 @@ import com.example.examer.data.domain.MultiChoiceQuestion
 import com.example.examer.data.domain.TestDetails
 import com.example.examer.di.AppContainer
 import com.example.examer.ui.navigation.TakeTestScreenDestinations
-import com.example.examer.ui.screens.listenToAudioScreen.AudioPlaybackState
 import com.example.examer.ui.screens.listenToAudioScreen.ListenToAudioScreen
 import com.example.examer.utils.WorkBookViewModelFactory
 import com.example.examer.viewmodels.ExamerWorkBookViewModel
@@ -81,19 +80,11 @@ fun TakeTestScreen(
             startDestination = TakeTestScreenDestinations.ListenToAudioScreen.route
         ) {
             composable(route = TakeTestScreenDestinations.ListenToAudioScreen.route) {
-                val isAudioPlaybackEnabled = remember { mutableStateOf(true) }
-                val numberOfRepeatsLeftForAudioFile =
-                    testSessionViewModel.numberOfRepeatsLeftForAudioFile
-                val audioPlaybackState = remember {
-                    AudioPlaybackState(
-                        isEnabled = isAudioPlaybackEnabled,
-                        progress = testSessionViewModel.playbackProgress,
-                        numberOfRepeatsLeft = numberOfRepeatsLeftForAudioFile
-                    )
-                }
+                val playbackState by testSessionViewModel.playbackState
                 val currentWorkBook by testSessionViewModel.currentWorkBook
                 ListenToAudioScreen(
-                    audioPlayBackState = audioPlaybackState,
+                    playbackState = playbackState,
+                    numberOfRepeatsLeftForCurrentAudioFile = testSessionViewModel.numberOfRepeatsLeftForAudioFile.value,
                     onNavigateToWorkBook = {
                         val routeString =
                             TakeTestScreenDestinations.WorkBookScreen.buildRoute(

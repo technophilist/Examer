@@ -23,15 +23,16 @@ import com.google.accompanist.insets.navigationBarsPadding
 
 @Composable
 fun ListenToAudioScreen(
-    audioPlayBackState: AudioPlaybackState,
+    playbackState: PlaybackState,
+    numberOfRepeatsLeftForCurrentAudioFile: Int, // TODO would cause the entire screen composable to re-compose
     onNavigateToWorkBook: () -> Unit,
     onAudioIconClick: () -> Unit = {},
 ) {
     val isAudioFilePlaying by derivedStateOf {
-        audioPlayBackState.progress.value > 0 && audioPlayBackState.progress.value < 1f
+        playbackState.currentProgress > 0 && playbackState.currentProgress < 1f
     }
     val isAudioIconClickEnabled by derivedStateOf {
-        audioPlayBackState.numberOfRepeatsLeft.value > 0 && !isAudioFilePlaying
+        numberOfRepeatsLeftForCurrentAudioFile > 0 && !isAudioFilePlaying
     }
 
     Box(
@@ -67,14 +68,14 @@ fun ListenToAudioScreen(
                 Text(
                     text = stringResource(
                         R.string.label_no_of_repeats_left,
-                        audioPlayBackState.numberOfRepeatsLeft.value
+                        numberOfRepeatsLeftForCurrentAudioFile
                     ),
                     style = MaterialTheme.typography.caption
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 LinearProgressIndicator(
                     modifier = Modifier.clip(RoundedCornerShape(50)),
-                    progress = audioPlayBackState.progress.value
+                    progress = playbackState.currentProgress
                 )
             }
         }
