@@ -22,7 +22,6 @@ import com.example.examer.di.AppContainer
 import com.example.examer.ui.navigation.TakeTestScreenDestinations
 import com.example.examer.ui.screens.listenToAudioScreen.AudioPlaybackState
 import com.example.examer.ui.screens.listenToAudioScreen.ListenToAudioScreen
-import com.example.examer.ui.screens.listenToAudioScreen.TimerState
 import com.example.examer.utils.WorkBookViewModelFactory
 import com.example.examer.viewmodels.ExamerWorkBookViewModel
 import com.example.examer.viewmodels.TestSessionViewModel
@@ -42,19 +41,12 @@ fun TakeTestScreen(
     val isLastWorkBook by derivedStateOf {
         testSessionViewModel.currentWorkBookNumber.value == testDetails.totalNumberOfWorkBooks
     }
-    val timerState = remember {
-        TimerState(
-            hoursRemaining = testSessionViewModel.hoursRemaining,
-            minutesRemaining = testSessionViewModel.minutesRemaining,
-            secondsRemaining = testSessionViewModel.secondsRemaining
-        )
-    }
     val timerAndExitIconRow = @Composable {
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = "${timerState.hoursRemaining.value} : ${timerState.minutesRemaining.value} : ${timerState.secondsRemaining.value}")
+            Text(text = "${testSessionViewModel.hoursRemaining.value} : ${testSessionViewModel.minutesRemaining.value} : ${testSessionViewModel.secondsRemaining.value}")
             IconButton(
                 onClick = onExitTestButtonClick,
                 content = { Icon(imageVector = Icons.Filled.ExitToApp, contentDescription = null) }
