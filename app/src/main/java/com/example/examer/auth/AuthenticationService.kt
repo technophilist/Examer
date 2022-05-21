@@ -10,6 +10,13 @@ import com.example.examer.data.domain.ExamerUser
  * for an authentication service.
  */
 interface AuthenticationService {
+    /**
+     * A sealed class that contains multiple nested classes that model
+     * different user attributes that can be updated.
+     * For certain attributes, a password is required to update
+     * the value. For such attributes, a password field will be defined
+     * as the constructor param of the nested class.
+     */
     sealed class UpdateAttribute {
         data class Name(val newName: String) : UpdateAttribute()
         data class Email(val newEmail: String, val password: String) : UpdateAttribute()
@@ -54,6 +61,13 @@ interface AuthenticationService {
      */
     fun signOut()
 
+    /**
+     * Used to update an attribute of the specified [user].
+     * The [UpdateAttribute] param of the function will
+     * be used to specify the attribute to update.
+     * An instance of [AuthenticationResult] will be returned to
+     * indicate whether the update was successful.
+     */
     suspend fun updateAttributeForUser(
         user: ExamerUser,
         updateAttribute: UpdateAttribute
