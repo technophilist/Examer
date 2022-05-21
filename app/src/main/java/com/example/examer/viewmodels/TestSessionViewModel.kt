@@ -39,7 +39,9 @@ interface TestSessionViewModel {
      */
     val uiState: State<UiState>
 
-    // TODO - add docs
+    /**
+     * A state property that contains an instance of [PlaybackState].
+     */
     val playbackState: State<PlaybackState>
 
     /**
