@@ -13,7 +13,7 @@ class PlaybackState(
     /*@FloatRange(from = 0.0, to = 1.0)*/
     startProgress: Float = 0.0f
 ) {
-    var isEnabled by mutableStateOf(isPlaybackEnabled)
+    var isPlaybackEnabled by mutableStateOf(isPlaybackEnabled)
 
     /*@FloatRange(from = 0.0, to = 1.0)*/
     var currentProgress by mutableStateOf(startProgress)
