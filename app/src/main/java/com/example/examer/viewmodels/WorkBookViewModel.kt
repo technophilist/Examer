@@ -10,7 +10,21 @@ import com.example.examer.data.workers.SaveUserAnswersWorker
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
+/**
+ * An interface that contains the requisite methods for a concrete
+ * implementation of [WorkBookViewModel].
+ */
 interface WorkBookViewModel {
+    /**
+     * Used to save the answers selected by the user for the specified
+     * workbook of a specific test.
+     * @param questionsList a list of all the questions in the workbook.
+     * @param answersMap a map tha contains the question and the answer
+     * selected by the user for each question.
+     * @param testDetailsId the id of the associated test.
+     * @param workBookId the id of the workbook for which the
+     * answers are to be saved.
+     */
     fun saveUserAnswersForTestId(
         questionsList: List<MultiChoiceQuestion>,
         answersMap: Map<MultiChoiceQuestion, IndexOfChosenOption>,
@@ -19,6 +33,9 @@ interface WorkBookViewModel {
     )
 }
 
+/**
+ * A concrete implementation of [WorkBookViewModel].
+ */
 class ExamerWorkBookViewModel(
     application: Application
 ) : AndroidViewModel(application), WorkBookViewModel {
@@ -51,6 +68,13 @@ class ExamerWorkBookViewModel(
         workManager.enqueue(workRequest)
     }
 
+    /**
+     * A utility method that is used to compute the total marks scored
+     * for a specific workbook.
+     * @param questionsList a list of all questions in the workbook.
+     * @param answersMap a map that contains all the questions and the
+     * correct answer for each respective question in the workbook.
+     */
     private fun computeMarks(
         questionsList: List<MultiChoiceQuestion>,
         answersMap: Map<MultiChoiceQuestion, IndexOfChosenOption>
