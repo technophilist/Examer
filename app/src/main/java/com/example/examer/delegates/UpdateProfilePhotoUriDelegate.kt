@@ -5,10 +5,19 @@ import com.example.examer.auth.AuthenticationResult
 import com.example.examer.auth.AuthenticationService
 import com.example.examer.utils.PasswordManager
 
+/**
+ * An interface that specifies the methods that are a requisite
+ * for a concrete implementation of [UpdateProfileUriDelegate].
+ */
 interface UpdateProfileUriDelegate {
     suspend fun update(uri: Uri)
 }
 
+/**
+ * A concrete implementation of [UpdateProfileUriDelegate].
+ * @param authenticationService an instance of [AuthenticationService]
+ * that will be used to get the [AuthenticationService.currentUser].
+ */
 class ExamerUpdateProfileUriDelegate(
     private val authenticationService: AuthenticationService
 ) : UpdateProfileUriDelegate {
