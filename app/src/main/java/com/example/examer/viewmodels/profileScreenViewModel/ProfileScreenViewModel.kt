@@ -22,23 +22,63 @@ import kotlin.coroutines.EmptyCoroutineContext
 
 const val defaultResetStateTimeOut = 4_000L
 
+/**
+ * An interface that contains the required methods and properties for
+ * a concrete implementation of [ProfileScreenViewModel].
+ */
 interface ProfileScreenViewModel {
+    /**
+     * An enum class that contains the user attributes that can be
+     * updated.
+     */
     enum class UpdateAttribute { NAME, EMAIL, PASSWORD }
+
+    /**
+     * An enum class the consists of the different UI states associated
+     * with [ProfileScreenViewModel].
+     */
     enum class UiState { UPDATE_SUCCESS, UPDATE_FAILURE, LOADING, IDLE }
 
+    /**
+     * A state property that contains the UI state of [ProfileScreenViewModel].
+     */
     val uiState: State<UiState>
+
+    /**
+     * Used to update the specified [updateAttribute] to the [newValue]
+     * for the current user.
+     * @param resetStateTimeOut the amount of time in millis before
+     * the [uiState] is set back to [ProfileScreenViewModel.UiState.IDLE].
+     */
     fun updateAttributeForCurrentUser(
         updateAttribute: UpdateAttribute,
         newValue: String,
         resetStateTimeOut: Long = defaultResetStateTimeOut
     )
 
+    /**
+     * Used to update the profile picture of the currently logged in
+     * user with the specified [imageBitmap].
+     * @param resetStateTimeOut the amount of time in millis before
+     * the [uiState] is set back to [ProfileScreenViewModel.UiState.IDLE].
+     */
     fun updateProfilePicture(
         imageBitmap: ImageBitmap,
         resetStateTimeOut: Long = defaultResetStateTimeOut
     )
 
+    /**
+     * A method that returns true if the specified [email] is a
+     * valid email. If it is not a valid email, it will return
+     * false.
+     */
     fun isValidEmail(email: String): Boolean
+
+    /**
+     * A method that returns true if the specified [password] is a
+     * valid password. If it is not a valid password, it will return
+     * false.
+     */
     fun isValidPassword(password: String): Boolean
 }
 
@@ -54,12 +94,6 @@ class ExamerProfileScreenViewModel(
     private val _uiState = mutableStateOf(ProfileScreenViewModel.UiState.IDLE)
     override val uiState: State<ProfileScreenViewModel.UiState> = _uiState
 
-    /**
-     * Used to update the specified [updateAttribute] to the [newValue]
-     * for the currently logged in user. The [resetStateTimeOut] is used
-     * to specify the timeout after which the [uiState] will be set back
-     * to [ProfileScreenViewModel.UiState.IDLE].
-     */
     override fun updateAttributeForCurrentUser(
         updateAttribute: ProfileScreenViewModel.UpdateAttribute,
         newValue: String,
@@ -89,12 +123,6 @@ class ExamerProfileScreenViewModel(
         }
     }
 
-    /**
-     * Used to update the profile picture of the currently logged
-     * in user to the [imageBitmap]. The [resetStateTimeOut] is used
-     * to specify the timeout after which the [uiState] will be set back
-     * to [ProfileScreenViewModel.UiState.IDLE].
-     */
     override fun updateProfilePicture(imageBitmap: ImageBitmap, resetStateTimeOut: Long) {
         authenticationService.currentUser.value?.let { user ->
             runUpdate {
