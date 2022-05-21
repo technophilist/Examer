@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>TestSessionViewModel</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+const savedDarkMode = storage ? JSON.parse(storage) : false
+if(savedDarkMode === true){
+    document.getElementsByTagName("html")[0].classList.add("theme-dark")
+}</script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/jetbrains-mono.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+</head>
+<body>
+<div class="navigation-wrapper" id="navigation-wrapper">
+    <div id="leftToggler"><span class="icon-toggler"></span></div>
+    <div class="library-name">
+            <a href="../../../index.html">
+                    <span>app</span>
+            </a>
+    </div>
+    <div>
+    </div>
+    <div class="pull-right d-flex">
+        <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+    </div>
+</div>
+<div id="container">
+    <div id="leftColumn">
+        <div id="sideMenu"></div>
+    </div>
+    <div id="main">
+<div class="main-content" id="content" pageIds="app::com.example.examer.viewmodels/TestSessionViewModel///PointingToDeclaration//492899073">
+  <div class="breadcrumbs"><a href="../../../index.html">app</a><span class="delimiter">/</span><a href="../index.html">com.example.examer.viewmodels</a><span class="delimiter">/</span><a href="index.html">TestSessionViewModel</a></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Test</span><wbr></wbr><span>Session</span><wbr></wbr><span>View</span><wbr></wbr><span><span>Model</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":app:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">interface </span><a href="index.html">TestSessionViewModel</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">An interface that contains the methods and properties that are required for a concrete implementation of <a href="index.html">TestSessionViewModel</a>.</p><p class="paragraph">This type of viewModel is used to encapsulate logic that is required to manage a single test session. In other words, it contains the logic that is used to manage a single test (<a href="../../com.example.examer.data.domain/-test-details/index.html">TestDetails</a>).</p></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Types">Types</button><button class="section-tab" data-togglable="Functions">Functions</button><button class="section-tab" data-togglable="Properties">Properties</button><button class="section-tab" data-togglable="Inheritors">Inheritors</button></div>
+    <div class="tabs-section-body">
+      <h2 class="">Types</h2>
+      <div class="table" data-togglable="Types"><a data-name="-833599149%2FClasslikes%2F492899073" anchor-label="UiState" id="-833599149%2FClasslikes%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-ui-state/index.html"><span>Ui</span><wbr></wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-833599149%2FClasslikes%2F492899073"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":app:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">enum </span><a href="-ui-state/index.html">UiState</a> : <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="-ui-state/index.html">TestSessionViewModel.UiState</a><span class="token operator">&gt; </span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">An enum class that contains different UI stats associated  with a concrete implementation of <a href="index.html">TestSessionViewModel</a>.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Functions</h2>
+      <div class="table" data-togglable="Functions"><a data-name="-724528172%2FFunctions%2F492899073" anchor-label="markCurrentTestAsComplete" id="-724528172%2FFunctions%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="mark-current-test-as-complete.html"><span>mark</span><wbr></wbr><span>Current</span><wbr></wbr><span>Test</span><wbr></wbr><span>As</span><wbr></wbr><span><span>Complete</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-724528172%2FFunctions%2F492899073"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":app:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="mark-current-test-as-complete.html"><span class="token function">markCurrentTestAsComplete</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Used to mark the current test as complete.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1242459868%2FFunctions%2F492899073" anchor-label="moveToNextWorkBook" id="-1242459868%2FFunctions%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="move-to-next-work-book.html"><span>move</span><wbr></wbr><span>To</span><wbr></wbr><span>Next</span><wbr></wbr><span>Work</span><wbr></wbr><span><span>Book</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1242459868%2FFunctions%2F492899073"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":app:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="move-to-next-work-book.html"><span class="token function">moveToNextWorkBook</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Used to update the <a href="current-work-book.html">currentWorkBook</a> value to the next workbook.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1383498447%2FFunctions%2F492899073" anchor-label="playAudioForCurrentWorkBook" id="-1383498447%2FFunctions%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="play-audio-for-current-work-book.html"><span>play</span><wbr></wbr><span>Audio</span><wbr></wbr><span>For</span><wbr></wbr><span>Current</span><wbr></wbr><span>Work</span><wbr></wbr><span><span>Book</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1383498447%2FFunctions%2F492899073"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":app:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="play-audio-for-current-work-book.html"><span class="token function">playAudioForCurrentWorkBook</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Used to play the audio file for the <a href="current-work-book.html">currentWorkBook</a>.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1147374034%2FFunctions%2F492899073" anchor-label="stopAudioPlayback" id="-1147374034%2FFunctions%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="stop-audio-playback.html"><span>stop</span><wbr></wbr><span>Audio</span><wbr></wbr><span><span>Playback</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1147374034%2FFunctions%2F492899073"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":app:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="stop-audio-playback.html"><span class="token function">stopAudioPlayback</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Used to stop the playback of the <strong>currently</strong> playing audio file.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Properties</h2>
+      <div class="table" data-togglable="Properties"><a data-name="-457240662%2FProperties%2F492899073" anchor-label="currentWorkBook" id="-457240662%2FProperties%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="current-work-book.html">currentWorkBook</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-457240662%2FProperties%2F492899073"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":app:dokkaHtml/release"><a data-name="-457240662%2FProperties%2F492899073" anchor-label="currentWorkBook" id="-457240662%2FProperties%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">val </span><a href="current-work-book.html">currentWorkBook</a><span class="token operator">: </span><span data-unresolved-link="androidx.compose.runtime/State///PointingToDeclaration/">State</span><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../com.example.examer.data.domain/-work-book/index.html">WorkBook</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="-457240662%2FProperties%2F492899073" anchor-label="currentWorkBook" id="-457240662%2FProperties%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a><p class="paragraph">A state property that contains the current <a href="../../com.example.examer.data.domain/-work-book/index.html">WorkBook</a>.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-200615263%2FProperties%2F492899073" anchor-label="currentWorkBookNumber" id="-200615263%2FProperties%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="current-work-book-number.html">currentWorkBookNumber</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-200615263%2FProperties%2F492899073"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":app:dokkaHtml/release"><a data-name="-200615263%2FProperties%2F492899073" anchor-label="currentWorkBookNumber" id="-200615263%2FProperties%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">val </span><a href="current-work-book-number.html">currentWorkBookNumber</a><span class="token operator">: </span><span data-unresolved-link="androidx.compose.runtime/State///PointingToDeclaration/">State</span><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="-200615263%2FProperties%2F492899073" anchor-label="currentWorkBookNumber" id="-200615263%2FProperties%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a><p class="paragraph">A state property that contains the current workbook number.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-215309514%2FProperties%2F492899073" anchor-label="hoursRemaining" id="-215309514%2FProperties%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="hours-remaining.html">hoursRemaining</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-215309514%2FProperties%2F492899073"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":app:dokkaHtml/release"><a data-name="-215309514%2FProperties%2F492899073" anchor-label="hoursRemaining" id="-215309514%2FProperties%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">val </span><a href="hours-remaining.html">hoursRemaining</a><span class="token operator">: </span><span data-unresolved-link="androidx.compose.runtime/State///PointingToDeclaration/">State</span><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="-215309514%2FProperties%2F492899073" anchor-label="hoursRemaining" id="-215309514%2FProperties%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a><p class="paragraph">A state property that contains a string indicating the number of hours remaining for the test.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="988700951%2FProperties%2F492899073" anchor-label="isAudioFilePlaying" id="988700951%2FProperties%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="is-audio-file-playing.html">isAudioFilePlaying</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="988700951%2FProperties%2F492899073"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":app:dokkaHtml/release"><a data-name="988700951%2FProperties%2F492899073" anchor-label="isAudioFilePlaying" id="988700951%2FProperties%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">val </span><a href="is-audio-file-playing.html">isAudioFilePlaying</a><span class="token operator">: </span><span data-unresolved-link="androidx.compose.runtime/State///PointingToDeclaration/">State</span><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="988700951%2FProperties%2F492899073" anchor-label="isAudioFilePlaying" id="988700951%2FProperties%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a><p class="paragraph">A state property that indicates whether the <strong>current</strong> audio is playing.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1859532038%2FProperties%2F492899073" anchor-label="minutesRemaining" id="1859532038%2FProperties%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="minutes-remaining.html">minutesRemaining</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1859532038%2FProperties%2F492899073"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":app:dokkaHtml/release"><a data-name="1859532038%2FProperties%2F492899073" anchor-label="minutesRemaining" id="1859532038%2FProperties%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">val </span><a href="minutes-remaining.html">minutesRemaining</a><span class="token operator">: </span><span data-unresolved-link="androidx.compose.runtime/State///PointingToDeclaration/">State</span><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="1859532038%2FProperties%2F492899073" anchor-label="minutesRemaining" id="1859532038%2FProperties%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a><p class="paragraph">A state property that contains a string indicating the number of minutes remaining for the test.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-139412747%2FProperties%2F492899073" anchor-label="numberOfRepeatsLeftForAudioFile" id="-139412747%2FProperties%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="number-of-repeats-left-for-audio-file.html">numberOfRepeatsLeftForAudioFile</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-139412747%2FProperties%2F492899073"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":app:dokkaHtml/release"><a data-name="-139412747%2FProperties%2F492899073" anchor-label="numberOfRepeatsLeftForAudioFile" id="-139412747%2FProperties%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">val </span><a href="number-of-repeats-left-for-audio-file.html">numberOfRepeatsLeftForAudioFile</a><span class="token operator">: </span><span data-unresolved-link="androidx.compose.runtime/State///PointingToDeclaration/">State</span><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="-139412747%2FProperties%2F492899073" anchor-label="numberOfRepeatsLeftForAudioFile" id="-139412747%2FProperties%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a><p class="paragraph">A state property that contains a string indicating the number of repeats left for the <strong>current</strong> audio file .</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="177430535%2FProperties%2F492899073" anchor-label="playbackState" id="177430535%2FProperties%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="playback-state.html">playbackState</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="177430535%2FProperties%2F492899073"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":app:dokkaHtml/release"><a data-name="177430535%2FProperties%2F492899073" anchor-label="playbackState" id="177430535%2FProperties%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">val </span><a href="playback-state.html">playbackState</a><span class="token operator">: </span><span data-unresolved-link="androidx.compose.runtime/State///PointingToDeclaration/">State</span><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../com.example.examer.ui.screens.listenToAudioScreen/-playback-state/index.html">PlaybackState</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="177430535%2FProperties%2F492899073" anchor-label="playbackState" id="177430535%2FProperties%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a><p class="paragraph">A state property that contains an instance of <a href="../../com.example.examer.ui.screens.listenToAudioScreen/-playback-state/index.html">PlaybackState</a>.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1997079898%2FProperties%2F492899073" anchor-label="secondsRemaining" id="-1997079898%2FProperties%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="seconds-remaining.html">secondsRemaining</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1997079898%2FProperties%2F492899073"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":app:dokkaHtml/release"><a data-name="-1997079898%2FProperties%2F492899073" anchor-label="secondsRemaining" id="-1997079898%2FProperties%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">val </span><a href="seconds-remaining.html">secondsRemaining</a><span class="token operator">: </span><span data-unresolved-link="androidx.compose.runtime/State///PointingToDeclaration/">State</span><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="-1997079898%2FProperties%2F492899073" anchor-label="secondsRemaining" id="-1997079898%2FProperties%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a><p class="paragraph">A state property that contains a string indicating the number of seconds remaining for the test.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-2112008512%2FProperties%2F492899073" anchor-label="uiState" id="-2112008512%2FProperties%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="ui-state.html">uiState</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2112008512%2FProperties%2F492899073"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":app:dokkaHtml/release"><a data-name="-2112008512%2FProperties%2F492899073" anchor-label="uiState" id="-2112008512%2FProperties%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">val </span><a href="ui-state.html">uiState</a><span class="token operator">: </span><span data-unresolved-link="androidx.compose.runtime/State///PointingToDeclaration/">State</span><span class="token operator">&lt;</span><span class="token keyword"></span><a href="-ui-state/index.html">TestSessionViewModel.UiState</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="-2112008512%2FProperties%2F492899073" anchor-label="uiState" id="-2112008512%2FProperties%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a><p class="paragraph">A state property that contains the current <a href="-ui-state/index.html">UiState</a> of the <a href="index.html">TestSessionViewModel</a>.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Inheritors</h2>
+      <div class="table" data-togglable="Inheritors"><a data-name="386484054%2FInheritors%2F492899073" anchor-label="ExamerTestSessionViewModel" id="386484054%2FInheritors%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="../-examer-test-session-view-model/index.html">ExamerTestSessionViewModel</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="386484054%2FInheritors%2F492899073"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        <div class="footer"><span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2022 Copyright</span><span
+                class="pull-right"><span>Generated by </span><a
+                href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>TestsViewModel</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+const savedDarkMode = storage ? JSON.parse(storage) : false
+if(savedDarkMode === true){
+    document.getElementsByTagName("html")[0].classList.add("theme-dark")
+}</script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/jetbrains-mono.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+</head>
+<body>
+<div class="navigation-wrapper" id="navigation-wrapper">
+    <div id="leftToggler"><span class="icon-toggler"></span></div>
+    <div class="library-name">
+            <a href="../../../index.html">
+                    <span>app</span>
+            </a>
+    </div>
+    <div>
+    </div>
+    <div class="pull-right d-flex">
+        <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+    </div>
+</div>
+<div id="container">
+    <div id="leftColumn">
+        <div id="sideMenu"></div>
+    </div>
+    <div id="main">
+<div class="main-content" id="content" pageIds="app::com.example.examer.viewmodels/TestsViewModel///PointingToDeclaration//492899073">
+  <div class="breadcrumbs"><a href="../../../index.html">app</a><span class="delimiter">/</span><a href="../index.html">com.example.examer.viewmodels</a><span class="delimiter">/</span><a href="index.html">TestsViewModel</a></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Tests</span><wbr></wbr><span>View</span><wbr></wbr><span><span>Model</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":app:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">interface </span><a href="index.html">TestsViewModel</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">An interface that contains all the properties and methods required for a concrete implementation of <a href="index.html">TestsViewModel</a></p></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Functions">Functions</button><button class="section-tab" data-togglable="Properties">Properties</button><button class="section-tab" data-togglable="Inheritors">Inheritors</button></div>
+    <div class="tabs-section-body">
+      <h2 class="">Functions</h2>
+      <div class="table" data-togglable="Functions"><a data-name="1802774187%2FFunctions%2F492899073" anchor-label="fetchWorkBookListForTestDetails" id="1802774187%2FFunctions%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="fetch-work-book-list-for-test-details.html"><span>fetch</span><wbr></wbr><span>Work</span><wbr></wbr><span>Book</span><wbr></wbr><span>List</span><wbr></wbr><span>For</span><wbr></wbr><span>Test</span><wbr></wbr><span><span>Details</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1802774187%2FFunctions%2F492899073"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":app:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="fetch-work-book-list-for-test-details.html"><span class="token function">fetchWorkBookListForTestDetails</span></a><span class="token punctuation">(</span><span class="parameters wrapped"><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;testDetails<span class="token operator">: </span><a href="../../com.example.examer.data.domain/-test-details/index.html">TestDetails</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span><span class="token annotation">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/MainThread.html"><span class="token annotation">MainThread</span></a> </span>onSuccess<span class="token operator">: </span><span class="token punctuation">(</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../com.example.examer.data.domain/-work-book/index.html">WorkBook</a><span class="token operator">&gt;</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span><span class="token annotation">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/MainThread.html"><span class="token annotation">MainThread</span></a> </span>onFailure<span class="token operator">: </span><span class="token punctuation">(</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-throwable/index.html">Throwable</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Used to fetch a list of workbooks for the specified test.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="374873019%2FFunctions%2F492899073" anchor-label="markTestAsMissed" id="374873019%2FFunctions%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="mark-test-as-missed.html"><span>mark</span><wbr></wbr><span>Test</span><wbr></wbr><span>As</span><wbr></wbr><span><span>Missed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="374873019%2FFunctions%2F492899073"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":app:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="mark-test-as-missed.html"><span class="token function">markTestAsMissed</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">testDetails<span class="token operator">: </span><a href="../../com.example.examer.data.domain/-test-details/index.html">TestDetails</a></span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Used to mark the specified test as missed.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-330980339%2FFunctions%2F492899073" anchor-label="refreshTestDetailsList" id="-330980339%2FFunctions%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="refresh-test-details-list.html"><span>refresh</span><wbr></wbr><span>Test</span><wbr></wbr><span>Details</span><wbr></wbr><span><span>List</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-330980339%2FFunctions%2F492899073"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":app:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="refresh-test-details-list.html"><span class="token function">refreshTestDetailsList</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Used to refresh <a href="test-details-list.html">testDetailsList</a>.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Properties</h2>
+      <div class="table" data-togglable="Properties"><a data-name="1799858220%2FProperties%2F492899073" anchor-label="testDetailsList" id="1799858220%2FProperties%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="test-details-list.html">testDetailsList</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1799858220%2FProperties%2F492899073"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":app:dokkaHtml/release"><a data-name="1799858220%2FProperties%2F492899073" anchor-label="testDetailsList" id="1799858220%2FProperties%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">val </span><a href="test-details-list.html">testDetailsList</a><span class="token operator">: </span><span data-unresolved-link="androidx.compose.runtime/State///PointingToDeclaration/">State</span><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../com.example.examer.data.domain/-test-details/index.html">TestDetails</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="1799858220%2FProperties%2F492899073" anchor-label="testDetailsList" id="1799858220%2FProperties%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a><p class="paragraph">A state property that is holds a list of <a href="../../com.example.examer.data.domain/-test-details/index.html">TestDetails</a>.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-74075264%2FProperties%2F492899073" anchor-label="testsViewModelUiState" id="-74075264%2FProperties%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="tests-view-model-ui-state.html">testsViewModelUiState</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-74075264%2FProperties%2F492899073"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":app:dokkaHtml/release"><a data-name="-74075264%2FProperties%2F492899073" anchor-label="testsViewModelUiState" id="-74075264%2FProperties%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">val </span><a href="tests-view-model-ui-state.html">testsViewModelUiState</a><span class="token operator">: </span><span data-unresolved-link="androidx.compose.runtime/State///PointingToDeclaration/">State</span><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../-tests-view-model-ui-state/index.html">TestsViewModelUiState</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="-74075264%2FProperties%2F492899073" anchor-label="testsViewModelUiState" id="-74075264%2FProperties%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a><p class="paragraph">A state property that holds that hold the current <a href="../-tests-view-model-ui-state/index.html">TestsViewModelUiState</a>.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Inheritors</h2>
+      <div class="table" data-togglable="Inheritors"><a data-name="-1662846893%2FInheritors%2F492899073" anchor-label="ExamerTestsViewModel" id="-1662846893%2FInheritors%2F492899073" data-filterable-set=":app:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":app:dokkaHtml/release" data-filterable-set=":app:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="../-examer-tests-view-model/index.html">ExamerTestsViewModel</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1662846893%2FInheritors%2F492899073"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        <div class="footer"><span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2022 Copyright</span><span
+                class="pull-right"><span>Generated by </span><a
+                href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+        </div>
+    </div>
+</div>
+</body>
+</html>
