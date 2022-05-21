@@ -20,6 +20,9 @@ import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 
+/**
+ * A concrete implementation of [RemoteDatabase] that uses Firebase.
+ */
 class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider) : RemoteDatabase {
 
     override suspend fun fetchActiveTestListForUser(user: ExamerUser): List<TestDetails> =
@@ -142,6 +145,10 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
         )
     }
 
+    /**
+     * Used to convert an instance of [DocumentSnapshot] to an instance of
+     * [WorkBookDTO].
+     */
     private fun DocumentSnapshot.toWorkBookDTO(): WorkBookDTO {
         val examerAudioFile = AudioFileDTO(
             audioFileUrl = URL(get("audioFileDownloadUrl").toString()),
@@ -159,6 +166,10 @@ class FirebaseRemoteDatabase(private val dispatcherProvider: DispatcherProvider)
         )
     }
 
+    /**
+     * Used to convert an instance of [DocumentSnapshot] to an instance of
+     * [TestDetailsDTO].
+     */
     private fun DocumentSnapshot.toTestDetailsDTO() = TestDetailsDTO(
         id = id,
         title = getString("title")!!,
