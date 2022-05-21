@@ -5,11 +5,18 @@ import com.example.examer.utils.containsDigit
 import com.example.examer.utils.containsLowercase
 import com.example.examer.utils.containsUppercase
 
+/**
+ * An interface that contains the requisite methods required
+ * for a concrete implementation of [CredentialsValidationUseCase].
+ */
 interface CredentialsValidationUseCase {
     fun isValidEmail(email: String): Boolean
     fun isValidPassword(password: String): Boolean
 }
 
+/**
+ * A concrete implementation of [CredentialsValidationUseCase].
+ */
 class ExamerCredentialsValidationUseCase : CredentialsValidationUseCase {
     /**
      * The method is used to check whether the [email] is valid.
