@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 
 /**
- * A DTO object equivalent to [TestDetails].
+ * A DTO object for [TestDetails].
  */
 data class TestDetailsDTO(
     val id: String,
@@ -21,6 +21,10 @@ data class TestDetailsDTO(
     val maximumMarks: String
 )
 
+/**
+ * Utility method used to convert an instance of [TestDetailsDTO]
+ * to an instance of [TestDetails].
+ */
 fun TestDetailsDTO.toTestDetails() = TestDetails(
     id = id,
     title = title,
@@ -32,6 +36,10 @@ fun TestDetailsDTO.toTestDetails() = TestDetails(
     testStatus = Status.valueOf(testStatus.uppercase())
 )
 
+/**
+ * Used to get an instance of [LocalDateTime] for the specified
+ * [timestamp].
+ */
 private fun getLocalDateTimeForTimeStamp(timestamp: Long): LocalDateTime =
     Instant
         .ofEpochMilli(timestamp)
