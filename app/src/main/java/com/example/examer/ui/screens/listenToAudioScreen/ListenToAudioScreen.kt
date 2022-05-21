@@ -24,9 +24,9 @@ import com.google.accompanist.insets.navigationBarsPadding
 @Composable
 fun ListenToAudioScreen(
     playbackState: PlaybackState,
-    numberOfRepeatsLeftForCurrentAudioFile: Int, // TODO would cause the entire screen composable to re-compose
+    numberOfRepeatsLeftForCurrentAudioFile: Int,
     onNavigateToWorkBook: () -> Unit,
-    onAudioIconClick: () -> Unit = {},
+    onAudioIconClick: () -> Unit = {}
 ) {
     val isAudioFilePlaying by derivedStateOf {
         playbackState.currentProgress > 0 && playbackState.currentProgress < 1f
