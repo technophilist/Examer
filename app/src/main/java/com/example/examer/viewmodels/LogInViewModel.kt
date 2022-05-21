@@ -31,6 +31,9 @@ enum class LoginUiState {
  * for a LogInViewModel.
  */
 interface LogInViewModel {
+    /**
+     * A state property the contains the current [LoginUiState].
+     */
     val uiState: State<LoginUiState>
 
     /**
