@@ -27,13 +27,6 @@ class FirebaseAuthenticationService(
         MutableLiveData<ExamerUser?>(firebaseAuth.currentUser?.toExamerUser())
     override val currentUser: LiveData<ExamerUser?> = _currentUser
 
-    /**
-     * Used to signIn an existing user with the specified [email] and
-     * [password].
-     * @return an instance of [AuthenticationResult.Failure] if an error
-     * occurred, or, an instance of [AuthenticationResult.Success] if
-     * an account was created successfully.
-     */
     override suspend fun signIn(
         email: String,
         password: String
@@ -65,13 +58,6 @@ class FirebaseAuthenticationService(
         }
     }
 
-    /**
-     * Used to create a new user account with the specified [username],
-     * [email],[password] and [profilePhotoUri].
-     * @return an instance of [AuthenticationResult.Failure] if an error
-     * occurred, or, an instance of [AuthenticationResult.Success] if
-     * an account was created successfully.
-     */
     override suspend fun createAccount(
         username: String,
         email: String,
@@ -107,9 +93,6 @@ class FirebaseAuthenticationService(
         }
     }
 
-    /**
-     * This method is used for signing-out the current signed-in user.
-     */
     override fun signOut() {
         firebaseAuth.signOut()
         // manually set the current user to null
