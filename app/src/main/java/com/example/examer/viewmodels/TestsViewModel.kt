@@ -30,10 +30,38 @@ enum class TestDetailsListType { SCHEDULED_TESTS, PREVIOUS_TESTS }
  * for a concrete implementation of [TestsViewModel]
  */
 interface TestsViewModel {
+    /**
+     * A state property that is holds a list of [TestDetails].
+     */
     val testDetailsList: State<List<TestDetails>>
+
+    /**
+     * A state property that holds that hold the current [TestsViewModelUiState].
+     */
     val testsViewModelUiState: State<TestsViewModelUiState>
+
+    /**
+     * Used to refresh [testDetailsList].
+     */
     fun refreshTestDetailsList()
+
+    /**
+     * Used to mark the specified test as missed.
+     *
+     * @param testDetails the test to mark as missed.
+     */
     fun markTestAsMissed(testDetails: TestDetails)
+
+    /**
+     * Used to fetch a list of workbooks for the specified test.
+     *
+     * @param testDetails the test for which the list of workbooks
+     * is to be fetched.
+     * @param onSuccess a callback that will be executed on the main
+     * thread, if the fetching operation was successful.
+     * @param onFailure an optional callback that will be executed
+     * on the main thread, if the fetching operation was un-successful.
+     */
     fun fetchWorkBookListForTestDetails(
         testDetails: TestDetails,
         @MainThread onSuccess: (List<WorkBook>) -> Unit,
