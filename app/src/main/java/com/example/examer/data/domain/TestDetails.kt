@@ -90,6 +90,15 @@ fun TestDetails.isTestOpen(): Boolean {
     return currentDateTimeTruncatedToMinutes in validDateTimeRange
 }
 
+/**
+ * Used to check whether the test has expired (The window for taking the
+ * test has expired).
+ *
+ * The user is allowed to take the test within one hour of the test
+ * being open. If the [LocalDateTime.now] is within the range of
+ * [TestDetails.localDateTime] + 60 minutes, then it returns true.
+ * Else, it returns false.
+ */
 fun TestDetails.isTestExpired(): Boolean {
     val currentDateTimeTruncatedToMinutes = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES)
     val testDetailsLocalDateTimeTruncatedToMinutes =
@@ -103,6 +112,12 @@ fun TestDetails.isTestExpired(): Boolean {
 
 }
 
+/**
+ * Used to check whether the test is scheduled, but not open.
+ *
+ * If the [LocalDateTime.now] is less than the [TestDetails.localDateTime]
+ * it returns true. Else, it returns false.
+ */
 fun TestDetails.isScheduledNotOpen(): Boolean {
     val currentDateTimeTruncatedToMinutes = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES)
     val testDetailsLocalDateTimeTruncatedToMinutes =
