@@ -11,6 +11,7 @@ import com.example.examer.utils.toString
 import java.util.concurrent.TimeUnit
 import com.example.examer.data.domain.TestDetails
 import com.example.examer.data.domain.WorkBook
+import com.example.examer.ui.screens.listenToAudioScreen.PlaybackState
 import com.example.examer.usecases.MarkTestAsCompletedUseCase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -37,6 +38,9 @@ interface TestSessionViewModel {
      * [TestSessionViewModel].
      */
     val uiState: State<UiState>
+
+    // TODO - add docs
+    val playbackState: State<PlaybackState>
 
     /**
      * A state property that contains the current [WorkBook].
@@ -71,12 +75,6 @@ interface TestSessionViewModel {
      * of repeats left for the **current** audio file .
      */
     val numberOfRepeatsLeftForAudioFile: State<Int>
-
-    /**
-     * A state property that contains a string indicating the playback
-     * progress for the **current** audio file .
-     */
-    val playbackProgress: State<Float>
 
     /**
      * A state property that indicates whether the **current** audio
@@ -129,6 +127,8 @@ class ExamerTestSessionViewModel(
     override val secondsRemaining = derivedStateOf { splitTextList.value[2] }
 
     // Audio Playback
+    private val _playbackState = mutableStateOf(PlaybackState())
+    override val playbackState = _playbackState as State<PlaybackState>
     private val _numberOfRepeatsLeftForAudioFile =
         mutableStateOf(_currentWorkBook.value.audioFile.numberOfRepeatsAllowedForAudioFile)
     override val numberOfRepeatsLeftForAudioFile = _numberOfRepeatsLeftForAudioFile as State<Int>
@@ -156,11 +156,6 @@ class ExamerTestSessionViewModel(
             _uiState.value = TestSessionViewModel.UiState.TEST_TIMED_OUT
         }
     )
-
-    // playback progress states
-    /*@FloatRange(from = 0.0, to = 1.0)*/
-    private val _playbackProgress = mutableStateOf(0.0f)
-    override val playbackProgress = _playbackProgress as State<Float>
 
     init {
         countDownTimer.start()
@@ -191,7 +186,8 @@ class ExamerTestSessionViewModel(
         setPlaybackProgressCoroutineJob = viewModelScope.launch {
             while (player.isPlaying) {
                 ensureActive()
-                _playbackProgress.value = player.currentPosition / player.duration.toFloat()
+                _playbackState.value.currentProgress =
+                    player.currentPosition / player.duration.toFloat()
                 delay(1_000)
             }
             // when the media player has finished playing, the loop
@@ -200,11 +196,11 @@ class ExamerTestSessionViewModel(
             // not be executed for one last time - when the player has
             // finished playing the audio file. In order to accommodate
             // for that, set the value to 1.0f outside the loop.
-            _playbackProgress.value = 1.0f
+            _playbackState.value.currentProgress = 1.0f
             // set the playbackProgress back to zero after 1 second to
             // indicate to the user that the playback has completed.
             delay(1_000)
-            _playbackProgress.value = 0.0f
+            _playbackState.value.currentProgress = 0.0f
         }
     }
 
