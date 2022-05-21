@@ -5,8 +5,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @JvmInline
-value class IndexOfChosenOption(val index: Int) {
-    override fun toString(): String = index.toString()
+value class IndexOfChosenOption(val value: Int) {
+    override fun toString(): String = value.toString()
 }
 
 @Serializable

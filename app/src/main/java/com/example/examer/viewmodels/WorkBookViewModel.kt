@@ -55,6 +55,6 @@ class ExamerWorkBookViewModel(
         questionsList: List<MultiChoiceQuestion>,
         answersMap: Map<MultiChoiceQuestion, IndexOfChosenOption>
     ): Int = questionsList.fold(0) { acc, mcq ->
-        acc + if (answersMap[mcq]!!.index == mcq.indexOfCorrectOption) mcq.mark else 0
+        acc + if (answersMap[mcq]!!.value == mcq.indexOfCorrectOption) mcq.mark else 0
     }
 }
