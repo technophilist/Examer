@@ -9,6 +9,10 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
+/**
+ * A [CoroutineWorker] that is used to save the answers of a user, for a
+ * particular test.
+ */
 class SaveUserAnswersWorker(
     private val appContext: Context,
     workerParameters: WorkerParameters
