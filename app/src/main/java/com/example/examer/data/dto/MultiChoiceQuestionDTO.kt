@@ -4,7 +4,7 @@ import com.example.examer.data.domain.MultiChoiceQuestion
 import kotlinx.serialization.Serializable
 
 /**
- * A DTO object equivalent of [MultiChoiceQuestion]
+ * A DTO object for [MultiChoiceQuestion].
  */
 @Serializable
 data class MultiChoiceQuestionDTO(

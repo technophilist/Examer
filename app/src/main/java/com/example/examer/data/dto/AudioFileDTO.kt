@@ -4,7 +4,7 @@ import com.example.examer.data.domain.ExamerAudioFile
 import java.net.URL
 
 /**
- * A DTO object equivalent of [ExamerAudioFile]
+ * A DTO object for [ExamerAudioFile].
  */
 data class AudioFileDTO(
     val audioFileUrl: URL,
