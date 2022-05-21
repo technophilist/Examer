@@ -33,7 +33,7 @@ interface Repository {
      * set to [Status.OPEN] or [Status.SCHEDULED]. The returned list will contain
      * both, tests which are open and tests which are scheduled.
      */
-    suspend fun fetchScheduledTestListForUser(user: ExamerUser): List<TestDetails>
+    suspend fun fetchActiveTestListForUser(user: ExamerUser): List<TestDetails>
 
     /**
      * Used to fetch a list of previous tests for the specified [user].
@@ -92,7 +92,7 @@ class ExamerRepository(
     private val remoteDatabase: RemoteDatabase,
     private val updateProfileUriDelegate: UpdateProfileUriDelegate
 ) : Repository {
-    override suspend fun fetchScheduledTestListForUser(user: ExamerUser): List<TestDetails> =
+    override suspend fun fetchActiveTestListForUser(user: ExamerUser): List<TestDetails> =
         remoteDatabase.fetchActiveTestListForUser(user)
 
     override suspend fun fetchPreviousTestListForUser(user: ExamerUser): List<TestDetails> =

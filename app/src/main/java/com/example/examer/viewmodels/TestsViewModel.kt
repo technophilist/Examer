@@ -109,7 +109,7 @@ class ExamerTestsViewModel(
      * based on the [testDetailsListType].
      */
     private suspend fun fetchTestDetailsList(user: ExamerUser) = when (testDetailsListType) {
-        TestDetailsListType.SCHEDULED_TESTS -> repository.fetchScheduledTestListForUser(user)
+        TestDetailsListType.SCHEDULED_TESTS -> repository.fetchActiveTestListForUser(user)
         TestDetailsListType.PREVIOUS_TESTS -> repository.fetchPreviousTestListForUser(user)
     }
 }
