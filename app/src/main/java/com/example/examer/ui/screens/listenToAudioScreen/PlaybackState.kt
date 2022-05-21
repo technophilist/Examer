@@ -2,6 +2,12 @@ package com.example.examer.ui.screens.listenToAudioScreen
 
 import androidx.compose.runtime.*
 
+/**
+ * A state holder class that holds the state for audio playback.
+ * @param isPlaybackEnabled indicates whether playback is enabled.
+ * @param startProgress indicates the initial start progress of the
+ * playback.
+ */
 class PlaybackState(
     isPlaybackEnabled: Boolean = true,
     /*@FloatRange(from = 0.0, to = 1.0)*/
