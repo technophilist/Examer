@@ -20,6 +20,10 @@ data class UserAnswersDTO(
     val marksObtainedForWorkBook: String
 )
 
+/**
+ * A utility method used to convert an instance of [DocumentSnapshot]
+ * to an instance of [UserAnswersDTO].
+ */
 @Suppress("UNCHECKED_CAST")
 fun DocumentSnapshot.toUserAnswersDTO() = UserAnswersDTO(
     associatedWorkBookId = getString("associatedWorkBookId")!!,
