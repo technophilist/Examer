@@ -41,11 +41,20 @@ suspend fun FirebaseAuth.createUser(
     currentUser!!
 }.getOrThrow()
 
-
+/**
+ * Used to change the associated email of a [FirebaseUser] to the
+ * specified [newEmail]. If a re-authentication is required, then
+ * the specified [password] would be used.
+ */
 suspend fun FirebaseUser.changeEmail(newEmail: String, password: String) {
     runCatchingRecentLoginException(password) { updateEmail(newEmail).await() }
 }
 
+/**
+ * Used to change the password of a [FirebaseUser] to the specified
+ * [newPassword]. If a re-authentication is required, then the
+ * value of the specified [oldPassword] would be used.
+ */
 suspend fun FirebaseUser.changePassword(newPassword: String, oldPassword: String) {
     runCatchingRecentLoginException(oldPassword) { updatePassword(newPassword).await() }
 }
@@ -95,6 +104,10 @@ suspend fun FirebaseUser.changeUserName(newName: String) {
     updateProfile(userProfileChangeRequest).await()
 }
 
+/**
+ * Used o change the associated photo uri of a [FirebaseUser] to the
+ * specified [uri].
+ */
 suspend fun FirebaseUser.changePhotoUri(uri: Uri) {
     val userProfileChangeRequest = buildProfileChangeRequest { photoUri = uri }
     updateProfile(userProfileChangeRequest).await()
