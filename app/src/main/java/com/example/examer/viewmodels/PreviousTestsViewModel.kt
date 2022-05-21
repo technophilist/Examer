@@ -10,10 +10,31 @@ import com.example.examer.data.domain.TestDetails
 import com.example.examer.data.domain.TestResult
 import kotlinx.coroutines.launch
 
+/**
+ * An enum class used to model the different UI states associated with
+ * a concrete implementation of [PreviousTestsViewModel].
+ */
 enum class PreviousTestsViewModelUiState { LOADING, SUCCESSFULLY_LOADED }
+
+/**
+ * An interface that specifies the requisite properties and methods
+ * required for a concrete implementation of [PreviousTestsViewModel].
+ */
 interface PreviousTestsViewModel {
+    /**
+     * A state property that contains the current [PreviousTestsViewModelUiState].
+     */
     val uiState: State<PreviousTestsViewModelUiState>
+
+    /**
+     * A state property that contains the a map that stores [TestDetails]
+     * object and the associated [TestResult] object.
+     */
     val testResultsMap: State<Map<TestDetails, TestResult>>
+
+    /**
+     * Used to refresh the previous test list.
+     */
     fun refreshPreviousTestsList()
 }
 
@@ -35,6 +56,11 @@ class ExamerPreviousTestsViewModel(
         viewModelScope.launch { fetchAndAssignPreviousTestsList() }
     }
 
+    /**
+     * Used to fetching a list of previous tests and assigning them to
+     * [_testResultsMap]. An empty map will be assigned if the
+     * [AuthenticationService.currentUser] is null.
+     */
     private fun fetchAndAssignPreviousTestsList() {
         viewModelScope.launch {
             _uiState.value = PreviousTestsViewModelUiState.LOADING
@@ -45,5 +71,4 @@ class ExamerPreviousTestsViewModel(
             _uiState.value = PreviousTestsViewModelUiState.SUCCESSFULLY_LOADED
         }
     }
-
 }
