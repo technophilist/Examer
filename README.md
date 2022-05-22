@@ -10,6 +10,11 @@ Although the app works, the development of this project has be permanently stopp
 ## Screenshots
 ![A compilation of, some of the app' screenshots](screenshots/screenshot-compilation.png)
 
+## Notable Features
+- Experimental support for French.
+- Supports both 12hr and 24hr time formats based on the device's settings.
+- User won’t be allowed to use the app if the date/time or time zone is set manually.
+
 ## Color Scheme
 The color palette and the typography used in this app is entirely based on the specification for [Reply app](https://material.io/design/material-studies/reply.html#color), which is one of the many material studies app maitained by google.
 
