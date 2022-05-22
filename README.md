@@ -24,6 +24,7 @@ The color palette and the typography used in this app is entirely based on the s
 - [Firebase Storage](https://firebase.google.com/products/storage) for storing audio files and images.
 - [Coil (Compose)](https://coil-kt.github.io/coil/compose/) for image loading and caching.
 - [Accompanist library](https://google.github.io/accompanist/) for window insets and pager,pager-indicators,swiperefresh,placeholder.
+- [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager?gclid=EAIaIQobChMIzJLs5aTy9wIVu5NmAh0F4wU7EAAYASAAEgKMn_D_BwE&gclsrc=aw.ds) for persistent background tasks.
 
 ## Source code and architecture
 - [Architecture components](https://developer.android.com/topic/libraries/architecture/) such as
