@@ -16,7 +16,7 @@ Although the app works, the development of this project has be permanently stopp
 - User won’t be allowed to use the app if the date/time or time zone is set manually.
 
 ## Color Scheme
-The color palette and the typography used in this app is entirely based on the specification for [Reply app](https://material.io/design/material-studies/reply.html#color), which is one of the many material studies app maitained by google.
+The color palette and the typography used in this app is entirely based on the specification for [Reply app](https://material.io/design/material-studies/reply.html#color), which is one of the many material studies apps maitained by google.
 
 <img src = "screenshots/color-scheme.png" height = "675" width = "245">
 
