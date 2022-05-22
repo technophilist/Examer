@@ -5,7 +5,7 @@ Examer is an Android app that is used to take tests that evaluate a person's abi
 To try out this app you need to use the latest version of [Android Studio Arctic Fox](https://developer.android.com/studio?gclid=EAIaIQobChMInc7OlbDD9QIVmpJmAh2lKgaZEAAYASAAEgLvsfD_BwE&gclsrc=aw.ds).
 
 ## Note
-Although the app works, the development of this project has be permanently stopped. There is no intention of continuing the development of this project. The features implemented will work, but bugs are bound to exist. The app doesn't handle most of the exceptions, especially those related to network.
+Although the app works, the development of this project has be permanently stopped. There is no intention of continuing the development of this project. The features implemented will work, but bugs are bound to exist. The app doesn't handle most of the exceptions, especially those related to network. FCM (Firebase Cloud Messaging) is used in the app, but, the token is just logged and not stored anywhere.
 
 ## Screenshots
 ![A compilation of, some of the app' screenshots](screenshots/screenshot-compilation.png)
