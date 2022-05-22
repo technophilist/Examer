@@ -7,6 +7,13 @@ To try out this app you need to use the latest version of [Android Studio Arctic
 ## Note
 Although the app works, the development of this project has been permanently stopped. There is no intention of continuing the development of this project. The features implemented will work, but bugs are bound to exist. The app doesn't handle most of the exceptions, especially those related to network. FCM (Firebase Cloud Messaging) is used in the app, but, the token is just logged and not stored anywhere.
 
+## Table of contents
+- [Screenshots](#screenshots)
+- [Notable Features](#notable-features)
+- [Color Scheme](#color-scheme)
+- [Tech Stack](#tech-stack)
+- [Source code and architecture](#source-code-and-architecture)
+
 ## Screenshots
 ![A compilation of, some of the app' screenshots](screenshots/screenshot-compilation.png)
 
@@ -34,7 +41,7 @@ The color palette and the typography used in this app is entirely based on the s
 - [Accompanist library](https://google.github.io/accompanist/) for window insets and pager,pager-indicators,swiperefresh,placeholder.
 - [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager?gclid=EAIaIQobChMIzJLs5aTy9wIVu5NmAh0F4wU7EAAYASAAEgKMn_D_BwE&gclsrc=aw.ds) for persistent background tasks.
 
-## Source code and architecture
+## Source code and Architecture
 - [Architecture components](https://developer.android.com/topic/libraries/architecture/) such as
   Lifecycle and ViewModels are used.
 - [MVVM](https://developer.android.com/jetpack/guide?gclid=EAIaIQobChMI-_GIsejG8QIVzNaWCh0NXQANEAAYASAAEgKZ2fD_BwE&gclsrc=aw.ds)
