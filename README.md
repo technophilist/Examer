@@ -1,5 +1,6 @@
 # Examer 📖 
-[![Project Status: Abandoned –  Initial development has started, but there has not yet been a stable, usable release; the project has been abandoned and the author(s) do not intend on continuing development.](https://www.repostatus.org/badges/latest/abandoned.svg)](https://www.repostatus.org/#abandoned)![Android CI workflow](https://github.com/t3chkid/Examer/actions/workflows/Android-CI.yaml/badge.svg)
+[![Project Status: Inactive – The project has reached a stable, usable state but is no longer being actively developed; support/maintenance will be provided as time allows.](https://www.repostatus.org/badges/latest/inactive.svg)](https://www.repostatus.org/#inactive)
+![Android CI workflow](https://github.com/t3chkid/Examer/actions/workflows/Android-CI.yaml/badge.svg)
 
 Examer is an Android app that is used to take tests that evaluate a person's ability to listen to, and understand conversations in English.
 To try out this app you need to use the latest version of [Android Studio Arctic Fox](https://developer.android.com/studio?gclid=EAIaIQobChMInc7OlbDD9QIVmpJmAh2lKgaZEAAYASAAEgLvsfD_BwE&gclsrc=aw.ds).
