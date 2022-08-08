@@ -9,11 +9,15 @@ To try out this app you need to use the latest version of [Android Studio Arctic
 Although the app works, the development of this project has been permanently stopped. There is no intention of continuing the development of this project. The features implemented will work, but bugs are bound to exist. The app doesn't handle most of the exceptions, especially those related to network. FCM (Firebase Cloud Messaging) is used in the app, but, the token is just logged and not stored anywhere.
 
 ## Table of contents
+- [Demo](#demo)
 - [Screenshots](#screenshots)
 - [Notable Features](#notable-features)
 - [Color Scheme](#color-scheme)
 - [Tech Stack](#tech-stack)
 - [Source code and architecture](#source-code-and-architecture)
+
+## Demo
+https://user-images.githubusercontent.com/54663474/183374231-703c42f6-6988-4326-b555-c9de329a38cd.mp4
 
 ## Screenshots
 ![A compilation of, some of the app' screenshots](screenshots/screenshot-compilation.png)
